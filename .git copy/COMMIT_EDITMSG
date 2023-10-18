@@ -1,0 +1,20 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Changes to be committed:
+#	new file:   .App.js.swp
+#	modified:   App.js
+#	modified:   app.json
+#	renamed:    assets/adaptive-icon.png -> app/assets/adaptive-icon.png
+#	renamed:    assets/favicon.png -> app/assets/favicon.png
+#	renamed:    assets/icon.png -> app/assets/icon.png
+#	renamed:    assets/splash.png -> app/assets/splash.png
+#	new file:   app/assets/squirtle.png
+#	new file:   app/components/Task.js
+#	new file:   app/components/Todolist.js
+#	new file:   app/screens/WelcomeScreen.js
+#	modified:   package-lock.json
+#	modified:   package.json
+#
