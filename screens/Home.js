@@ -1,10 +1,20 @@
-import React from "react"
-import {View, Text} from "react-native"
+import React,{useState} from 'react';
+import {KeyboardAvoidingView, TextInput } from 'react-native';
+import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import Form from '../components/Todolist'
 
-const Home = () => {
-    <View>
-        <Text>Welcome to Triogrow!</Text>
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Form></Form>
     </View>
+  );
 }
 
-export default Home
+const styles = StyleSheet.create({
+  container: {
+    flex: 1 ,
+    backgroundColor: 'white',
+  },
+  
+});
