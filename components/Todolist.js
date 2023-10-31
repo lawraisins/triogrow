@@ -51,7 +51,9 @@ const Form = () =>  {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
+
+
 
   },
   tasksWrapper: {
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
   items: {},  
   writeTaskWrapper: {
     position: "absolute",
-    bottom: 60,
+    bottom: 40,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,
+    left: 10,
     backgroundColor: "white",
     borderRadius: 60,
     borderColor: "green",
@@ -84,6 +87,7 @@ const styles = StyleSheet.create({
   addWrapper: {
     width: 60,
     height: 60,
+    right: 10,
     backgroundColor: "white",
     borderRadius: 60,
     justifyContent: "center",

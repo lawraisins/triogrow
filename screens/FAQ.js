@@ -4,10 +4,10 @@ import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'r
 import Form from '../components/Todolist'
 import { NavigationContainer } from '@react-navigation/native';
 
-export default function Home() {
+
+export default function FAQ() {
   return (
     <View style={styles.container}>
-      <Form></Form>
     </View>
   );
 }

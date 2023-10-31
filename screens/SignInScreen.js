@@ -11,7 +11,7 @@ const SignInScreen = () => {
     const navigation = useNavigation();
 
     const onSignInPressed = () => {
-        navigation.navigate('Home')
+        navigation.navigate('Landing')
     }
     const onForgotPasswordPressed = () => {
     }

@@ -3,11 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import SignInScreen from "./screens/SignInScreen"
 import SignUpScreen from './screens/SignUpScreen';
 import Navigation from './navigation';
+import Tabs from './components/tabs';
+import { NavigationContainer } from '@react-navigation/native';
 export default function App() {
   return (
     <Navigation>
-    <SignInScreen></SignInScreen>
+      <SignInScreen>
+      </SignInScreen>
     </Navigation>
+
+
   );
 }
 
