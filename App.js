@@ -1,61 +1,22 @@
-import React,{useState} from 'react';
-import {KeyboardAvoidingView, TextInput } from 'react-native';
-import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import Form from './app/components/Todolist';
-
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import SignInScreen from "./screens/SignInScreen"
+import SignUpScreen from './screens/SignUpScreen';
+import Navigation from './navigation';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Form></Form>
-    </View>
+    <Navigation>
+    <SignInScreen></SignInScreen>
+    </Navigation>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
-    flex: 1 ,
-    backgroundColor: 'grey',
-
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  tasksWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20
-  },
-  sectionHeader: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginLeft: 15,
-  },
-  items: {},  
-  writeTaskWrapper: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: "white",
-    borderRadius: 60,
-    borderColor: "green",
-    borderWidth: 1,
-    width: 250,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: "white",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "green",
-    borderWidth: 1,
-
-
-
-  },
-  addText: {},
 });
