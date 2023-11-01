@@ -4,7 +4,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from "expo-app-loading"
-import App from '../App';
+
 
 const Form = () =>  {
 
