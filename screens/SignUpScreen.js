@@ -19,6 +19,7 @@ const SignUpScreen = () => {
     }
 
     const onSignUpPressed = () => {
+        navigation.navigate("SignIn")
     }
 
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -71,7 +72,7 @@ const SignUpScreen = () => {
             <CustomButton
             text="Have an account? Sign in"
             onPress={onSignUpPressed}
-            type="TERTIARY"></CustomButton>
+            type="PRIMARY"></CustomButton>
         </View>
     )
 }
