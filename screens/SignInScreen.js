@@ -10,8 +10,11 @@ const SignInScreen = () => {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
-    const onSignInPressed = () => {
+    const onSignInPressed = (data) => {
         navigation.navigate('Landing')
+        console.log(data)
+        password = data.password
+        username = data.username
     }
     const onForgotPasswordPressed = () => {
     }

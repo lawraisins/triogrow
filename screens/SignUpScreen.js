@@ -8,14 +8,20 @@ import {useForm, Controller} from 'react-hook-form'
 const SignUpScreen = () => {
     const {control, handleSubmit, formState: {errors}, watch} = useForm();
     const pwd = watch('password')
+    const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setemail] = useState('');
     const [confirmPassword, setconfirmPassword] = useState('');
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
-    const onRegisterPressed = () => {
+    const onRegisterPressed = (data) => {
         navigation.navigate("SignIn")
+        console.log(data)
+        rname = data.name
+        rusername = data.username
+        remail = data.email
+        rpassword = data.password
     }
 
     const onSignUpPressed = () => {
@@ -31,7 +37,7 @@ const SignUpScreen = () => {
             name="name"
             control={control}
             placeholder="Name"
-            rules={{required: "Name is required.", minLength: {value: 3, message: "Username should be at least 3 characters long.", maxLength: {value: 20, message: "Username cannot be longer than 20 characters long."}}}}
+            rules={{required: "Name is required.", minLength: {value: 3, message: "Name should be at least 3 characters long.", maxLength: {value: 20, message: "Name cannot be longer than 20 characters long."}}}}
              />
             <CustomInput 
             name="username"
