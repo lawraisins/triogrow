@@ -27,6 +27,12 @@ const SignUpScreen = () => {
         <View style={styles.root}>
             <Text style={styles.title}>Create an Account </Text>
             <CustomInput 
+            name="name"
+            control={control}
+            placeholder="Name"
+            rules={{required: "Name is required.", minLength: {value: 3, message: "Username should be at least 3 characters long.", maxLength: {value: 20, message: "Username cannot be longer than 20 characters long."}}}}
+             />
+            <CustomInput 
             name="username"
             control={control}
             placeholder="Username"
