@@ -2,24 +2,54 @@ import React,{useState} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Task from './Task';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppLoading from "expo-app-loading"
+import App from '../App';
 
 const Form = () =>  {
+
+  
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
-  const handleAddTask = () => {
-    setTaskItems([...taskItems, task])
-    setTask(null);
+  const [ready, setReady] = useState(false);
+  const displayData = async () => {
+      AsyncStorage.getItem("storedTodo").then(data => {
+        if (data !== null) {
+          setTaskItems(JSON.parse(data))
+        }
+      }).catch((error) => console.log(error))
+      }
+  
+      if (!ready) {
+        return (
+          <AppLoading
+            startAsync={displayData}
+            onFinish={() => setReady(true)}
+            onError={console.warn} />
+        )
+      }
+  const handleAddTask =  () => {
+    const newtaskItems = setTaskItems([...taskItems, task])
+    setTask(newtaskItems);
+    AsyncStorage.setItem("storedTodo", JSON.stringify(newtaskItems)).then(() => {
+      setTask(newtaskItems);
+    }).catch(error => console.log(error));
   }
 
-  const completeTask = (index) => {
+  const completeTask = async (index) => {
     let itemsCopy = [...taskItems];
     itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
+    AsyncStorage.setItem("storedTodo", JSON.stringify(itemsCopy)).then(() => {
+      setTask(itemsCopy);
+      setModalVisible(false);
+    }).catch(error => console.log(error));
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}></View>
-     <Text style = {styles.sectionHeader}>To-do List</Text>
+     <Text style = {styles.sectionHeader}>Tasks</Text>
      <View style = {styles.items}>
             {/* To-do List */}
             {
@@ -46,7 +76,7 @@ const Form = () =>  {
         </KeyboardAvoidingView> 
     </View>
   );
-}
+    }
 
 const styles = StyleSheet.create({
   container: {
