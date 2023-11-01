@@ -23,12 +23,14 @@ const viewTaskList = () =>  navigation.navigate("Todo")
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'white',
+    backgroundColor: '#BEE4FF',
     justifyContent: "center",
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: '#FDF76A',
+    borderColor: "black",
+    borderRadius: 2,
     padding: 10,
   },
   

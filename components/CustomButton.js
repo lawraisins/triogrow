@@ -17,12 +17,21 @@ const styles = StyleSheet.create({
 
         alignItems: "center",
         borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 2,
 
 
     },
 
     container_PRIMARY: {
-        backgroundColor: "#3B71F3",
+        backgroundColor: "#FDF76A",
+        shadowColor: "black",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
     },
 
 
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
 
     text: {
         fontWeight: "bold",
-        color: "white",
+        color: "black",
 
     }
 })

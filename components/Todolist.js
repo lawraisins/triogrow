@@ -81,7 +81,7 @@ const Form = () =>  {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'white',
+    backgroundColor: '#BEE4FF',
 
 
 
@@ -110,9 +110,9 @@ const styles = StyleSheet.create({
     left: 10,
     backgroundColor: "white",
     borderRadius: 60,
-    borderColor: "green",
+    borderColor: "#FDF76A",
     borderWidth: 1,
-    width: 250,
+    width: 280,
   },
   addWrapper: {
     width: 60,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "green",
+    borderColor: "#FDF76A",
     borderWidth: 1,
 
 

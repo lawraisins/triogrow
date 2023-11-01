@@ -40,8 +40,8 @@ const SignInScreen = () => {
 
 
             <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} type="PRIMARY"/>
-            <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/>
-            <CustomButton text="Create a New Account" onPress={onSignUpPressed} type="TERTIARY"/>
+            {/* <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/> */}
+            <CustomButton text="Create a New Account" onPress={onSignUpPressed} type="PRIMARY"/>
         </View>
     )
 }
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
     root: {
         alignItems: "center",
         padding: 20,
+        backgroundColor: "#BEE4FF",
+        opacity: "20%",
+        height: "100%"
     }, 
     logo: {
         width: '70%',

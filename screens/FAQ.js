@@ -15,7 +15,7 @@ export default function FAQ() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'white',
+    backgroundColor: '#BEE4FF',
   },
   
 });

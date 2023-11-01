@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
     root: {
         alignItems: "center",
         padding: 20,
+        backgroundColor: '#BEE4FF',
+        height: "100%"
     }, 
     logo: {
         width: '70%',
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
 
     },
     link: {
-        color: "orange",
+        color: "#FDF76A",
 
     }
 })

@@ -20,7 +20,7 @@ const CustomInput = ({control, name, rules = {}, placeholder, secureTextEntry}) 
                  />
                  </View>
                  {error && (
-                    <Text style={{color:"red", alignSelf: "Stretch"}}>{error.message}</Text>
+                    <Text style={{color:"red"}}>{error.message}</Text>
                  )}
                  </>
                  )}
@@ -34,12 +34,19 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         width: "100%",
         padding: 20,
-
-        borderColor: "#e8e8e8",
-        borderWidth: 1,
         borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 2,
         paddingHorizontal: 10,
         marginVertical: 5,
+
+        shadowColor: "black",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
 
     },
 
