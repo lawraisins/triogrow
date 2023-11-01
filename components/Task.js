@@ -32,21 +32,11 @@ const styles = StyleSheet.create({
     square: {
         width: 24,
         height: 24,
-        backgroundColor: "green",
+        backgroundColor: "#FDF76A",
         opacity: 0.4,
         marginRight: 15,
 
     },
-    itemText: {
-        maxWidth: "80%"
-    },
-    circular: {
-        width: 12,
-        height: 12,
-        backgroundColor: "green",
-        borderwidth: 2,
-        borderRadius: 5,
 
-    }, 
 });
 export default Task;

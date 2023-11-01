@@ -7,23 +7,6 @@ import AppLoading from "expo-app-loading"
 
 
 export default function Learn() {
-    const [ready, setReady] = useState(false);
-    const displayData = async () => {
-        AsyncStorage.getItem("storedTodo").then(data => {
-          if (data !== null) {
-            setTaskItems(JSON.parse(data))
-          }
-        }).catch((error) => console.log(error))
-        }
-    
-        if (!ready) {
-          return (
-            <AppLoading
-              startAsync={displayData}
-              onFinish={() => setReady(true)}
-              onError={console.warn} />
-          )
-        }
   return (
     <View style={styles.container}>
         <Form></Form>

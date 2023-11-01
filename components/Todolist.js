@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Task from './Task';
@@ -12,14 +12,17 @@ const Form = () =>  {
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
   const [ready, setReady] = useState(false);
+
+  //Loads cached to-do list information whenever the page is
+  
   const displayData = async () => {
-      AsyncStorage.getItem("storedTodo").then(data => {
+      await AsyncStorage.getItem("storedTodo").then(data => {
         if (data !== null) {
           setTaskItems(JSON.parse(data))
         }
       }).catch((error) => console.log(error))
       }
-  
+  // Loads to-do list while screen loads
       if (!ready) {
         return (
           <AppLoading
@@ -29,12 +32,13 @@ const Form = () =>  {
         )
       }
   const handleAddTask =  () => {
-    const newtaskItems = setTaskItems([...taskItems, task])
-    setTask(newtaskItems);
-    AsyncStorage.setItem("storedTodo", JSON.stringify(newtaskItems)).then(() => {
-      setTask(newtaskItems);
+    setTaskItems([...taskItems, task])
+    setTask()
+    AsyncStorage.setItem("storedTodo", JSON.stringify(taskItems)).then(() => {
+      setTask(taskItems);
     }).catch(error => console.log(error));
   }
+  
 
   const completeTask = async (index) => {
     let itemsCopy = [...taskItems];
@@ -42,7 +46,6 @@ const Form = () =>  {
     setTaskItems(itemsCopy);
     AsyncStorage.setItem("storedTodo", JSON.stringify(itemsCopy)).then(() => {
       setTask(itemsCopy);
-      setModalVisible(false);
     }).catch(error => console.log(error));
   }
 
@@ -55,10 +58,13 @@ const Form = () =>  {
             {
         taskItems.map((item, index) => {
         return <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+
           <Task text={item}/>
          </TouchableOpacity>
         }
+      
         )
+
       }
 
       </View>   
