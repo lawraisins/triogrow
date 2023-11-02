@@ -4,7 +4,9 @@ import Logo from '../assets/images/squirtle.png';
 import CustomInput from "../components/CustomInput"
 import CustomButton from "../components/CustomButton"
 import { useNavigation } from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form'
+import {useForm, Controller} from 'react-hook-form';
+import axios from 'axios';
+
 const SignUpScreen = () => {
     const {control, handleSubmit, formState: {errors}, watch} = useForm();
     const pwd = watch('password')
@@ -15,18 +17,52 @@ const SignUpScreen = () => {
     const [confirmPassword, setconfirmPassword] = useState('');
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
-    const onRegisterPressed = (data) => {
-        navigation.navigate("SignIn")
-        console.log(data)
+    const onRegisterPressed = async (data) => { // changed this to async function
+    
+        // navigation.navigate("SignIn") // moved this to line 54
+        // console.log(data)
         rname = data.name
         rusername = data.username
         remail = data.email
         rpassword = data.password
-    }
+
+        // pass the sign up information to the backend
+        try {
+            // Remember to change the backend server URL accordingly!!
+            const backendURL = 'http://localhost:3000';
+
+            // Data to send in the POST request
+            const userData = {
+                name: rname,
+                username: rusername,
+                email: remail,
+                password: rpassword,
+            };
+
+            // for debugging
+            console.log('Sending a POST request to register a user...');
+            console.log('Request URL: ', `${backendURL}/auth/register`);
+            console.log('Data to be sent: ', data);
+
+            // Make a POST request to register the user
+            // ERROR  Registration error:  [AxiosError: Network Error]
+            // probably happening on this line
+            const response = await axios.post(`${backendURL}/auth/register`, userData);
+
+            // Handle the response, e.g. show a success message or navigate to a new screen
+            console.log('Registraion successful: ', response.data);
+            navigation.navigate("SignIn");
+        
+        } catch (error) {
+            // Handle any errors that occur during the registraion process
+            console.error('Registration error: ', error);
+        }
+    };
 
     const onSignUpPressed = () => {
         navigation.navigate("SignIn")
     }
+
 
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
