@@ -42,7 +42,7 @@ const SignUpScreen = () => {
             // for debugging
             console.log('Sending a POST request to register a user...');
             console.log('Request URL: ', `${backendURL}/auth/register`);
-            console.log('Data to be sent: ', data);
+            console.log('Data to be sent: ', userData);
 
             // Make a POST request to register the user
             // ERROR  Registration error:  [AxiosError: Network Error]
@@ -50,13 +50,24 @@ const SignUpScreen = () => {
             const response = await axios.post(`${backendURL}/auth/register`, userData);
 
             // Handle the response, e.g. show a success message or navigate to a new screen
-            console.log('Registraion successful: ', response.data);
+            console.log('Registration successful: ', response.data);
             navigation.navigate("SignIn");
         
         } catch (error) {
-            // Handle any errors that occur during the registraion process
+            // Handle any errors that occur during the registration process
             console.error('Registration error: ', error);
+            if (error.response) {
+                // The request was made, but the server responded with an error
+                console.error('Server error: ', error.response.data);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('No response received from the server');
+            } else {
+                // Something happened in setting up the request
+                console.error('Request setup error: ', error.message);
+            }
         }
+        
     };
 
     const onSignUpPressed = () => {
