@@ -7,7 +7,25 @@ import FAQ from "../screens/FAQ"
 import Profile from "../screens/Profile"
 import { useFonts } from 'expo-font';
 const Tab = createBottomTabNavigator();
-
+const CustomTabBarButton = ({children, onPress}) => (
+    <TouchableOpacity
+    style={{
+        top: -30,
+        justifyContent: "center",
+        alignItems: "center",
+    }}
+    onPress = {onPress}
+    >
+        <View style={{
+            width:70,
+            height:70,
+            borderRadius: 35,
+            backgroundColor: "black",
+        }}>
+            {children}
+        </View>
+    </TouchableOpacity>
+)
 const Tabs = () => {
     const [fontsLoaded] = useFonts (
         {
@@ -26,7 +44,7 @@ const Tabs = () => {
                 tabBarLabelStyle: {
                     display: "none"
                   },
-                style: {
+                tabBarStyle: {
                     position: "absolute",
                     bottom: 25,
                     left: 20,
@@ -74,6 +92,21 @@ const Tabs = () => {
                                 
                                 )
                             }}/>
+            <Tab.Screen name="Post" component={Home} 
+                            options={{headerShown: false,
+                                tabBarIcon: ({focused}) => (
+                                    <Image source={require("../assets/images/plus.png")}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        tintColor: "#fff",
+                                    }}></Image>
+                                ),
+                                tabBarButton: (props) => (
+                                    <CustomTabBarButton {...props} />
+                                )
+                            }}></Tab.Screen>
             <Tab.Screen name="FAQ" component={FAQ} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
