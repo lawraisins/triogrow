@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         maxHeight: 200,
     },
     title: {
-        fontSize: 36,
+        fontSize: 32,
         fontFamily: "Poppins-Header",
         color: "#051C60",
         margin: 10,
