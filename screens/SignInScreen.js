@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 20,
         backgroundColor: "#BEE4FF",
-        opacity: "20%",
+        // opacity: "20%",
         height: "100%"
     }, 
     logo: {
