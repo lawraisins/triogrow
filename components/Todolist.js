@@ -1,9 +1,10 @@
 import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from "expo-app-loading"
+import { useFonts } from 'expo-font';
 
 
 const Form = () =>  {
@@ -13,6 +14,7 @@ const Form = () =>  {
   const [taskItems, setTaskItems] = useState([]);
   const [ready, setReady] = useState(false);
 
+  
   //Loads cached to-do list information whenever the page is
   
   const displayData = async () => {
@@ -49,10 +51,13 @@ const Form = () =>  {
     }).catch(error => console.log(error));
   }
 
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}></View>
-     <Text style = {styles.sectionHeader}>Tasks</Text>
+     <Text style = {styles.header}>My Tasks</Text>
      <View style = {styles.items}>
             {/* To-do List */}
             {
@@ -73,9 +78,7 @@ const Form = () =>  {
             <TextInput style={styles.input} placeholder={'Write a task'} value = {task} onChangeText={text => setTask(text)}></TextInput>
             <TouchableOpacity onPress={() => handleAddTask()}>
                 <View style={styles.addWrapper}>
-                    <Text style={styles.addText}>
-                        +
-                    </Text>
+                    <Image source={require("../assets/images/plus.png")} style={{width: 25, height:25 }} />
                 </View>
             </TouchableOpacity>
         
@@ -89,19 +92,18 @@ const styles = StyleSheet.create({
     flex: 1 ,
     backgroundColor: '#BEE4FF',
 
-
-
   },
   tasksWrapper: {
-    paddingTop: 80,
     paddingHorizontal: 20
   },
-  sectionHeader: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginLeft: 15,
+  header: {
+    fontSize: 42,
+    fontFamily: "Poppins-Header",
+    top: 55,
   },
-  items: {},  
+  items: {
+    top: 55,
+  },  
   writeTaskWrapper: {
     position: "absolute",
     bottom: 40,
@@ -113,7 +115,6 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    left: 10,
     backgroundColor: "white",
     borderRadius: 60,
     borderColor: "#FDF76A",
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   addWrapper: {
     width: 60,
     height: 60,
-    right: 10,
+    left:10,
     backgroundColor: "white",
     borderRadius: 60,
     justifyContent: "center",

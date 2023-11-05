@@ -17,7 +17,8 @@ export default function ToDo() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'white',
+    backgroundColor: '#BEE4FF',
+    padding: 20,
   },
   
 });
