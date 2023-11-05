@@ -14,7 +14,7 @@ const SignInScreen = () => {
     const navigation = useNavigation();
 
     const onSignInPressed = (data) => {
-        navigation.navigate('Landing')
+        navigation.navigate('Landing', {"username": data.username})
         console.log(data)
         password = data.password
         username = data.username

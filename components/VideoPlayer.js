@@ -5,17 +5,13 @@ import { useRef,useState } from "react";
 import { StyleSheet, Button, View } from 'react-native';
 import WebView from "react-native-webview";
 
-// Within your render function, assuming you have a file called
-// "background.mp4" in your project. You can include multiple videos
-// on a single screen if you like.
-
 const COMPOST_TUBE = "https://www.youtube.com/watch?v=CT4YeCWeST4"
 
-const VideoPlayer = () => {
+const VideoPlayer = ({sourcelink}) => {
  return (
 <View>
 <WebView
-source={{uri: COMPOST_TUBE}}
+source={{uri: sourcelink}}
     onLoad={console.log("Starting")}>
         
 

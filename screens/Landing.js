@@ -4,6 +4,7 @@ import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'r
 import Form from '../components/Todolist'
 import { NavigationContainer } from '@react-navigation/native';
 import Tabs from '../components/tabs';
+
 export default function Home() {
   return (
     <Tabs></Tabs>

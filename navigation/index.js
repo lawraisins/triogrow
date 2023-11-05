@@ -7,6 +7,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import Landing from "../screens/Landing";
 import Todo from "../screens/Todo"
 import Tutorial from "../screens/Tutorial";
+import Tutorial2 from "../screens/Tutorial2";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -18,6 +19,7 @@ const Navigation = () => {
                 <Stack.Screen name="Landing" component={Landing}/>
                 <Stack.Screen name="Todo" component={Todo}/>
                 <Stack.Screen name="Tutorial" component={Tutorial}/>
+                <Stack.Screen name="Tutorial2" component={Tutorial2}/>
             </Stack.Navigator>
         </NavigationContainer>
 

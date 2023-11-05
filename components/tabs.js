@@ -5,9 +5,21 @@ import Home from "../screens/Home"
 import Learn from "../screens/Learn"
 import FAQ from "../screens/FAQ"
 import Profile from "../screens/Profile"
+import { useFonts } from 'expo-font';
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
+    const [fontsLoaded] = useFonts (
+        {
+             "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+      }
+      );
+      
+      if (!fontsLoaded) {
+          return undefined
+      }
+    
     return(
         <Tab.Navigator
             screenOptions={{
@@ -40,7 +52,7 @@ const Tabs = () => {
                                         height: 25,
                                         tintColor: focused ? "blue" : "black",
                                     }}/>
-                            <Text>HOME</Text>
+                            <Text style={styles.text}>HOME</Text>
                         </View>
                     
                     )
@@ -57,7 +69,7 @@ const Tabs = () => {
                                                     height: 25,
                                                     tintColor: focused ? "blue" : "black",
                                                 }}/>
-                                        <Text>LEARN</Text>
+                                        <Text style={styles.text}>LEARN</Text>
                                     </View>
                                 
                                 )
@@ -73,7 +85,7 @@ const Tabs = () => {
                                                     height: 25,
                                                     tintColor: focused ? "blue" : "black",
                                                 }}/>
-                                        <Text>FAQ</Text>
+                                        <Text style={styles.text}>FAQ</Text>
                                     </View>
                                 
                                 )
@@ -89,7 +101,7 @@ const Tabs = () => {
                                                     height: 25,
                                                     tintColor: focused ? "blue" : "black",
                                                 }}/>
-                                        <Text>PROFILE</Text>
+                                        <Text style={styles.text}>PROFILE</Text>
                                     </View>
                                 
                                 )
@@ -109,7 +121,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.5,
 
-    }
+    },
+
+    text: {
+        fontFamily: "Poppins",
+        fontWeight: "bold",
+        fontSize: 10,
+    },
 })
 
 export default Tabs
