@@ -5,6 +5,7 @@ import Form from '../components/Todolist'
 import { NavigationContainer } from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../components/CustomButton';
 
 export default function Home() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
@@ -13,9 +14,7 @@ export default function Home() {
 const viewTaskList = () =>  navigation.navigate("Todo")
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(viewTaskList)}>
-        <Text>View Outstanding Tasks</Text>
-        </TouchableOpacity>
+        <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY"></CustomButton>
     </View>
   );
 }

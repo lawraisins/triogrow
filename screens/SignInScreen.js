@@ -4,8 +4,11 @@ import Logo from '../assets/images/squirtle.png';
 import CustomInput from "../components/CustomInput"
 import CustomButton from "../components/CustomButton"
 import { useNavigation } from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form'
-const SignInScreen = () => {
+import {useForm, Controller} from 'react-hook-form';
+import { useFonts } from 'expo-font';
+
+
+const SignInScreen = () => {    
     const {control, handleSubmit, formState: {errors},} = useForm();
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
@@ -23,9 +26,22 @@ const SignInScreen = () => {
         navigation.navigate("SignUp")
     }
 
+    const [fontsLoaded] = useFonts (
+        {
+             "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+    }
+      );
+  
+      if (!fontsLoaded) {
+          return undefined
+      }
+
+
     return (
         <View style={styles.root}>
             <Image source = {Logo} style = {[styles.logo, {height: height * 0.3}]} resizeMode = "contain" />
+            <Text style = {styles.header}>Triogrow</Text>
             <CustomInput
                 name="username"
                 placeholder="Username"
@@ -54,13 +70,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 20,
         backgroundColor: "#BEE4FF",
-        // opacity: "20%",
         height: "100%"
     }, 
     logo: {
-        width: '70%',
-        maxWidth: 300,
-    }
+        height: 128,
+        width: 128
+    },
+    header: {
+        fontSize: 36,
+        fontFamily: "Poppins-Header",
+    },
+
 })
 
 export default SignInScreen;

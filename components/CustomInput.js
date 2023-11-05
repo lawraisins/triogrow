@@ -1,7 +1,19 @@
 import React from "react";
 import {View, Text, TextInput, StyleSheet} from "react-native";
 import { Controller } from "react-hook-form";
+import { useFonts } from 'expo-font';
+
 const CustomInput = ({control, name, rules = {}, placeholder, secureTextEntry}) => {
+    const [fontsLoaded] = useFonts (
+        {
+             "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+    }
+      );
+  
+      if (!fontsLoaded) {
+          return undefined
+      }
     return (
         <Controller
             control={control}
@@ -20,7 +32,7 @@ const CustomInput = ({control, name, rules = {}, placeholder, secureTextEntry}) 
                  />
                  </View>
                  {error && (
-                    <Text style={{color:"red"}}>{error.message}</Text>
+                    <Text style={{color:"red", fontFamily:"Poppins"}}>{error.message}</Text>
                  )}
                  </>
                  )}
@@ -50,6 +62,8 @@ const styles = StyleSheet.create({
 
     },
 
-    input: {}
+    input: {
+        fontFamily: "Poppins"
+    }
 })
 export default CustomInput;

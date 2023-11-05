@@ -1,7 +1,19 @@
 import React from "react";
 import {View, Text, StyleSheet, Pressable} from "react-native";
+import { useFonts } from 'expo-font';
 
 const CustomButton = ({onPress, text, type}) => {
+    const [fontsLoaded] = useFonts (
+        {
+             "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+    }
+      );
+  
+      if (!fontsLoaded) {
+          return undefined
+      }
+
     return(
         <Pressable onPress={onPress} style={[styles.container, styles[`container_${type}`]]}>
             <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
@@ -39,11 +51,13 @@ const styles = StyleSheet.create({
 
     text_TERTIARY:{
         color: "black",
+        fontFamily: "Poppins",
     },
 
     text: {
         fontWeight: "bold",
         color: "black",
+        fontFamily: "Poppins",
 
     }
 })

@@ -5,6 +5,7 @@ import CustomInput from "../components/CustomInput"
 import CustomButton from "../components/CustomButton"
 import { useNavigation } from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
+import { useFonts } from 'expo-font';
 import axios from 'axios';
 
 const SignUpScreen = () => {
@@ -77,6 +78,17 @@ const SignUpScreen = () => {
 
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
+    const [fontsLoaded] = useFonts (
+        {
+             "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+    }
+      );
+  
+      if (!fontsLoaded) {
+          return undefined
+      }
+
     return (
         <View style={styles.root}>
             <Text style={styles.title}>Create an Account </Text>
@@ -143,11 +155,10 @@ const styles = StyleSheet.create({
         maxHeight: 200,
     },
     title: {
-        fontSize: 24,
-        fontWeight: "bold",
+        fontSize: 36,
+        fontFamily: "Poppins-Header",
         color: "#051C60",
         margin: 10,
-
     },
     link: {
         color: "#FDF76A",
