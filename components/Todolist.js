@@ -23,6 +23,7 @@ const Form = () =>  {
           setTaskItems(JSON.parse(data))
         }
       }).catch((error) => console.log(error))
+      console.log(taskItems.length)
       }
   // Loads to-do list while screen loads
       if (!ready) {
@@ -34,11 +35,12 @@ const Form = () =>  {
         )
       }
   const handleAddTask =  () => {
-    setTaskItems([...taskItems, task])
-    setTask()
-    AsyncStorage.setItem("storedTodo", JSON.stringify(taskItems)).then(() => {
+    const newTaskItems = [...taskItems, task]
+    setTaskItems(newTaskItems)
+    AsyncStorage.setItem("storedTodo", JSON.stringify(newTaskItems)).then(() => {
       setTask(taskItems);
     }).catch(error => console.log(error));
+    console.log(taskItems.length + 1)
   }
   
 
@@ -49,6 +51,7 @@ const Form = () =>  {
     AsyncStorage.setItem("storedTodo", JSON.stringify(itemsCopy)).then(() => {
       setTask(itemsCopy);
     }).catch(error => console.log(error));
+    console.log(itemsCopy.length)
   }
 
 
@@ -118,19 +121,32 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 60,
     borderColor: "#FDF76A",
-    borderWidth: 1,
+    borderWidth: 2,
     width: 280,
+    shadowColor: "black",
+    shadowOffset: {
+        width: 4,
+        height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   addWrapper: {
     width: 60,
     height: 60,
-    left:10,
     backgroundColor: "white",
     borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "#FDF76A",
-    borderWidth: 1,
+    borderWidth: 2,
+    shadowColor: "black",
+    shadowOffset: {
+        width: 4,
+        height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
 
 
 

@@ -36,6 +36,9 @@ const viewTaskList = () =>  navigation.navigate("Todo")
         <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Trackers:</Text>
         </View>
+        <View style={styles.communities}>
+        <Text style={styles.subheader}>Communities for You:</Text>
+        </View>
 
     </ScrollView>
   );
@@ -61,6 +64,9 @@ const styles = StyleSheet.create({
   },
   trackers: {
     top: 103,
+  },
+  communities: {
+    top: 143,
   },
   
 });
