@@ -23,7 +23,8 @@ const Form = () =>  {
           setTaskItems(JSON.parse(data))
         }
       }).catch((error) => console.log(error))
-      console.log(taskItems.length)
+      let tasklist = [...taskItems]
+      console.log(tasklist.length)
       }
   // Loads to-do list while screen loads
       if (!ready) {
@@ -40,7 +41,7 @@ const Form = () =>  {
     AsyncStorage.setItem("storedTodo", JSON.stringify(newTaskItems)).then(() => {
       setTask(taskItems);
     }).catch(error => console.log(error));
-    console.log(taskItems.length + 1)
+    console.log(newTaskItems.length)
   }
   
 
@@ -89,6 +90,8 @@ const Form = () =>  {
     </View>
   );
     }
+
+  
 
 const styles = StyleSheet.create({
   container: {
@@ -151,6 +154,5 @@ const styles = StyleSheet.create({
 
 
   },
-  addText: {},
 });
 export default Form;

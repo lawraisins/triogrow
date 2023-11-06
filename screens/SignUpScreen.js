@@ -33,17 +33,23 @@ const SignUpScreen = () => {
             const backendURL = 'http://localhost:3000';
 
             // Data to send in the POST request
-            const userData = {
+            const userData = JSON.stringify({
                 name: rname,
                 username: rusername,
                 email: remail,
                 password: rpassword,
-            };
+            });
+
+            const api = axios.create({
+                baseURL: 'http://localhost:3000',
+            })
+            
 
             // for debugging
             console.log('Sending a POST request to register a user...');
             console.log('Request URL: ', `${backendURL}/auth/register`);
             console.log('Data to be sent: ', userData);
+            console.log(typeof(userData));
 
             // Make a POST request to register the user
             // ERROR  Registration error:  [AxiosError: Network Error]
@@ -56,13 +62,13 @@ const SignUpScreen = () => {
         
         } catch (error) {
             // Handle any errors that occur during the registration process
-            console.error('Registration error: ', error);
+            console.error('Registration error: ', error.toJSON());
             if (error.response) {
                 // The request was made, but the server responded with an error
                 console.error('Server error: ', error.response.data);
             } else if (error.request) {
                 // The request was made but no response was received
-                console.error('No response received from the server');
+                console.error('No response received from the server', error.toJSON());
             } else {
                 // Something happened in setting up the request
                 console.error('Request setup error: ', error.message);
