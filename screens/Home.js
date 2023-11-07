@@ -8,10 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 import { useFonts } from 'expo-font';
 
-
-
-
-
 export default function Home() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
@@ -29,6 +25,7 @@ export default function Home() {
 const viewTaskList = () =>  navigation.navigate("Todo")
   return (
     <ScrollView style={styles.container}>
+
         <Text style={styles.header}>Hello, Farmer!</Text>
         <View style={styles.tasklist}>
         <Text style={styles.subheader}>Today's Tasks:</Text>

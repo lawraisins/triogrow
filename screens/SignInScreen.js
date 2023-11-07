@@ -6,6 +6,7 @@ import CustomButton from "../components/CustomButton"
 import { useNavigation } from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import { useFonts } from 'expo-font';
+import axios from 'axios';
 
 
 const SignInScreen = () => {    
@@ -13,12 +14,53 @@ const SignInScreen = () => {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
-    const onSignInPressed = (data) => {
-        navigation.navigate('Landing', {"username": data.username})
+    const onSignInPressed = async (data) => {
         console.log(data)
-        password = data.password
-        username = data.username
+        rpassword = data.password
+        rusername = data.username
+
+        try {
+            // Remember to change the backend server URL accordingly!!
+            const backendURL = 'http://192.168.50.89:3000';
+
+            // Data to send in the POST request
+            const userData = {
+                username: rusername,
+                password: rpassword,
+            };
+            
+
+            // for debugging
+            console.log('Sending a POST request to register a user...');
+            console.log('Request URL: ', `${backendURL}/auth/login`);
+            console.log('Data to be sent: ', userData);
+
+            // Make a POST request to register the user
+            // ERROR  Registration error:  [AxiosError: Network Error]
+            // probably happening on this line
+            const response = await axios.post(`${backendURL}/auth/login`, userData);
+
+            // Handle the response, e.g. show a success message or navigate to a new screen
+            console.log('Registration successful: ', response.data);
+            navigation.navigate('Landing')
+        
+        } catch (error) {
+            // Handle any errors that occur during the registration process
+            console.error('Registration error: ', error);
+            if (error.response) {
+                // The request was made, but the server responded with an error
+                console.error('Server error: ', error);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('No response received from the server', error);
+            } else {
+                // Something happened in setting up the request
+                console.error('Request setup error: ', error);
+            }
+        }
     }
+
+    
     const onForgotPasswordPressed = () => {
     }
 
@@ -59,7 +101,7 @@ const SignInScreen = () => {
 
 
             <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} type="PRIMARY"/>
-            {/* <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY"/> */}
+            {/* <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="PRIMARY"/> */}
             <CustomButton text="Create a New Account" onPress={onSignUpPressed} type="PRIMARY"/>
         </View>
     )

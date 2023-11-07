@@ -39,10 +39,6 @@ const SignUpScreen = () => {
                 email: remail,
                 password: rpassword,
             };
-
-            const api = axios.create({
-                baseURL: 'http://localhost',
-            })
             
 
             // for debugging
@@ -67,10 +63,10 @@ const SignUpScreen = () => {
                 console.error('Server error: ', error);
             } else if (error.request) {
                 // The request was made but no response was received
-                console.error('No response received from the server', error.response);
+                console.error('No response received from the server', error);
             } else {
                 // Something happened in setting up the request
-                console.error('Request setup error: ', error.message);
+                console.error('Request setup error: ', error);
             }
         }
         
