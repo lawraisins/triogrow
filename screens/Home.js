@@ -11,6 +11,7 @@ import { useFonts } from 'expo-font';
 
 
 
+
 export default function Home() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
