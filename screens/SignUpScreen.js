@@ -30,7 +30,7 @@ const SignUpScreen = () => {
         // pass the sign up information to the backend
         try {
             // Remember to change the backend server URL accordingly!!
-            const backendURL = 'http://192.168.50.89:3000';
+            const backendURL = 'http://172.20.10.2:3000';
 
             // Data to send in the POST request
             const userData = {

@@ -7,6 +7,7 @@ import {useForm, Controller} from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 import { useFonts } from 'expo-font';
+import Planter from '../components/Planter';
 
 export default function Home() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
@@ -33,6 +34,7 @@ const viewTaskList = () =>  navigation.navigate("Todo")
         </View>
         <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Trackers:</Text>
+        <Planter></Planter>
         </View>
         <View style={styles.communities}>
         <Text style={styles.subheader}>Communities for You:</Text>

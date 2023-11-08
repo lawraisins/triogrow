@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet, Pressable} from "react-native";
+import {View, Text, StyleSheet, Pressable, TouchableOpacity} from "react-native";
 import { useFonts } from 'expo-font';
 
 const CustomButton = ({onPress, text, type}) => {
@@ -15,9 +15,9 @@ const CustomButton = ({onPress, text, type}) => {
       }
 
     return(
-        <Pressable onPress={onPress} style={[styles.container, styles[`container_${type}`]]}>
+        <TouchableOpacity onPress={onPress} style={[styles.container, styles[`container_${type}`]]}>
             <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 
