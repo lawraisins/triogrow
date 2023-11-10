@@ -49,7 +49,7 @@ const SignInScreen = () => {
             console.error('Registration error: ', error);
             if (error.response) {
                 // The request was made, but the server responded with an error
-                console.error('Server error: ', error);
+                console.error('Server error: ', error.response.data);
             } else if (error.request) {
                 // The request was made but no response was received
                 console.error('No response received from the server', error);
