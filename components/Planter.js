@@ -1,11 +1,8 @@
 import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoading from "expo-app-loading"
 import CustomButton from './CustomButton';
-import { useFonts } from 'expo-font';
 import {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
 import backendURL from './backendURL';

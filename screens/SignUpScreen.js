@@ -12,12 +12,12 @@ import backendURL from '../components/backendURL';
 const SignUpScreen = () => {
     const {control, handleSubmit, formState: {errors}, watch} = useForm();
     const pwd = watch('password')
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setemail] = useState('');
-    const [confirmPassword, setconfirmPassword] = useState('');
-    const {height} = useWindowDimensions();
+    // const [name, setName] = useState('');
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [email, setemail] = useState('');
+    // const [confirmPassword, setconfirmPassword] = useState('');
+    // const {height} = useWindowDimensions();
     const navigation = useNavigation();
     const onRegisterPressed = async (data) => { // changed this to async function
     
