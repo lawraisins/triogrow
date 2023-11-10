@@ -8,6 +8,7 @@ import CustomButton from './CustomButton';
 import { useFonts } from 'expo-font';
 import {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
+import backendURL from './backendURL';
 
 
 const Planter = () =>  {
@@ -23,9 +24,6 @@ const Planter = () =>  {
         console.log("Current pump value", pump)
 
         try {
-            // Remember to change the backend server URL accordingly!!
-            const backendURL = 'http://172.20.10.2:3000';
-
             // Data to send in the POST request
             const pumpData = 
                 {"newPumpNumber": pump}

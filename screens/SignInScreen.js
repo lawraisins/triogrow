@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import { useFonts } from 'expo-font';
 import axios from 'axios';
+import backendURL from '../components/backendURL';
 
 
 const SignInScreen = () => {    
@@ -21,7 +22,6 @@ const SignInScreen = () => {
 
         try {
             // Remember to change the backend server URL accordingly!!
-            const backendURL = 'http://172.20.10.2:3000';
 
             // Data to send in the POST request
             const userData = {

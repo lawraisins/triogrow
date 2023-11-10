@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import { useFonts } from 'expo-font';
 import axios from 'axios';
+import backendURL from '../components/backendURL';
 
 const SignUpScreen = () => {
     const {control, handleSubmit, formState: {errors}, watch} = useForm();
@@ -29,9 +30,6 @@ const SignUpScreen = () => {
 
         // pass the sign up information to the backend
         try {
-            // Remember to change the backend server URL accordingly!!
-            const backendURL = 'http://172.20.10.2:3000';
-
             // Data to send in the POST request
             const userData = {
                 name: rname,
@@ -53,7 +51,7 @@ const SignUpScreen = () => {
 
             // Handle the response, e.g. show a success message or navigate to a new screen
             console.log('Registration successful: ', response.data);
-            navigation.navigate("SignIn");
+            navigation.navigate("SignUpConfirmation");
         
         } catch (error) {
             // Handle any errors that occur during the registration process
@@ -73,7 +71,7 @@ const SignUpScreen = () => {
     };
 
     const onSignUpPressed = () => {
-        navigation.navigate("SignIn")
+        navigation.navigate("SignUp")
     }
 
 
