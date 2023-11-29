@@ -4,8 +4,22 @@ import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'r
 import Form from '../components/Todolist'
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import Tabs from '../components/tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Landing() {
+
+export default function Landing( {route}) {
+  const { username } = route.params;
+  _storeName = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'Name',
+        username,
+      );
+    } catch (error) {
+      // Error saving data
+    }
+  };
 
   return (
     <Tabs></Tabs>

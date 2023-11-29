@@ -48,10 +48,10 @@ const Planter = () =>  {
                 console.error('Server error: ', error.response.data);
             } else if (error.request) {
                 // The request was made but no response was received
-                console.error('No response received from the server', error);
+                console.error('No response received from the server', error.response.data);
             } else {
                 // Something happened in setting up the request
-                console.error('Request setup error: ', error);
+                console.error('Request setup error: ', error.response.data);
             }
         }
     }

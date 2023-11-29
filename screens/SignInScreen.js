@@ -8,6 +8,8 @@ import {useForm, Controller} from 'react-hook-form';
 import { useFonts } from 'expo-font';
 import axios from 'axios';
 import backendURL from '../components/backendURL';
+import { jwtDecode } from 'jwt-decode';
+
 
 
 const SignInScreen = () => {    
@@ -39,10 +41,14 @@ const SignInScreen = () => {
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
             const response = await axios.post(`${backendURL}/auth/login`, userData);
+            // Assuming the response contains a token field
+            // Parse the JWT token to get user information
+            // const decodedToken = jwtDecode(response.data.accessToken);
 
             // Handle the response, e.g. show a success message or navigate to a new screen
             console.log('Registration successful: ', response.data);
-            navigation.navigate('Landing')
+            // Go to Landing
+            navigation.navigate('Landing', {username: response.data.user.fullName })
         
         } catch (error) {
             // Handle any errors that occur during the registration process
@@ -58,6 +64,12 @@ const SignInScreen = () => {
                 console.error('Request setup error: ', error);
             }
         }
+
+
+
+
+
+
     }
 
     
