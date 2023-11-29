@@ -45,16 +45,6 @@ export default function Home() {
       });
   };
   
-  // Example usage
-  getUsername()
-    .then(username => {
-      // Continue with code that depends on the username
-    })
-    .catch(error => {
-      // Handle errors from getUsername() function
-      console.error("Error in getUsername function:", error);
-    });
-
 
 const viewTaskList = async() =>  navigation.navigate("Todo")
   return (
