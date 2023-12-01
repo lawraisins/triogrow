@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
 import {Button, StyleSheet, Text, View, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Form from '../components/Todolist'
@@ -11,58 +11,43 @@ import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
-  // let getUsername = () => {
-  //   try {
-  //     // Use await to wait for the AsyncStorage.getItem() to complete
-  //     const name = AsyncStorage.getItem('Name');
-      
-  //     // Now you can use the 'name' variable in your code
-  //     console.log(name);
-  
-  //     // You might want to return the value or use it in some way
-  //     return name;
-  //   } catch (error) {
-  //     // Handle errors, e.g., AsyncStorage errors
-  //     console.error("Error retrieving username from AsyncStorage:", error);
-  //     // You might want to throw the error or return a default value here
-  //     throw error;
-  //   }
-  // };
-  const {control, handleSubmit, formState: {errors}, watch} = useForm();
+  const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const navigation = useNavigation();
-  const getUsername = () => {
-    return AsyncStorage.getItem('Name')
-      .then(name => {
-        // Use the name, or provide a default if it's null or undefined
-        const username = JSON.parse(name) || "DefaultUsername";
-        console.log("Username:", username);
-        // Continue with code that depends on the username
-        return username;
-      })
-      .catch(error => {
-        console.error("Error retrieving username from AsyncStorage:", error);
-        throw error;
-      });
-  };
-  
+  const [username, setUsername] = useState("DefaultUsername");
 
-const viewTaskList = async() =>  navigation.navigate("Todo")
+  const getUsername = async () => {
+    try {
+      const name = await AsyncStorage.getItem('Name');
+      if (name) {
+        setUsername(name);
+      }
+    } catch (error) {
+      console.error("Error retrieving username from AsyncStorage:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the username when the component mounts
+    getUsername();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  const viewTaskList = () => navigation.navigate("Todo");
+
   return (
     <ScrollView style={styles.container}>
-
-        <Text style={styles.header}>Hello, {username}!</Text>
-        <View style={styles.tasklist}>
+      <Text style={styles.header}>Hello, {username}!</Text>
+      <View style={styles.tasklist}>
         <Text style={styles.subheader}>Today's Tasks:</Text>
-        <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" ></CustomButton>
-        </View>
-        <View style={styles.trackers}>
+        <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" />
+      </View>
+      <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Trackers:</Text>
+        {/* Include your Planter component here */}
         <Planter></Planter>
-        </View>
-        <View style={styles.communities}>
+      </View>
+      <View style={styles.communities}>
         <Text style={styles.subheader}>Communities for You:</Text>
-        </View>
-
+      </View>
     </ScrollView>
   );
 }
