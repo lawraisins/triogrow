@@ -10,8 +10,6 @@ import Home from "../screens/Home"
 import Tutorial from "../screens/Tutorial";
 import Tutorial2 from "../screens/Tutorial2";
 import SignUpConfirmationScreen from "../screens/SignUpConfirmation";
-import AddPlanter from "../screens/AddPlanter";
-
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -26,7 +24,6 @@ const Navigation = () => {
                 <Stack.Screen name="Todo" component={Todo}/>
                 <Stack.Screen name="Tutorial" component={Tutorial}/>
                 <Stack.Screen name="Tutorial2" component={Tutorial2}/>
-                <Stack.Screen name="AddPlanter" component={AddPlanter}/>
             </Stack.Navigator>
         </NavigationContainer>
 

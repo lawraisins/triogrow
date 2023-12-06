@@ -42,7 +42,6 @@ export default function Home() {
       </View>
       <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Trackers:</Text>
-        <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton>
         {/* Include your Planter component here */}
         <Planter></Planter>
       </View>
