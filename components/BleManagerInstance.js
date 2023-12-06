@@ -1,5 +1,5 @@
-import BleManager from 'react-native-ble-manager';
+// import BleManager from 'react-native-ble-manager';
 
-const BleManagerInstance = new BleManager();
+// const BleManagerInstance = new BleManager();
 
-export default BleManagerInstance
+// export default BleManagerInstance

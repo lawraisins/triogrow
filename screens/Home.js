@@ -17,7 +17,7 @@ export default function Home() {
 
   const getUsername = async () => {
     try {
-      const name = await AsyncStorage.getItem('Name');
+      const name = JSON.parse(await AsyncStorage.getItem('Name'));
       if (name) {
         setUsername(name);
       }
@@ -25,11 +25,14 @@ export default function Home() {
       console.error("Error retrieving username from AsyncStorage:", error);
     }
   };
+  
 
   useEffect(() => {
     // Fetch the username when the component mounts
     getUsername();
   }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  console.log("Home is receiving the username: ", username);
 
   const viewTaskList = () => navigation.navigate("Todo");
 
@@ -42,7 +45,7 @@ export default function Home() {
       </View>
       <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Trackers:</Text>
-        <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton>
+        {/* <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton> */}
         {/* Include your Planter component here */}
         <Planter></Planter>
       </View>

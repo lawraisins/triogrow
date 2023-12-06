@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "black",
         fontFamily: "Poppins",
+        fontSize: 18,
 
     }
 })
