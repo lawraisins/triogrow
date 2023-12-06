@@ -9,7 +9,6 @@ import { useFonts } from 'expo-font';
 
 const Form = () =>  {
 
-  
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
   const [ready, setReady] = useState(false);

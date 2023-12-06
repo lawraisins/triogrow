@@ -9,12 +9,15 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function Landing( {route}) {
-  const { username } = route.params;
+  const { username, id } = route.params;
+  console.log(id)
  _storeName = () => {
     try {
       AsyncStorage.setItem(
         'Name',
         JSON.stringify(username),
+        'id',
+        JSON.stringify(id)
       );
     } catch (error) {
       // Error saving data

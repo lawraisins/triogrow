@@ -48,7 +48,7 @@ const SignInScreen = () => {
             // Handle the response, e.g. show a success message or navigate to a new screen
             console.log('Registration successful: ', response.data);
             // Go to Landing
-            navigation.navigate('Landing', {username: response.data.user.fullName })
+            navigation.navigate('Landing', {username: response.data.user.fullName, id:response.data.user.id })
         
         } catch (error) {
             // Handle any errors that occur during the registration process
