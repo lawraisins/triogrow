@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import {useForm, Controller} from 'react-hook-form'
 import CustomButton from '../components/CustomButton';
+import User from '../components/user';
 
 export default function Profile() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
@@ -24,7 +25,7 @@ export default function Profile() {
   const signOut = () =>  navigation.navigate("SignIn")
   return (
     <ScrollView style={styles.container}>
-    <Text style={styles.header}>Profile</Text>
+    <View style={styles.User}><User></User></View>
     <View style={styles.signout}>
     <CustomButton text="Sign Out" onPress={handleSubmit(signOut)} type="PRIMARY"></CustomButton>
     </View>
@@ -38,9 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BEE4FF',
     padding: 20,
   },
-  header: {
-    fontSize: 42,
-    fontFamily: "Poppins-Header",
+  User: {
     top: 55,
   },
   signout: {

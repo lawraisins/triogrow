@@ -10,19 +10,10 @@ import { useFonts } from 'expo-font';
 import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunityFeed from '../components/communityfeed';
+import Logo from '../assets/images/squirtle.png';
 
-export default function Home() {
-  const [refreshing, setRefreshing] = React.useState(false);
-  const { control, handleSubmit, formState: { errors }, watch } = useForm();
-  const navigation = useNavigation();
+const User = () => {
   const [username, setUsername] = useState("DefaultUsername");
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
 
   const getUsername = async () => {
     try {
@@ -34,6 +25,19 @@ export default function Home() {
       console.error("Error retrieving username from AsyncStorage:", error);
     }
   };
+
+  const [handle, setHandle] = useState("farmer");
+
+  const getHandle = async () => {
+    try {
+      const hand = JSON.parse(await AsyncStorage.getItem('Handle'));
+      if (hand) {
+        setHandle(hand);
+      }
+    } catch (error) {
+      console.error("Error retrieving handle from AsyncStorage:", error);
+    }
+  };
   
 
   useEffect(() => {
@@ -41,56 +45,55 @@ export default function Home() {
     getUsername();
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
+  useEffect(() => {
+    // Fetch the handle when the component mounts
+    getHandle();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
-  const viewTaskList = () => navigation.navigate("Todo");
+
 
   return (
-    <ScrollView style={styles.container}
-    refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    } >
-      <Text style={styles.header}>Hello, {username}!</Text>
-      <View style={styles.tasklist}>
-        <Text style={styles.subheader}>Today's Tasks:</Text>
-        <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" />
+    <View style={styles.container}>
+      <Image style={styles.dp} source={Logo}></Image>
+      <View style={styles.info}>
+      <Text style={styles.header}>{username}</Text>
+      <Text style={styles.subheader}>@{handle}</Text>
+      <Text style={styles.subheader}>Bio</Text>
       </View>
-      <View style={styles.trackers}>
-        <Text style={styles.subheader}>Your Trackers:</Text>
-        {/* <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton> */}
-        {/* Include your Planter component here */}
-        <Planter></Planter>
       </View>
-      <View style={styles.communities}>
-        <Text style={styles.subheader}>Community Updates:</Text>
-        <CommunityFeed refreshing={refreshing} onRefresh={onRefresh} ></CommunityFeed>
-      </View>
-    </ScrollView>
   );
-}
+};
+
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 ,
     backgroundColor: '#BEE4FF',
-    padding: 20,
+    flexDirection:"row",
+    alignItems:"flex-start",
+
   },
   header: {
     fontSize: 42,
     fontFamily: "Poppins-Header",
-    top: 55,
+    textAlign: 'right',
   },
   subheader: {
     fontSize: 25,
     fontFamily: "Poppins",
+    textAlign: 'right',
   },
-  tasklist: {
-    top: 83,
+  dp:{
+    borderRadius:60,
+    backgroundColor: "white",
+    width: 120,
+    height: 120,
+
   },
-  trackers: {
-    top: 103,
-  },
-  communities: {
-    top: 133,
-  },
+  info:{
+    marginLeft:30,
+
+  }
   
 });
+
+export default User

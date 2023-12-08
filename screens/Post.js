@@ -14,7 +14,6 @@ const Post = () => {
     const _getToken = async () => {
         try {
           const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
-        console.log("Token: ", storedToken);
           return storedToken;
         } catch (error) {
           console.error('Error fetching token from AsyncStorage:', error);
@@ -36,15 +35,15 @@ const Post = () => {
             
             // for debugging
             console.log('Uploading Post...');
-            console.log('Request URL: ', `${backendURL}/uploadPost`);
+            console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
             // console.log('Data to be sent: ', postData);
             const token = await _getToken();
-            console.log("token: ", token)
+            // console.log("token: ", token)
 
             // Make a POST request to upload posts
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
-            const response = await axios.post(`${backendURL}/uploadPost`, 
+            const response = await axios.post(`${backendURL}/posts/uploadPost`, 
                 {
                     contents: postcaption,
                 }, {
