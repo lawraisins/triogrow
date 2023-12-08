@@ -77,6 +77,6 @@ const AddPlanter = () => {
 //       <Button title="Post Data" onPress={handlePostData} disabled={!isConnected} />
 //     </View>
 //   );
-// };
+};
 
 export default AddPlanter;

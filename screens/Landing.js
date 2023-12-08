@@ -9,20 +9,23 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function Landing( {route}) {
-  const { username, id } = route.params;
+  const { username, id, token } = route.params;
+  // console.log(username, id, token);
   
   // console.log(id);
-  const _storeName = async () => {
+  const _storeUserData = async () => {
     try {
       await AsyncStorage.setItem('Name', JSON.stringify(username));
+      await AsyncStorage.setItem('token', JSON.stringify(token));
     } catch (error) {
       console.error('Error saving username to AsyncStorage:', error);
     }
   };
 
+
   useEffect(() => {
-    _storeName();
-  }, [username]); // Add username to dependency array to ensure _storeName is called whenever username changes
+    _storeUserData();
+  }, [username, token]); // Add username to dependency array to ensure _storeName is called whenever username changes
   
   
 

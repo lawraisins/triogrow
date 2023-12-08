@@ -5,6 +5,7 @@ import Home from "../screens/Home"
 import Learn from "../screens/Learn"
 import FAQ from "../screens/FAQ"
 import Profile from "../screens/Profile"
+import Post from "../screens/Post"
 import { useFonts } from 'expo-font';
 const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({children, onPress}) => (
@@ -92,7 +93,7 @@ const Tabs = () => {
                                 
                                 )
                             }}/>
-            <Tab.Screen name="Post" component={Home} 
+            <Tab.Screen name="Post" component={Post} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
                                     <Image source={require("../assets/images/plus.png")}
