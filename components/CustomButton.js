@@ -36,6 +36,14 @@ const styles = StyleSheet.create({
     },
 
     container_PRIMARY: {
+        width: "100%",
+        padding: 15,
+        marginVertical: 5,
+
+        alignItems: "center",
+        borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 2,
         backgroundColor: "#FDF76A",
         shadowColor: "black",
         shadowOffset: {
@@ -47,7 +55,25 @@ const styles = StyleSheet.create({
     },
 
 
-    container_TERTIARY: {},
+    container_TERTIARY: {
+        width: "50%",
+        padding: 5,
+        margin: 5,
+
+        alignItems: "center",
+        borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 2,
+        backgroundColor: "#FDF76A",
+        shadowColor: "black",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+
+    },
 
     text_TERTIARY:{
         color: "black",

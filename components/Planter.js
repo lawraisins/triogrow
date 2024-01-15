@@ -65,9 +65,10 @@ const Planter = () =>  {
   return (
     <View style={styles.container}>
         <Text style={styles.text}>Potato Plant</Text>
+        <View style={styles.pump}>
         <Image source={require("../assets/images/potato.jpeg")} style={styles.image}></Image>
-        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="PRIMARY" style={styles.pump}></CustomButton>
-  
+        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
+        </View>
     </View>
   );
     }
@@ -162,5 +163,12 @@ const styles = StyleSheet.create({
     
 
   },
+  pump:{
+    flexDirection:'row',
+    alignItems:'flex-start'
+  },
+  button:{
+    margin: 10,
+  }
 });
 export default Planter;
