@@ -9,10 +9,12 @@ import CustomButton from '../components/CustomButton';
 import { useFonts } from 'expo-font';
 import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import CommunityFeed from '../components/communityfeed';
 import Logo from '../assets/images/squirtle.png';
 
 const User = () => {
+  const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const [username, setUsername] = useState("DefaultUsername");
 
   const getUsername = async () => {
@@ -51,10 +53,29 @@ const User = () => {
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
 
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+
 
   return (
     <View style={styles.container}>
-      <Image style={styles.dp} source={Logo}></Image>
+      <TouchableOpacity onPress={handleSubmit(pickImage)}><Image style={styles.dp} source={{uri: image}}></Image></TouchableOpacity>
       <View style={styles.info}>
       <Text style={styles.header}>{username}</Text>
       <Text style={styles.subheader}>@{handle}</Text>

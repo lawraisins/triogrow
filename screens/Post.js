@@ -78,12 +78,13 @@ const Post = () => {
     return(
         <View style={styles.container}>
             <Text style = {styles.header}>Post</Text>
+
         <CustomInput
             name="contents"
             placeholder="Insert your contents."
             control={control}
         />
-    
+            <CustomButton text="Choose Image" type="PRIMARY"></CustomButton>
           <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY"></CustomButton>
           </View>
     )
