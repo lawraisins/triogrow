@@ -12,6 +12,8 @@ import Tutorial2 from "../screens/Tutorial2";
 import SignUpConfirmationScreen from "../screens/SignUpConfirmation";
 // import AddPlanter from "../screens/AddPlanter";
 import Post from "../screens/Post";
+import EditProfile from "../screens/EditProfile";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +30,7 @@ const Navigation = () => {
                 <Stack.Screen name="Tutorial" component={Tutorial}/>
                 <Stack.Screen name="Tutorial2" component={Tutorial2}/>
                 <Stack.Screen name="Post" component={Post}/>
+                <Stack.Screen name="EditProfile" component={EditProfile}/>
             </Stack.Navigator>
         </NavigationContainer>
 

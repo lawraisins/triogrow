@@ -33,12 +33,16 @@ export default function Profile() {
     }
   };
   const signOut = () =>  navigation.navigate("SignIn")
+  const editProfile= async () => {
+          navigation.navigate('EditProfile');
+      }
+
   return (
     <ScrollView style={styles.container}>
     <View style={styles.User}><User></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
-      <CustomButton text="Edit Profile" type="TERTIARY"></CustomButton>
+      <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>
     <CustomButton text="Sign Out" onPress={handleSubmit(signOut)} type="TERTIARY"></CustomButton></View>
     </View>
   </ScrollView>

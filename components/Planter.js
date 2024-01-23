@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput } from 'react-native';
+import {KeyboardAvoidingView, TextInput, Alert } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from './CustomButton';
@@ -15,8 +15,10 @@ const Planter = () =>  {
     const onPumpPressed = async () => {
         if (pump == 0) {
             setPump(1)
+            Alert.alert("Pump has been turned off!")
         } else {
             setPump(0)
+            Alert.alert("Pump has been turned on!")
         }
         console.log("Current pump value", pump)
 

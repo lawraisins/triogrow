@@ -52,30 +52,35 @@ const User = () => {
     getHandle();
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
+  //Need to fetch bio from Users Table using axios, populate bio section
+  //Create an edit user section that can save the changes
+  //Allow users to use camera along with uploading from gallery
+  //Resolve FTP connection issues, make sure can post to and retrieve from FTP server
 
-  const [image, setImage] = useState(null);
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  // const [image, setImage] = useState(null);
 
-    console.log(result);
+  // const pickImage = async () => {
+  //   // No permissions request is necessary for launching the image library
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
+  //   console.log(result);
+
+  //   if (!result.canceled) {
+  //     setImage(result.assets[0].uri);
+  //   }
+  // };
 
 
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleSubmit(pickImage)}><Image style={styles.dp} source={{uri: image}}></Image></TouchableOpacity>
+    <Image style={styles.dp} source={Logo}></Image>
       <View style={styles.info}>
       <Text style={styles.header}>{username}</Text>
       <Text style={styles.subheader}>@{handle}</Text>
