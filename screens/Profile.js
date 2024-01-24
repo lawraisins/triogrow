@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
-import {Button, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import {Button, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import Form from '../components/Todolist'
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -15,14 +15,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Profile() {
+  const [refreshing, setRefreshing] = React.useState(false);
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
 
-
-
-
-
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const signOut = () =>  navigation.navigate("SignIn")
   const editProfile= async () => {
@@ -30,8 +33,8 @@ export default function Profile() {
       }
 
   return (
-    <ScrollView style={styles.container}>
-    <View style={styles.User}><User></User></View>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <View style={styles.User}><User refreshing={refreshing} onRefresh={onRefresh}></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
       <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>

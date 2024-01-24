@@ -23,7 +23,7 @@ const _getToken = async () => {
   }
 };
 
-const User = () => {
+const User = ({refreshing, onRefresh }) => {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("DefaultUsername");
@@ -79,7 +79,11 @@ const User = () => {
   //Resolve FTP connection issues, make sure can post to and retrieve from FTP server
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}  onRefresh={async () => {
+      // Fetch posts again when refreshing
+      await fetchProfile();
+      onRefresh();
+    }} refreshing={refreshing}>
     <Image style={styles.dp} source={Logo}></Image>
       <View style={styles.info}>
       <Text style={styles.header}>{username}</Text>
