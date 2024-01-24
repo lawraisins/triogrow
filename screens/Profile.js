@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
 import {Button, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import Form from '../components/Todolist'
@@ -8,8 +8,9 @@ import { useFonts } from 'expo-font';
 import {useForm, Controller} from 'react-hook-form'
 import CustomButton from '../components/CustomButton';
 import User from '../components/user';
-import * as ImagePicker from 'expo-image-picker';
-import ImagePickerExample from '../components/imagePicker';
+import backendURL from '../components/backendURL';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -17,21 +18,12 @@ export default function Profile() {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    console.log(result);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
+
+
+
+
   const signOut = () =>  navigation.navigate("SignIn")
   const editProfile= async () => {
           navigation.navigate('EditProfile');

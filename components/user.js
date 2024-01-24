@@ -12,71 +12,71 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import CommunityFeed from '../components/communityfeed';
 import Logo from '../assets/images/squirtle.png';
+import backendURL from './backendURL';
+
+const _getToken = async () => {
+  try {
+    const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+    return storedToken;
+  } catch (error) {
+    console.error('Error fetching token from AsyncStorage:', error);
+  }
+};
 
 const User = () => {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
+  const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("DefaultUsername");
-
-  const getUsername = async () => {
-    try {
-      const name = JSON.parse(await AsyncStorage.getItem('Name'));
-      if (name) {
-        setUsername(name);
-      }
-    } catch (error) {
-      console.error("Error retrieving username from AsyncStorage:", error);
-    }
-  };
-
   const [handle, setHandle] = useState("farmer");
+  const [bio, setBio] = useState("");
 
-  const getHandle = async () => {
+
+  useEffect(() => {
+    // Fetch profile when the component mounts
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
     try {
-      const hand = JSON.parse(await AsyncStorage.getItem('Handle'));
-      if (hand) {
-        setHandle(hand);
+      // Replace 'your-backend-url' with the actual URL of your backend server
+      const token = await _getToken();
+      const response = await fetch(`${backendURL}/profile/view`, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        // Update the state with the retrieved profile data
+        try {
+          const name = data.userProfile[0].name;
+          console.log(name)
+          const username = data.userProfile[0].username;
+          console.log(username)
+          const bio = data.userProfile[0].bio;
+          console.log(bio)
+          setUsername(name);
+          setHandle(username);
+          setBio(bio);
+          // You can use the username and bio values here as needed
+        } catch (error) {
+          console.error("Error retrieving profile data from AsyncStorage:", error);
+        }
+      } else {
+        console.error('Failed to retrieve profile:', data.error);
       }
     } catch (error) {
-      console.error("Error retrieving handle from AsyncStorage:", error);
+      console.error('Error fetching user profile:', error.message);
     }
   };
-  
 
-  useEffect(() => {
-    // Fetch the username when the component mounts
-    getUsername();
-  }, []); // Empty dependency array ensures the effect runs only once on mount
 
-  useEffect(() => {
-    // Fetch the handle when the component mounts
-    getHandle();
-  }, []); // Empty dependency array ensures the effect runs only once on mount
 
   //Need to fetch bio from Users Table using axios, populate bio section
   //Create an edit user section that can save the changes
   //Allow users to use camera along with uploading from gallery
   //Resolve FTP connection issues, make sure can post to and retrieve from FTP server
-
-
-  // const [image, setImage] = useState(null);
-
-  // const pickImage = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.canceled) {
-  //     setImage(result.assets[0].uri);
-  //   }
-  // };
-
-
 
   return (
     <View style={styles.container}>
@@ -84,7 +84,7 @@ const User = () => {
       <View style={styles.info}>
       <Text style={styles.header}>{username}</Text>
       <Text style={styles.subheader}>@{handle}</Text>
-      <Text style={styles.subheader}>Bio</Text>
+      <Text style={styles.subheader}>{bio}</Text>
       </View>
       </View>
   );
