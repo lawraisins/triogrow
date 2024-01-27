@@ -23,26 +23,24 @@ const _getToken = async () => {
   }
 };
 
-const User = ({refreshing, onRefresh }) => {
+const User = ({ refreshing, onRefresh }) => {
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("DefaultUsername");
   const [handle, setHandle] = useState("farmer");
   const [bio, setBio] = useState("");
 
-
   useEffect(() => {
-    // Fetch profile when the component mounts
     fetchProfile();
-  }, []);
+  }, [fetchProfile]);
 
-  const fetchProfile = async () => {
+
+  const fetchProfile = React.useCallback(async () => {
     try {
-      // Replace 'your-backend-url' with the actual URL of your backend server
       const token = await _getToken();
       const response = await fetch(`${backendURL}/profile/view`, {
         headers: {
-          Authorization: `${token}`, // Access the token from the headers
+          Authorization: `${token}`,
         },
       });
       const data = await response.json();
@@ -69,28 +67,22 @@ const User = ({refreshing, onRefresh }) => {
     } catch (error) {
       console.error('Error fetching user profile:', error.message);
     }
-  };
+  }, []);
 
-
-
-  //Need to fetch bio from Users Table using axios, populate bio section
-  //Create an edit user section that can save the changes
-  //Allow users to use camera along with uploading from gallery
-  //Resolve FTP connection issues, make sure can post to and retrieve from FTP server
+  // Need to fetch bio from Users Table using axios, populate bio section
+  // Create an edit user section that can save the changes
+  // Allow users to use camera along with uploading from gallery
+  // Resolve FTP connection issues, make sure can post to and retrieve from FTP server
 
   return (
-    <View style={styles.container}  onRefresh={async () => {
-      // Fetch posts again when refreshing
-      await fetchProfile();
-      onRefresh();
-    }} refreshing={refreshing}>
-    <Image style={styles.dp} source={Logo}></Image>
+    <View style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
+      <Image style={styles.dp} source={Logo}></Image>
       <View style={styles.info}>
-      <Text style={styles.header}>{username}</Text>
-      <Text style={styles.subheader}>@{handle}</Text>
-      <Text style={styles.subheader}>{bio}</Text>
+        <Text style={styles.header}>{username}</Text>
+        <Text style={styles.subheader}>@{handle}</Text>
+        <Text style={styles.subheader}>{bio}</Text>
       </View>
-      </View>
+    </View>
   );
 };
 

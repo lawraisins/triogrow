@@ -11,13 +11,23 @@ import User from '../components/user';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
+const _getToken = async () => {
+  try {
+    const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+    return storedToken;
+  } catch (error) {
+    console.error('Error fetching token from AsyncStorage:', error);
+  }
+};
 
 
 export default function Profile() {
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
+  const [username, setUsername] = useState("DefaultUsername");
+  const [handle, setHandle] = useState("farmer");
+  const [bio, setBio] = useState("");
   const [image, setImage] = useState(null);
 
   const onRefresh = React.useCallback(() => {
@@ -27,6 +37,48 @@ export default function Profile() {
     }, 2000);
   }, []);
 
+  const handleRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    onRefresh();
+  }, [onRefresh]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [refreshing, onRefresh]);
+
+  const fetchProfile = async () => {
+    try {
+      const token = await _getToken();
+      const response = await fetch(`${backendURL}/profile/view`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        try {
+          const name = data.userProfile[0].name;
+          console.log(name)
+          const username = data.userProfile[0].username;
+          console.log(username)
+          const bio = data.userProfile[0].bio;
+          console.log(bio)
+          setUsername(name);
+          setHandle(username);
+          setBio(bio);
+          // You can use the username and bio values here as needed
+        } catch (error) {
+          console.error("Error retrieving profile data from AsyncStorage:", error);
+        }
+      } else {
+        console.error('Failed to retrieve profile:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error.message);
+    }
+  };
+
   const signOut = () =>  navigation.navigate("SignIn")
   const editProfile= async () => {
           navigation.navigate('EditProfile');
@@ -34,7 +86,7 @@ export default function Profile() {
 
   return (
     <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-    <View style={styles.User}><User refreshing={refreshing} onRefresh={onRefresh}></User></View>
+    <View style={styles.User}><User onRefresh={handleRefresh}></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
       <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>

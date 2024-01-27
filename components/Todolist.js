@@ -1,48 +1,139 @@
 import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput } from 'react-native';
+import {KeyboardAvoidingView, TextInput, Modal, Pressable } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from "expo-app-loading"
-import { useFonts } from 'expo-font';
+import {useForm, Controller} from 'react-hook-form'
+import axios from 'axios';
+import backendURL from '../components/backendURL';
+import CustomButton from './CustomButton';
+import CustomInput from './CustomInput';
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 
 const Form = () =>  {
 
   const [task, setTask] = useState();
+  const [date, setDate] = useState(new Date())
   const [taskItems, setTaskItems] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const {control, handleSubmit, formState: {errors}, watch} = useForm();
+
+
+  const _getToken = async () => {
+    try {
+      const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+      return storedToken;
+    } catch (error) {
+      console.error('Error fetching token from AsyncStorage:', error);
+    }
+  };
+
+  <Modal
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    Alert.alert('Modal has been closed.');
+    setModalVisible(!modalVisible);
+  }}>
+    <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            </View>
+            </View>
+    </Modal>
 
   
   //Loads cached to-do list information whenever the page is
-  
-  const displayData = async () => {
-      await AsyncStorage.getItem("storedTodo").then(data => {
-        if (data !== null) {
-          setTaskItems(JSON.parse(data))
+  useEffect(() => {
+    // Fetch posts when the component mounts
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      // Replace 'your-backend-url' with the actual URL of your backend server
+      const token = await _getToken();
+      const response = await fetch(`${backendURL}/task/view`, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        // Update the state with the retrieved profile data
+        try {
+          console.log("Can fetch tasks")
+          // You can use the username and bio values here as needed
+        } catch (error) {
+          console.error("Error retrieving tasks:", error);
         }
-      }).catch((error) => console.log(error))
-      let tasklist = [...taskItems]
-      console.log(tasklist.length)
+      } else {
+        console.error('Failed to retrieve tasks:', data.error);
       }
+    } catch (error) {
+      console.error('Error fetching tasks:', error.message);
+    }
+  };
+      
   // Loads to-do list while screen loads
-      if (!ready) {
-        return (
-          <AppLoading
-            startAsync={displayData}
-            onFinish={() => setReady(true)}
-            onError={console.warn} />
-        )
-      }
-  const handleAddTask =  () => {
-    const newTaskItems = [...taskItems, task]
-    setTaskItems(newTaskItems)
-    AsyncStorage.setItem("storedTodo", JSON.stringify(newTaskItems)).then(() => {
-      setTask(taskItems);
-    }).catch(error => console.log(error));
-    console.log(newTaskItems.length)
+
+  const handleAddTask =  async() => {
+    console.log(data)
+
+    try {
+        // Remember to change the backend server URL accordingly!!
+
+        // Data to send in the POST request
+        // const postData = {
+        //     contents: postcaption,
+        // };
+        
+        // for debugging
+        console.log('Adding Task...');
+        console.log('Request URL: ', `${backendURL}/task/upload`);
+        // console.log('Data to be sent: ', postData);
+        const token = await _getToken();
+        // console.log("token: ", token)
+
+        // Make a POST request to upload posts
+        // ERROR  Registration error:  [AxiosError: Network Error]
+        // probably happening on this line
+        const response = await axios.post(`${backendURL}/task/upload`, 
+            {
+                contents: postcaption,
+            }, {
+            headers: {
+              Authorization: `${token}`, // Access the token from the headers
+            }
+          });
+        // Assuming the response contains a token field
+        // Parse the JWT token to get user information
+        // const decodedToken = jwtDecode(response.data.accessToken);
+
+        // Handle the response, e.g. show a success message or navigate to a new screen
+        console.log('Task added successfully: ', response.data);
+    
+    } catch (error) {
+        // Handle any errors that occur during the registration process
+        console.error('Upload error: ', error.response.data);
+        if (error.response) {
+            // The request was made, but the server responded with an error
+            console.error('Server error: ', error.response.data);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received from the server', error);
+        } else {
+            // Something happened in setting up the request
+            console.error('Request setup error: ', error);
+        }
+    }
   }
   
+
 
   const completeTask = async (index) => {
     let itemsCopy = [...taskItems];
@@ -76,16 +167,44 @@ const Form = () =>  {
       }
 
       </View>   
-      <KeyboardAvoidingView
-            style={styles.writeTaskWrapper}>
-            <TextInput style={styles.input} placeholder={'Write a task'} value = {task} onChangeText={text => setTask(text)}></TextInput>
+      <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text>Task</Text>
+            <CustomInput name="Name" control={control}></CustomInput>
+            <Text>Notes</Text>
+            <CustomInput name="Details" control={control}></CustomInput>
+            <Text>Complete By</Text>
+            <DateTimePicker value={date} date={date} onDateChange={setDate}></DateTimePicker>
+              <CustomButton text="Confirm" type="TERTIARY"
+        onPress={() => setModalVisible(!modalVisible)}>
+      </CustomButton>
+      <CustomButton text="Cancel" type="TERTIARY"
+        onPress={() => setModalVisible(!modalVisible)}>
+      </CustomButton>
+          </View>
+        </View>
+      </Modal>
+     <CustomButton text="Add Task" type="PRIMARY"
+        onPress={() => setModalVisible(true)}>
+      </CustomButton>
+    </View>
+
+            {/* <TextInput style={styles.input} placeholder={'Write a task'} value = {task} onChangeText={text => setTask(text)}></TextInput>
             <TouchableOpacity onPress={() => handleAddTask()}>
                 <View style={styles.addWrapper}>
-                    <Image source={require("../assets/images/plus.png")} style={{width: 25, height:25 }} />
-                </View>
-            </TouchableOpacity>
+                    <Image source={require("../assets/images/plus.png")} style={{width: 25, height:25 }} /> */}
+                {/* </View>
+            </TouchableOpacity> */}
         
-        </KeyboardAvoidingView> 
     </View>
   );
     }
@@ -152,6 +271,47 @@ const styles = StyleSheet.create({
 
 
 
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 export default Form;
