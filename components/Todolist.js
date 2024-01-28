@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput, Modal, Pressable } from 'react-native';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, Alert} from 'react-native';
 import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from "expo-app-loading"
@@ -9,7 +9,8 @@ import axios from 'axios';
 import backendURL from '../components/backendURL';
 import CustomButton from './CustomButton';
 import CustomInput from './CustomInput';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 
 const Form = () =>  {
@@ -29,22 +30,6 @@ const Form = () =>  {
       console.error('Error fetching token from AsyncStorage:', error);
     }
   };
-
-  <Modal
-  animationType="slide"
-  transparent={true}
-  visible={modalVisible}
-  onRequestClose={() => {
-    Alert.alert('Modal has been closed.');
-    setModalVisible(!modalVisible);
-  }}>
-    <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            </View>
-            </View>
-    </Modal>
-
   
   //Loads cached to-do list information whenever the page is
   useEffect(() => {
@@ -78,8 +63,65 @@ const Form = () =>  {
       console.error('Error fetching tasks:', error.message);
     }
   };
+
+
+
+  const onAddTaskPressed = async (data) => {
+    console.log(data);
+    const rname = data.Name;
+    const rdetails = data.Details;
+    const rcompleteBy= moment(date).format('YYYY-MM-DD HH:mm:ss');
+  
+    try {
+      // Remember to change the backend server URL accordingly!!
+  
+      // Data to send in the POST request
+      const userData = {
+        name: rname,
+        details: rdetails,
+        completeBy: rcompleteBy,
+      };
+  
+      // for debugging
+      console.log('Sending a POST request to save add new task...');
+      console.log('Request URL: ', `${backendURL}/task/upload`);
+      const token = await _getToken();
+      console.log('Data to be sent: ', userData);
+  
+      // Make a POST request to update user profile
+      const response = await axios.post(`${backendURL}/task/upload`, userData, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        },
+      });
+  
+      // Assuming the response contains a token field
+      // Parse the JWT token to get user information
+      // const decodedToken = jwtDecode(response.data.accessToken);
+  
+      // Handle the response, e.g. show a success message or navigate to a new screen
+      console.log('Task Added: ', response.data);
+      // Go to Landing
+      Alert.alert("New task has been added!");
+      setModalVisible(!modalVisible);
+    } catch (error) {
+      // Handle any errors that occur during the registration process
+      console.error('Update error: ', error);
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        console.error('Server error: ', error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received from the server', error);
+      } else {
+        // Something happened in setting up the request
+        console.error('Request setup error: ', error);
+      }
+    }
+  };
+
       
-  // Loads to-do list while screen loads
+
 
   const handleAddTask =  async() => {
     console.log(data)
@@ -167,7 +209,7 @@ const Form = () =>  {
       }
 
       </View>   
-      <View style={styles.centeredView}>
+      <View style={styles.bottomView}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -178,14 +220,14 @@ const Form = () =>  {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text>Task</Text>
+            <Text style={styles.subheader}>Task</Text>
             <CustomInput name="Name" control={control}></CustomInput>
-            <Text>Notes</Text>
+            <Text style={styles.subheader}>Notes</Text>
             <CustomInput name="Details" control={control}></CustomInput>
-            <Text>Complete By</Text>
-            <DateTimePicker value={date} date={date} onDateChange={setDate}></DateTimePicker>
+            <Text style={styles.subheader}>Complete By</Text>
+            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => ( <DateTimePicker value={value} date={value} onDateChange={onChange} mode="date" is24Hour={true} display="default" /> )} />
               <CustomButton text="Confirm" type="TERTIARY"
-        onPress={() => setModalVisible(!modalVisible)}>
+        onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>
       <CustomButton text="Cancel" type="TERTIARY"
         onPress={() => setModalVisible(!modalVisible)}>
@@ -275,14 +317,24 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
+    padding:10,
+    // alignItems: 'center',
+
+  },
+  bottomView: {
+    flex: 1,
+    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
+
   },
   modalView: {
-    margin: 20,
+    // margin: 20,
     backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 2,
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -312,6 +364,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  subheader: {
+    fontSize: 18,
+    fontFamily: "Poppins",
   },
 });
 export default Form;
