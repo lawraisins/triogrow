@@ -52,6 +52,8 @@ const Form = () =>  {
         // Update the state with the retrieved profile data
         try {
           console.log("Can fetch tasks")
+          setTaskItems(data);
+
           // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving tasks:", error);
@@ -78,8 +80,8 @@ const Form = () =>  {
       // Data to send in the POST request
       const userData = {
         name: rname,
-        details: rdetails,
         completeBy: rcompleteBy,
+        details: rdetails,
       };
   
       // for debugging
@@ -119,63 +121,6 @@ const Form = () =>  {
       }
     }
   };
-
-      
-
-
-  const handleAddTask =  async() => {
-    console.log(data)
-
-    try {
-        // Remember to change the backend server URL accordingly!!
-
-        // Data to send in the POST request
-        // const postData = {
-        //     contents: postcaption,
-        // };
-        
-        // for debugging
-        console.log('Adding Task...');
-        console.log('Request URL: ', `${backendURL}/task/upload`);
-        // console.log('Data to be sent: ', postData);
-        const token = await _getToken();
-        // console.log("token: ", token)
-
-        // Make a POST request to upload posts
-        // ERROR  Registration error:  [AxiosError: Network Error]
-        // probably happening on this line
-        const response = await axios.post(`${backendURL}/task/upload`, 
-            {
-                contents: postcaption,
-            }, {
-            headers: {
-              Authorization: `${token}`, // Access the token from the headers
-            }
-          });
-        // Assuming the response contains a token field
-        // Parse the JWT token to get user information
-        // const decodedToken = jwtDecode(response.data.accessToken);
-
-        // Handle the response, e.g. show a success message or navigate to a new screen
-        console.log('Task added successfully: ', response.data);
-    
-    } catch (error) {
-        // Handle any errors that occur during the registration process
-        console.error('Upload error: ', error.response.data);
-        if (error.response) {
-            // The request was made, but the server responded with an error
-            console.error('Server error: ', error.response.data);
-        } else if (error.request) {
-            // The request was made but no response was received
-            console.error('No response received from the server', error);
-        } else {
-            // Something happened in setting up the request
-            console.error('Request setup error: ', error);
-        }
-    }
-  }
-  
-
 
   const completeTask = async (index) => {
     let itemsCopy = [...taskItems];

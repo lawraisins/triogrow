@@ -1,12 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, Touchable, TouchableOpacity, KeyboardAvoidingView, TextInput, Platform} from 'react-native';
 
-const Task = (props) => {
+const Task = (name, details, completeBy) => {
     return(
         <View style={styles.item}>
-            <View style={styles.itemLeft}>
-            <Text style={styles.text}>{props.text}</Text>
-            </View>
+            <Text style={styles.text}>{name}</Text>
         </View>
 
     )
