@@ -1,9 +1,7 @@
 import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput, Modal, Pressable } from 'react-native';
+import {KeyboardAvoidingView, TextInput, Modal, Pressable, FlatList } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image, Alert} from 'react-native';
-import Task from './Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoading from "expo-app-loading"
 import {useForm, Controller} from 'react-hook-form'
 import axios from 'axios';
 import backendURL from '../components/backendURL';
@@ -11,6 +9,8 @@ import CustomButton from './CustomButton';
 import CustomInput from './CustomInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import Collapsible from 'react-native-collapsible';
+import Accordion from 'react-native-collapsible/Accordion';
 
 
 const Form = () =>  {
@@ -19,6 +19,15 @@ const Form = () =>  {
   const [date, setDate] = useState(new Date())
   const [taskItems, setTaskItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
+  const toggleExpand = (name) => {
+    setTaskItems(
+      taskItems.map((item) =>
+        item.name === name ? { ...item, collapsed: !item.collapsed } : item
+      )
+    );
+  };
+  
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
 
 
@@ -32,11 +41,8 @@ const Form = () =>  {
   };
   
   //Loads cached to-do list information whenever the page is
-  useEffect(() => {
-    // Fetch posts when the component mounts
-    fetchTasks();
-  }, []);
-
+useEffect(() => {
+  // Fetch posts when the component mounts
   const fetchTasks = async () => {
     try {
       // Replace 'your-backend-url' with the actual URL of your backend server
@@ -47,13 +53,17 @@ const Form = () =>  {
         },
       });
       const data = await response.json();
-      console.log(data);
+      console.log(data.tasks)
+
+      // Add collapsed property to each item
+      const updatedTasks = data.tasks.map(item => ({ ...item, collapsed: true }));
+      setTaskItems(updatedTasks || []);
+
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
           console.log("Can fetch tasks")
-          setTaskItems(data);
-
+          console.log("taskItems", taskItems)
           // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving tasks:", error);
@@ -65,8 +75,24 @@ const Form = () =>  {
       console.error('Error fetching tasks:', error.message);
     }
   };
+  fetchTasks();
+}, []);
 
 
+const renderItem = ({ item }) => {
+  return (
+    <TouchableOpacity onPress={() => toggleExpand(item.name)}>
+      <View style={styles.item}>
+        <Text style={styles.subheader}>{item.name}</Text>
+        <Collapsible collapsed={item.collapsed}>
+          <View>
+            <Text>{item.details}</Text>
+          </View>
+        </Collapsible>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
   const onAddTaskPressed = async (data) => {
     console.log(data);
@@ -80,8 +106,8 @@ const Form = () =>  {
       // Data to send in the POST request
       const userData = {
         name: rname,
-        completeBy: rcompleteBy,
         details: rdetails,
+        completeBy: rcompleteBy,
       };
   
       // for debugging
@@ -122,36 +148,18 @@ const Form = () =>  {
     }
   };
 
-  const completeTask = async (index) => {
-    let itemsCopy = [...taskItems];
-    itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy);
-    AsyncStorage.setItem("storedTodo", JSON.stringify(itemsCopy)).then(() => {
-      setTask(itemsCopy);
-    }).catch(error => console.log(error));
-    console.log(itemsCopy.length)
-  }
-
-
-
 
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}></View>
      <Text style = {styles.header}>My Tasks</Text>
      <View style = {styles.items}>
-            {/* To-do List */}
-            {
-        taskItems.map((item, index) => {
-        return <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-
-          <Task text={item}/>
-         </TouchableOpacity>
-        }
-      
-        )
-
-      }
+      <FlatList 
+        data={taskItems}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.name.toString()}
+        style={{ paddingBottom: 20 }}>
+        </FlatList>
 
       </View>   
       <View style={styles.bottomView}>
@@ -170,7 +178,7 @@ const Form = () =>  {
             <Text style={styles.subheader}>Notes</Text>
             <CustomInput name="Details" control={control}></CustomInput>
             <Text style={styles.subheader}>Complete By</Text>
-            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => ( <DateTimePicker value={value} date={value} onDateChange={onChange} mode="date" is24Hour={true} display="default" /> )} />
+            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => ( <DateTimePicker value={value|| new Date()} date={value} onDateChange={onChange} mode="date" is24Hour={true} display="default" /> )} />
               <CustomButton text="Confirm" type="TERTIARY"
         onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>
@@ -314,5 +322,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Poppins",
   },
+  item: {
+    backgroundColor: "#FDF76A",
+    padding: 15,
+    borderRadius: 10,
+    borderColor:"black",
+    borderWidth: 2,
+    // flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: 10,
+    shadowColor: "black",
+    shadowOffset: {
+        width: 4,
+        height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    
+},
+text: {
+    fontFamily: "Poppins"
+}
 });
 export default Form;

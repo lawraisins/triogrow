@@ -1,14 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet, Touchable, TouchableOpacity, KeyboardAvoidingView, TextInput, Platform} from 'react-native';
 
-const Task = (name, details, completeBy) => {
-    return(
-        <View style={styles.item}>
-            <Text style={styles.text}>{name}</Text>
-        </View>
-
-    )
-}
+const Task = ({ task }) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.text}>{task.name}</Text>
+        <Text style={styles.text}>{task.details}</Text>
+        <Text style={styles.text}>{task.completeBy}</Text>
+      </View>
+    );
+  };
 const styles = StyleSheet.create({
     item: {
         backgroundColor: "#FDF76A",
@@ -28,11 +29,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 2,
         
-    },
-    itemLeft: {
-        flexDirection: "row",
-        alignItems: "center",
-        flexWrap: "wrap",
     },
     text: {
         fontFamily: "Poppins"
