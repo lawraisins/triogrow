@@ -233,7 +233,7 @@ const renderItem = ({ item }) => {
         data={taskItems}
         renderItem={renderItem}
         keyExtractor={(item) => item.name.toString()}
-        style={{ paddingBottom: 20 }}>
+        style={{ paddingBottom: 20, height: '80%' }}>
         </FlatList>
 
       </View>   
@@ -253,7 +253,20 @@ const renderItem = ({ item }) => {
             <Text style={styles.subheader}>Notes</Text>
             <CustomInput name="Details" control={control}></CustomInput>
             <Text style={styles.subheader}>Complete By</Text>
-            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => ( <DateTimePicker value={value|| new Date()} date={value} onDateChange={onChange} mode="date" is24Hour={true} display="default" /> )} />
+            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => (
+  <DateTimePicker
+    value={value || new Date()}
+    date={value || new Date()}
+    onDateChange={(event, selectedDate) => {
+      const currentDate = selectedDate || value;
+      setDate(currentDate);
+      onChange(currentDate);
+    }}
+    mode="date"
+    is24Hour={true}
+    display="default"
+  />
+)} />
               <CustomButton text="Confirm" type="TERTIARY"
         onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>
