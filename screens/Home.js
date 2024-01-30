@@ -99,7 +99,7 @@ export default function Home() {
         <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" />
       </View>
       <View style={styles.trackers}>
-        <Text style={styles.subheader}>Your Trackers:</Text>
+        <Text style={styles.subheader}>Your Planters:</Text>
         {/* <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton> */}
         {/* Include your Planter component here */}
         <Planter></Planter>

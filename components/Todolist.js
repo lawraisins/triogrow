@@ -98,15 +98,17 @@ const renderItem = ({ item }) => {
   return (
     <TouchableOpacity onPress={() => toggleExpand(item.name)}>
       <View style={styles.itemWrapper}>
-      <Checkbox value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black'></Checkbox>
+      <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black' ></Checkbox>
       <View style={styles.item}>
         <Text style={styles.subheader}>{item.name}</Text>
         <Text>Complete By: {item.completeBy}</Text>
         <Collapsible collapsed={item.collapsed}>
-          <View>
-            <Text style={styles.details}>{item.details}</Text>
+          <View style={styles.details}>
+            <Text>Details:</Text>
+            <Text>{item.details}</Text>
           </View>
         </Collapsible>
+        {!item.collapsed && <CustomButton text="Delete" onPress={() => onDeleteTaskPressed(item.taskId)}></CustomButton>}
       </View>
       </View>
     </TouchableOpacity>
@@ -154,6 +156,55 @@ const renderItem = ({ item }) => {
     } catch (error) {
       // Handle any errors that occur during the registration process
       console.error('Update error: ', error);
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        console.error('Server error: ', error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received from the server', error);
+      } else {
+        // Something happened in setting up the request
+        console.error('Request setup error: ', error);
+      }
+    }
+  };
+
+  const onDeleteTaskPressed = async (data) => {
+    console.log(data);
+    const rid = data;
+
+  
+    try {
+      // Remember to change the backend server URL accordingly!!
+  
+      // Data to send in the POST request
+      const userData = {
+        taskId: rid,
+      };
+  
+      // for debugging
+      console.log('Sending a POST request to delete task...');
+      console.log('Request URL: ', `${backendURL}/task/delete`);
+      const token = await _getToken();
+      console.log('Data to be sent: ', userData);
+  
+      // Make a POST request to update user profile
+      const response = await axios.post(`${backendURL}/task/delete`, userData, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        },
+      });
+  
+      // Assuming the response contains a token field
+      // Parse the JWT token to get user information
+      // const decodedToken = jwtDecode(response.data.accessToken);
+  
+      // Handle the response, e.g. show a success message or navigate to a new screen
+      console.log('Task Deleted: ', response.data);
+      Alert.alert("Task deleted !");
+    } catch (error) {
+      // Handle any errors that occur during the registration process
+      console.error('Delete error: ', error);
       if (error.response) {
         // The request was made, but the server responded with an error
         console.error('Server error: ', error.response.data);
@@ -371,6 +422,12 @@ itemWrapper: {
 },
 details: {
   backgroundColor:'white',
+  alignItems:'center',
+  flex: 1,
 },
+checkbox: {
+  transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+  margin: 8,
+}
 });
 export default Form;

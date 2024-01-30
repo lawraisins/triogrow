@@ -69,7 +69,9 @@ const Planter = () =>  {
         <Text style={styles.text}>Potato Plant</Text>
         <View style={styles.pump}>
         <Image source={require("../assets/images/potato.jpeg")} style={styles.image}></Image>
+        <View style={styles.button}>
         <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
+        </View>       
         </View>
     </View>
   );
@@ -170,7 +172,10 @@ const styles = StyleSheet.create({
     alignItems:'flex-start'
   },
   button:{
-    margin: 10,
+    alignContent:'center',
+    justifyContent:'center',
+    flex: 1,
+
   }
 });
 export default Planter;
