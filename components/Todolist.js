@@ -56,7 +56,6 @@ const Form = () =>  {
 
   
   //Loads cached to-do list information whenever the page is
-useEffect(() => {
   // Fetch posts when the component mounts
   const fetchTasks = async () => {
     try {
@@ -90,8 +89,12 @@ useEffect(() => {
       console.error('Error fetching tasks:', error.message);
     }
   };
-  fetchTasks();
-}, []);
+
+  //Fetch Tasks when component is mounted
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
 
 
 const renderItem = ({ item }) => {
@@ -153,6 +156,7 @@ const renderItem = ({ item }) => {
       // Go to Landing
       Alert.alert("New task has been added!");
       setModalVisible(!modalVisible);
+      fetchTasks();
     } catch (error) {
       // Handle any errors that occur during the registration process
       console.error('Update error: ', error);
@@ -202,6 +206,7 @@ const renderItem = ({ item }) => {
       // Handle the response, e.g. show a success message or navigate to a new screen
       console.log('Task Deleted: ', response.data);
       Alert.alert("Task deleted !");
+      fetchTasks();
     } catch (error) {
       // Handle any errors that occur during the registration process
       console.error('Delete error: ', error);
