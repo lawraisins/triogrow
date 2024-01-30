@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput, Modal, Pressable, FlatList } from 'react-native';
+import {KeyboardAvoidingView, TextInput, Modal, Pressable, FlatList} from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useForm, Controller} from 'react-hook-form'
@@ -10,7 +10,7 @@ import CustomInput from './CustomInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import Collapsible from 'react-native-collapsible';
-import Accordion from 'react-native-collapsible/Accordion';
+import Checkbox from 'expo-checkbox';
 
 
 const Form = () =>  {
@@ -20,6 +20,19 @@ const Form = () =>  {
   const [taskItems, setTaskItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+  const [isChecked, setChecked] = useState(false);
+
+  //Get security token
+  const _getToken = async () => {
+    try {
+      const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+      return storedToken;
+    } catch (error) {
+      console.error('Error fetching token from AsyncStorage:', error);
+    }
+  };
+
+  //Toggle expansion of individual items
   const toggleExpand = (name) => {
     setTaskItems(
       taskItems.map((item) =>
@@ -30,15 +43,17 @@ const Form = () =>  {
   
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
 
-
-  const _getToken = async () => {
-    try {
-      const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
-      return storedToken;
-    } catch (error) {
-      console.error('Error fetching token from AsyncStorage:', error);
-    }
+  //Check completion
+  const toggleCheckBox = (name) => {
+    setTaskItems(
+      taskItems.map((item) =>
+        item.name === name ? { ...item, isChecked: !item.isChecked } : item
+      )
+    );
   };
+
+
+
   
   //Loads cached to-do list information whenever the page is
 useEffect(() => {
@@ -82,13 +97,17 @@ useEffect(() => {
 const renderItem = ({ item }) => {
   return (
     <TouchableOpacity onPress={() => toggleExpand(item.name)}>
+      <View style={styles.itemWrapper}>
+      <Checkbox value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black'></Checkbox>
       <View style={styles.item}>
         <Text style={styles.subheader}>{item.name}</Text>
+        <Text>Complete By: {item.completeBy}</Text>
         <Collapsible collapsed={item.collapsed}>
           <View>
-            <Text>{item.details}</Text>
+            <Text style={styles.details}>{item.details}</Text>
           </View>
         </Collapsible>
+      </View>
       </View>
     </TouchableOpacity>
   );
@@ -339,10 +358,19 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    flex: 1,
     
 },
 text: {
     fontFamily: "Poppins"
-}
+},
+itemWrapper: {
+  flexDirection:'row',
+  alignItems:'center',
+  alignSelf:'center',
+},
+details: {
+  backgroundColor:'white',
+},
 });
 export default Form;
