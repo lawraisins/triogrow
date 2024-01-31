@@ -106,7 +106,7 @@ export default function Home() {
       </View>
       <View style={styles.communities}>
         <Text style={styles.subheader}>Community Updates:</Text>
-        <CommunityFeed refreshing={refreshing} onRefresh={onRefresh} ></CommunityFeed>
+        {/* <CommunityFeed refreshing={refreshing} onRefresh={onRefresh} ></CommunityFeed> */}
       </View>
     </ScrollView>
   );

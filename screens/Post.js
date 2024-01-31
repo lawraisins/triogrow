@@ -8,6 +8,7 @@ import axios from 'axios';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+// import * as FileSystem from 'expo-file-system';
 
 const Post = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -24,34 +25,34 @@ const Post = () => {
 
     const onPostPressed = async (data) => {
         console.log(data)
-        postcaption = data.contents
+        console.log(image)
+        
 
         try {
             // Remember to change the backend server URL accordingly!!
 
             // Data to send in the POST request
-            // const postData = {
-            //     contents: postcaption,
-            // };
+            const postData = {
+                contents: data.contents,
+                imagePath: image
+            };
             
             // for debugging
             console.log('Uploading Post...');
             console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
-            // console.log('Data to be sent: ', postData);
+            console.log('Data to be sent: ', postData);
             const token = await _getToken();
             // console.log("token: ", token)
 
             // Make a POST request to upload posts
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
-            const response = await axios.post(`${backendURL}/posts/uploadPost`, 
-                {
-                    contents: postcaption,
-                }, {
+            const response = await axios.post(`${backendURL}/posts/uploadPost`,postData, {
                 headers: {
                   Authorization: `${token}`, // Access the token from the headers
                 }
               });
+              console.log(postData)
             // Assuming the response contains a token field
             // Parse the JWT token to get user information
             // const decodedToken = jwtDecode(response.data.accessToken);
@@ -77,6 +78,11 @@ const Post = () => {
     }
 
     const [image, setImage] = useState(null);
+
+    useEffect(() => {
+      console.log(image);
+    }, [image]);
+
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -86,10 +92,10 @@ const Post = () => {
         quality: 1,
       });
   
-      console.log(result);
-  
       if (!result.canceled) {
-        setImage(result.assets[0].uri);
+        const imageFileLocalPath = result.assets[0].uri
+        setImage(imageFileLocalPath);
+    
       }
     };
 
@@ -102,7 +108,7 @@ const Post = () => {
             placeholder="Insert your contents."
             control={control}
         />
-            <CustomButton text="Choose Image" type="PRIMARY" onPress={handleSubmit(pickImage)}></CustomButton>
+            <CustomButton name="imagePath" text="Choose Image" type="PRIMARY" onPress={handleSubmit(pickImage)} control={control}></CustomButton>
           <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY"></CustomButton>
           </View>
     )
