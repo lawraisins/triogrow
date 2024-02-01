@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, FlatList, ScrollView, ActivityIndicator } from 'react-native';
 import backendURL from '../components/backendURL';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -55,8 +55,8 @@ export default function SearchUsers() {
   const renderUser = ({ item }) => (
     <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('Profile', { userId: item.userId })}>
       <View>
-      <Text style={styles.username}>{JSON.stringify(item.Username)}</Text>
-      <Text style={styles.name}>{JSON.stringify(item.Name)}</Text>
+      <Text style={styles.username}>{JSON.stringify(item.Username).replace(/['"]+/g, '')}</Text>
+      <Text style={styles.name}>{JSON.stringify(item.Name).replace(/['"]+/g, '')}</Text>
       {/* <Text style={styles.name}>{item.userProfile[0].name}</Text> */}
       </View>
     </TouchableOpacity>
@@ -65,7 +65,7 @@ export default function SearchUsers() {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Search</Text>
       <View style={styles.searchBar}>
       <TextInput
@@ -85,7 +85,7 @@ export default function SearchUsers() {
         }
       />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -102,12 +102,14 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 20,
     fontFamily: 'Poppins',
+    backgroundColor: 'white',
+    
   },
   userContainer: {
     marginBottom: 20,
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     top: 83,
+    
 
   }
 });

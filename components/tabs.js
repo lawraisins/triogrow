@@ -97,22 +97,6 @@ const Tabs = () => {
                     )
 
                 }} />
-            <Tab.Screen name="Learn" component={Learn} 
-                            options={{headerShown: false,
-                                tabBarIcon: ({focused}) => (
-                                    <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
-                                        <Image source={require("../assets/images/brainstorm.png")}
-                                                resizeMode="contain"
-                                                style={{
-                                                    width: 25,
-                                                    height: 25,
-                                                    tintColor: focused ? "blue" : "black",
-                                                }}/>
-                                        <Text style={styles.text}>LEARN</Text>
-                                    </View>
-                                
-                                )
-                            }}/>
             <Tab.Screen name="Post" component={Post} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
@@ -128,18 +112,18 @@ const Tabs = () => {
                                     <CustomTabBarButton {...props} />
                                 )
                             }}></Tab.Screen>
-            <Tab.Screen name="FAQ" component={FAQ} 
+            <Tab.Screen name="Learn" component={Learn} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
                                     <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
-                                        <Image source={require("../assets/images/question.png")}
+                                        <Image source={require("../assets/images/brainstorm.png")}
                                                 resizeMode="contain"
                                                 style={{
                                                     width: 25,
                                                     height: 25,
                                                     tintColor: focused ? "blue" : "black",
                                                 }}/>
-                                        <Text style={styles.text}>FAQ</Text>
+                                        <Text style={styles.text}>LEARN</Text>
                                     </View>
                                 
                                 )

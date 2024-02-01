@@ -16,7 +16,7 @@ import Checkbox from 'expo-checkbox';
 const Form = () =>  {
 
   const [task, setTask] = useState();
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(new Date());
   const [taskItems, setTaskItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
@@ -95,6 +95,13 @@ const Form = () =>  {
     fetchTasks();
   }, []);
 
+const onChange = (e, selectedDate) => {
+  console.log(selectedDate)
+  setDate(selectedDate)
+
+
+}
+
 
 
 const renderItem = ({ item }) => {
@@ -104,7 +111,7 @@ const renderItem = ({ item }) => {
       <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black' ></Checkbox>
       <View style={styles.item}>
         <Text style={styles.subheader}>{item.name}</Text>
-        <Text>Complete By: {item.completeBy}</Text>
+        <Text>Complete By: {new Date(item.completeBy).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
         <Collapsible collapsed={item.collapsed}>
           <View style={styles.details}>
             <Text>Details:</Text>
@@ -173,6 +180,8 @@ const renderItem = ({ item }) => {
     }
   };
 
+
+
   const onDeleteTaskPressed = async (data) => {
     console.log(data);
     const rid = data;
@@ -225,6 +234,7 @@ const renderItem = ({ item }) => {
 
 
   return (
+
     <View style={styles.container}>
       <View style={styles.tasksWrapper}></View>
      <Text style = {styles.header}>My Tasks</Text>
@@ -253,20 +263,7 @@ const renderItem = ({ item }) => {
             <Text style={styles.subheader}>Notes</Text>
             <CustomInput name="Details" control={control}></CustomInput>
             <Text style={styles.subheader}>Complete By</Text>
-            <Controller control={control} name="CompleteBy" render={({ field: { onChange, value } }) => (
-  <DateTimePicker
-    value={value || new Date()}
-    date={value || new Date()}
-    onDateChange={(event, selectedDate) => {
-      const currentDate = selectedDate || value;
-      setDate(currentDate);
-      onChange(currentDate);
-    }}
-    mode="date" 
-    is24Hour={true}
-    display="default"
-  />
-)} />
+            <DateTimePicker value={date} is24Hour={true} onChange={onChange} />
         <CustomButton text="Confirm" type="TERTIARY"
         onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>
