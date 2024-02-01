@@ -60,6 +60,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       const renderItem = ({ item }) => (
         <TouchableOpacity>
         <View style={styles.postContainer}>
+          <Text style={styles.text}>@{item.username}</Text>
            <Text style={styles.text}>{item.caption}</Text>
         </View>
         </TouchableOpacity>
