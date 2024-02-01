@@ -6,6 +6,7 @@ import Learn from "../screens/Learn"
 import FAQ from "../screens/FAQ"
 import Profile from "../screens/Profile"
 import Post from "../screens/Post"
+import SearchUsers from "../screens/SearchUsers";
 import { useFonts } from 'expo-font';
 const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({children, onPress}) => (
@@ -72,6 +73,25 @@ const Tabs = () => {
                                         tintColor: focused ? "blue" : "black",
                                     }}/>
                             <Text style={styles.text}>HOME</Text>
+                        </View>
+                    
+                    )
+
+                }} />
+        <Tab.Screen 
+                name="Search"
+                component={SearchUsers}
+                options={{headerShown: false,
+                    tabBarIcon: ({focused}) => (
+                        <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
+                            <Image source={require("../assets/images/search.png")}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        tintColor: focused ? "blue" : "black",
+                                    }}/>
+                            <Text style={styles.text}>SEARCH</Text>
                         </View>
                     
                     )

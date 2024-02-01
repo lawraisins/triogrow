@@ -262,12 +262,12 @@ const renderItem = ({ item }) => {
       setDate(currentDate);
       onChange(currentDate);
     }}
-    mode="date"
+    mode="date" 
     is24Hour={true}
     display="default"
   />
 )} />
-              <CustomButton text="Confirm" type="TERTIARY"
+        <CustomButton text="Confirm" type="TERTIARY"
         onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>
       <CustomButton text="Cancel" type="TERTIARY"

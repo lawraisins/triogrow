@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList, Activity
 import backendURL from '../components/backendURL';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../components/CustomButton';
 
 export default function SearchUsers() {
@@ -11,11 +12,26 @@ export default function SearchUsers() {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  const _getToken = async () => {
+    try {
+      const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+      return storedToken;
+    } catch (error) {
+      console.error('Error fetching token from AsyncStorage:', error);
+    }
+  };
+
   const fetchUsers = async (searchTerm) => {
+    const token = await _getToken();
     try {
       setLoading(true);
-      const response = await fetch(`${backendURL}/users/search?q=${searchTerm}`);
+      const response = await fetch(`${backendURL}/users/search?q=${searchTerm}`,{
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        }
+      });
       const data = await response.json();
+      console.log(data)
       setUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -38,38 +54,37 @@ export default function SearchUsers() {
 
   const renderUser = ({ item }) => (
     <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('Profile', { userId: item.userId })}>
-      <Text style={styles.username}>{item.username}</Text>
-      <Text style={styles.name}>{item.name}</Text>
+      <View>
+      <Text style={styles.username}>{JSON.stringify(item.Username)}</Text>
+      <Text style={styles.name}>{JSON.stringify(item.Name)}</Text>
+      {/* <Text style={styles.name}>{item.userProfile[0].name}</Text> */}
+      </View>
     </TouchableOpacity>
   );
 
-  const [fontsLoaded] = useFonts({
-    'Poppins-Header': require('../assets/fonts/Poppins-Header.ttf'),
-    'Poppins': require('../assets/fonts/Poppins.ttf'),
-  });
 
-  if (!fontsLoaded) {
-    return <ActivityIndicator />;
-  }
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Search</Text>
+      <View style={styles.searchBar}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search users..."
+        placeholder="Search for users..."
         onChangeText={handleSearch}
         value={searchTerm}
       />
       <FlatList
         data={users}
         renderItem={renderUser}
-        keyExtractor={(item) => item.userId.toString()}
+        // keyExtractor={(item) => item.userId.toString()}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No users found.</Text>
           </View>
         }
       />
+      </View>
     </View>
   );
 }
@@ -79,6 +94,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#BEE4FF',
     padding: 20,
+  },
+  header: {
+    fontSize: 42,
+    fontFamily: "Poppins-Header",
+    top: 55,
   },
   searchInput: {
     height: 40,
@@ -109,4 +129,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins',
   },
+  searchBar: {
+    top: 83,
+
+  }
 });

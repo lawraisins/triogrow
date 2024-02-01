@@ -41,7 +41,8 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           console.log(data)
           if (response.ok) {
             // Update the state with the retrieved posts
-            setPosts(data.content);
+            console.log(data.content)
+            setPosts(data.content)
           } else {
             console.error('Failed to retrieve posts:', data.error);
           }
@@ -57,10 +58,11 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       }, [refreshing]);
     
       const renderItem = ({ item }) => (
+        <TouchableOpacity>
         <View style={styles.postContainer}>
-            <TouchableOpacity><Text style={styles.text}>{item}</Text></TouchableOpacity>
-          
+           <Text style={styles.text}>{item.caption}</Text>
         </View>
+        </TouchableOpacity>
       );
     
       return (

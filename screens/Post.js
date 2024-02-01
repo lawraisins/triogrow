@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Button, TouchableOpacity, Image} from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from "../components/CustomInput"
 import {useForm, Controller} from 'react-hook-form';
@@ -33,7 +33,7 @@ const Post = () => {
 
             // Data to send in the POST request
             const postData = {
-                contents: data.contents,
+                contents: data,
                 imagePath: image
             };
             
@@ -83,6 +83,23 @@ const Post = () => {
       console.log(image);
     }, [image]);
 
+
+    const pickCamera = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      if (!result.canceled) {
+        const imageFileLocalPath = result.assets[0].uri
+        setImage(imageFileLocalPath);
+    
+      }
+    };
+
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -100,17 +117,19 @@ const Post = () => {
     };
 
     return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style = {styles.header}>Post</Text>
-
-        <CustomInput
+            <View style={styles.tasklist}>
+            <CustomButton name="imagePath" text="Use Camera" type="PRIMARY" onPress={handleSubmit(pickCamera)} control={control}></CustomButton>
+            <CustomButton name="imagePath" text="Choose Image" type="PRIMARY" onPress={handleSubmit(pickImage)} control={control}></CustomButton>
+            <CustomInput
             name="contents"
-            placeholder="Insert your contents."
+            placeholder="Insert caption here!"
             control={control}
         />
-            <CustomButton name="imagePath" text="Choose Image" type="PRIMARY" onPress={handleSubmit(pickImage)} control={control}></CustomButton>
           <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY"></CustomButton>
           </View>
+          </ScrollView>
     )
 
 
@@ -136,12 +155,7 @@ const Post = () => {
         tasklist: {
           top: 83,
         },
-        trackers: {
-          top: 103,
-        },
-        communities: {
-          top: 143,
-        },
+
         
       });
       
