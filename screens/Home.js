@@ -73,6 +73,7 @@ export default function Home() {
 
 
   const viewTaskList = () => navigation.navigate("Todo");
+  const addPlanter = () => navigation.navigate("AddPlanter");
 
   return (
     <ScrollView style={styles.container}
@@ -88,7 +89,7 @@ export default function Home() {
         <Text style={styles.subheader}>Your Planters:</Text>
         {/* Include your Planter component here */}
         <Planter></Planter>
-        <CustomButton text="+ Add Planter" type="PRIMARY"></CustomButton>
+        <CustomButton text="+ Add Planter" type="PRIMARY" onPress={handleSubmit(addPlanter)}></CustomButton>
       </View>
       <View style={styles.communities}>
         <Text style={styles.subheader}>Community Updates:</Text>

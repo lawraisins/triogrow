@@ -6,16 +6,16 @@ import CustomButton from '../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import backendURL from '../components/backendURL';
+import { BleManager } from 'react-native-ble-plx';
 // import Planter from '../components/Planter';
 // import BleManager from 'react-native-ble-manager';
 // import BleManagerInstance from '../components/BleManagerInstance';
 
-const AddPlanter = () => {
+export default function AddPlanter() {
 //   const { control, handleSubmit, formState: { errors }, watch } = useForm();
-//   const navigation = useNavigation();
 //   const [raspberryPiId, setRaspberryPiId] = useState('');
 //   const [isConnected, setIsConnected] = useState(false);
-//   const manager = BleManagerInstance;
+  const manager = new BleManager();
 
 //   useEffect(() => {
 //     manager.startDeviceScan(null, null, (error, scanResult) => {
@@ -78,5 +78,3 @@ const AddPlanter = () => {
 //     </View>
 //   );
 };
-
-export default AddPlanter;
