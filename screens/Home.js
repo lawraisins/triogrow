@@ -12,6 +12,7 @@ import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunityFeed from '../components/communityfeed';
 
+
 export default function Home() {
   const [refreshing, setRefreshing] = React.useState(false);
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
@@ -68,22 +69,7 @@ export default function Home() {
     }, 2000);
   }, []);
 
-  // const getUsername = async () => {
-  //   try {
-  //     const name = JSON.parse(await AsyncStorage.getItem('Name'));
-  //     if (name) {
-  //       setUsername(name);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error retrieving username from AsyncStorage:", error);
-  //   }
-  // };
-  
 
-  // useEffect(() => {
-  //   // Fetch the username when the component mounts
-  //   getUsername();
-  // }, []); // Empty dependency array ensures the effect runs only once on mount
 
 
   const viewTaskList = () => navigation.navigate("Todo");
@@ -100,9 +86,9 @@ export default function Home() {
       </View>
       <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Planters:</Text>
-        {/* <CustomButton text="+ Add Planter" onPress={navigation.navigate("AddPlanter")} type="PRIMARY"></CustomButton> */}
         {/* Include your Planter component here */}
         <Planter></Planter>
+        <CustomButton text="+ Add Planter" type="PRIMARY"></CustomButton>
       </View>
       <View style={styles.communities}>
         <Text style={styles.subheader}>Community Updates:</Text>
@@ -134,7 +120,7 @@ const styles = StyleSheet.create({
     top: 103,
   },
   communities: {
-    top: 133,
+    top: 118,
   },
   
 });

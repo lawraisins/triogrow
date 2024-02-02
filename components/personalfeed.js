@@ -8,7 +8,7 @@ import axios from 'axios';
 import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CommunityFeed = ( {refreshing, onRefresh }) => {
+const PersonalFeed = ( {refreshing, onRefresh }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
 
 
@@ -32,7 +32,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         try {
           // Replace 'your-backend-url' with the actual URL of your backend server
           const token = await _getToken();
-          const response = await fetch(`${backendURL}/posts/getPosts`,{
+          const response = await fetch(`${backendURL}/posts/getOwnPosts`,{
             headers: {
               Authorization: `${token}`, // Access the token from the headers
             }
@@ -71,7 +71,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           data={posts}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
-          horizontal
           refreshing={refreshing}
           onRefresh={async () => {
             // Fetch posts again when refreshing
@@ -100,7 +99,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2,
-          marginRight:10,
+          margin:10,
 
         },
         text:{
@@ -116,4 +115,4 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
 
 
-export default CommunityFeed
+export default PersonalFeed

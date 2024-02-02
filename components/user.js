@@ -10,7 +10,7 @@ import { useFonts } from 'expo-font';
 import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import CommunityFeed from '../components/communityfeed';
+import CommunityFeed from './communityfeed';
 import Logo from '../assets/images/squirtle.png';
 import backendURL from './backendURL';
 

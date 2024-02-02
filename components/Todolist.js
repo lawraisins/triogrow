@@ -110,11 +110,11 @@ const renderItem = ({ item }) => {
       <View style={styles.itemWrapper}>
       <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black' ></Checkbox>
       <View style={styles.item}>
-        <Text style={styles.subheader}>{item.name}</Text>
+        <Text style={styles.taskheader}>{item.name}</Text>
         <Text>Complete By: {new Date(item.completeBy).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
         <Collapsible collapsed={item.collapsed}>
           <View style={styles.details}>
-            <Text>Details:</Text>
+            <Text style={styles.subheader}>Details:</Text>
             <Text>{item.details}</Text>
           </View>
         </Collapsible>
@@ -403,6 +403,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  taskheader: {
+    fontSize: 22,
+    fontFamily: "Poppins-Header",
+  },
   subheader: {
     fontSize: 18,
     fontFamily: "Poppins",
@@ -438,6 +442,8 @@ itemWrapper: {
 details: {
   backgroundColor:'white',
   alignItems:'center',
+  justifyContent:'space-between',
+  padding: 5,
   flex: 1,
 },
 checkbox: {

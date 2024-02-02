@@ -10,6 +10,7 @@ import CustomButton from '../components/CustomButton';
 import User from '../components/user';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PersonalFeed from '../components/personalfeed';
 
 const _getToken = async () => {
   try {
@@ -84,13 +85,19 @@ export default function Profile() {
           navigation.navigate('EditProfile');
       }
 
+
   return (
-    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <ScrollView style={styles.container}
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    } >
     <View style={styles.User}><User onRefresh={handleRefresh}></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
       <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>
-    <CustomButton text="Sign Out" onPress={handleSubmit(signOut)} type="TERTIARY"></CustomButton></View>
+    <CustomButton text="Sign Out" onPress={handleSubmit(signOut)} type="TERTIARY"></CustomButton>
+    </View>
+    <PersonalFeed refreshing={refreshing} onRefresh={onRefresh}></PersonalFeed>
     </View>
   </ScrollView>
   );

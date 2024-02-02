@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, Button, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Button, TouchableOpacity, Image, Alert} from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from "../components/CustomInput"
 import {useForm, Controller} from 'react-hook-form';
@@ -59,6 +59,7 @@ const Post = () => {
 
             // Handle the response, e.g. show a success message or navigate to a new screen
             console.log('Post successful: ', response.data);
+            Alert.alert("Post Successful!")
         
         } catch (error) {
             // Handle any errors that occur during the registration process

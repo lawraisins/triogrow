@@ -10,7 +10,6 @@ import Home from "../screens/Home"
 import Tutorial from "../screens/Tutorial";
 import Tutorial2 from "../screens/Tutorial2";
 import SignUpConfirmationScreen from "../screens/SignUpConfirmation";
-// import AddPlanter from "../screens/AddPlanter";
 import Post from "../screens/Post";
 import EditProfile from "../screens/EditProfile";
 

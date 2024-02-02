@@ -1,4 +1,4 @@
 // Update accordingly
-const backendURL = "http://192.168.50.89:3000"
+const backendURL = "http://124.155.214.143:3000"
 
 export default backendURL
