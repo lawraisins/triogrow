@@ -41,7 +41,7 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           console.log(data)
           if (response.ok) {
             // Update the state with the retrieved posts
-            console.log(data.content)
+            console.log(data)
             setPosts(data.content)
           } else {
             console.error('Failed to retrieve posts:', data.error);

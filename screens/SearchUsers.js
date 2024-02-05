@@ -41,7 +41,7 @@ export default function SearchUsers() {
   };
 
   useEffect(() => {
-    if (searchTerm.length > 2) {
+    if (searchTerm.length > 0) {
       fetchUsers(searchTerm);
     } else {
       setUsers([]);

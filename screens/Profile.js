@@ -31,6 +31,7 @@ export default function Profile() {
   const [bio, setBio] = useState("");
   const [image, setImage] = useState(null);
 
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -91,7 +92,7 @@ export default function Profile() {
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
-    <View style={styles.User}><User onRefresh={handleRefresh}></User></View>
+    <View style={styles.User}><User></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
       <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>

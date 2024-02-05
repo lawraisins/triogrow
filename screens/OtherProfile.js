@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {KeyboardAvoidingView, TextInput } from 'react-native';
+import axios from 'axios';
 import {Button, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import Form from '../components/Todolist'
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,6 +35,7 @@ export default function OtherProfile({route}) {
   const [handle, setHandle] = useState("farmer");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -50,6 +52,24 @@ export default function OtherProfile({route}) {
   useEffect(() => {
     fetchProfile();
   }, [refreshing, onRefresh]);
+
+  useEffect(() => {
+    const checkFollowing = async () => {
+      try {
+        const token = await _getToken();
+        const response = await axios.get(`${backendURL}/users/${id}/isFollowing`, {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        console.log(response.data)
+        setIsFollowing(response.data.isFollowing);
+      } catch (error) {
+        console.error('Error checking if following: ', error);
+      }
+    };
+    checkFollowing();
+  }, []);
 
   const fetchProfile = async () => {
     try {
@@ -84,10 +104,47 @@ export default function OtherProfile({route}) {
   };
 
 
-//   const follow= async () => {
-//           navigation.navigate('EditProfile');
-//       }
-
+  const onFollowPressed = async () => {
+    try {
+      // Remember to change the backend server URL accordingly!!
+  
+      // Data to send in the POST request
+      const followData = {
+        followingId: id,
+      };
+  
+      // for debugging
+      console.log('Sending a POST request to follow user...');
+      console.log('Request URL: ', `${backendURL}/users/${id}/follow`);
+      const token = await _getToken();
+      console.log('Data to be sent: ', followData);
+  
+      // Make a POST request to update user profile
+      const response = await axios.post(`${backendURL}/users/${id}/follow`, followData, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+        },
+      });
+  
+      // Handle the response, e.g. show a success message or navigate to a new screen
+      console.log('Following: ', response.data);
+      setIsFollowing(!isFollowing); // Toggle the isFollowing state here
+      Alert.alert(isFollowing ? "Unfollowed this user" : "Following this user");
+    } catch (error) {
+      // Handle any errors that occur during the registration process
+      console.error('Update error: ', error);
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        console.error('Server error: ', error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received from the server', error);
+      } else {
+        // Something happened in setting up the request
+        console.error('Request setup error: ', error);
+      }
+    }
+  };
 
   return (
     <ScrollView style={styles.container}
@@ -95,12 +152,16 @@ export default function OtherProfile({route}) {
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
     <View style={styles.User}><OtherUser onRefresh={handleRefresh} userId={id}></OtherUser></View>
-    <View style={styles.signout}>
-    <View style={styles.edit}>
-      <CustomButton text="Follow" type="PRIMARY"></CustomButton>
+    <View style={styles.Other}>
+    <TouchableOpacity onPress={onFollowPressed}>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>{isFollowing ? "Following" : "Follow"}</Text>
     </View>
+  </TouchableOpacity>
+
     <OtherFeed refreshing={refreshing} onRefresh={onRefresh} userId={id}></OtherFeed>
     </View>
+
   </ScrollView>
   );
 }
@@ -114,16 +175,39 @@ const styles = StyleSheet.create({
   User: {
     top: 55,
   },
-  signout: {
-    top: 83,
-  },
+
   edit:{
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
   button:{
-    padding: 10,
-    flexDirection:'row',
-  }
+    width: "100%",
+    padding: 15,
+    marginVertical: 5,
+
+
+    alignItems: "center",
+    borderRadius: 5,
+    borderColor: "black",
+    borderWidth: 2,
+    backgroundColor: "#FDF76A",
+    shadowColor: "black",
+    shadowOffset: {
+        width: 4,
+        height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    flex: 1,
+    justifyContent:'space-between',
+  },
+  buttonText:{
+            color: "black",
+        fontFamily: "Poppins",
+
+  },
+  Other:{
+    top: 83,
+  },
   
 });

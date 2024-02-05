@@ -110,8 +110,7 @@ const styles = StyleSheet.create({
 
   },
   info:{
-    marginLeft:30,
-
+    marginRight:10,
   }
   
 });
