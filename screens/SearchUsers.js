@@ -53,7 +53,7 @@ export default function SearchUsers() {
   };
 
   const renderUser = ({ item }) => (
-    <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('Profile', { userId: item.userId })}>
+    <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('OtherProfile', { userId: item.userId })}>
       <View>
       <Text style={styles.username}>{JSON.stringify(item.Username).replace(/['"]+/g, '')}</Text>
       <Text style={styles.name}>{JSON.stringify(item.Name).replace(/['"]+/g, '')}</Text>

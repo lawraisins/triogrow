@@ -12,6 +12,7 @@ import Tutorial2 from "../screens/Tutorial2";
 import SignUpConfirmationScreen from "../screens/SignUpConfirmation";
 import Post from "../screens/Post";
 import EditProfile from "../screens/EditProfile";
+import OtherProfile from "../screens/OtherProfile";
 
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ const Navigation = () => {
                 <Stack.Screen name="Tutorial2" component={Tutorial2}/>
                 <Stack.Screen name="Post" component={Post}/>
                 <Stack.Screen name="EditProfile" component={EditProfile}/>
+                <Stack.Screen name="OtherProfile" component={OtherProfile}/>
             </Stack.Navigator>
         </NavigationContainer>
 
