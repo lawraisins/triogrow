@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Pressable, TouchableOpacity} from "react-native";
 import { useFonts } from 'expo-font';
 
 const CustomButton = ({onPress, text, type}) => {
+    const [isPressed, setIsPressed] = useState(false);
     const [fontsLoaded] = useFonts (
         {
              "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
@@ -15,9 +16,18 @@ const CustomButton = ({onPress, text, type}) => {
       }
 
     return(
-        <TouchableOpacity onPress={onPress} style={[styles.container, styles[`container_${type}`]]}>
-            <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
-        </TouchableOpacity>
+<TouchableOpacity
+  onPress={onPress}
+  onPressIn={() => setIsPressed(true)}
+  onPressOut={() => setIsPressed(false)}
+  style={[
+    styles.container,
+    styles[`container_${type}`],
+    isPressed && styles[`container_${type}_pressed`],
+  ]}
+>
+  <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
+</TouchableOpacity>
     );
 };
 

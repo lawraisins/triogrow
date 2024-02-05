@@ -108,18 +108,23 @@ const renderItem = ({ item }) => {
   return (
     <TouchableOpacity onPress={() => toggleExpand(item.name)}>
       <View style={styles.itemWrapper}>
-      <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckBox(item.name)} color='black' ></Checkbox>
-      <View style={styles.item}>
-        <Text style={styles.taskheader}>{item.name}</Text>
-        <Text>Complete By: {new Date(item.completeBy).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
-        <Collapsible collapsed={item.collapsed}>
-          <View style={styles.details}>
-            <Text style={styles.subheader}>Details:</Text>
-            <Text>{item.details}</Text>
-          </View>
-        </Collapsible>
-        {!item.collapsed && <CustomButton text="Delete" onPress={() => onDeleteTaskPressed(item.taskId)}></CustomButton>}
-      </View>
+        <Checkbox
+          style={styles.checkbox}
+          value={item.isChecked}
+          onValueChange={() => toggleCheckBox(item.name)}
+          color='black'
+        ></Checkbox>
+        <View style={[styles.item, item.isChecked && styles.itemChecked]}>
+          <Text style={styles.taskheader}>{item.name}</Text>
+          <Text>Complete By: {new Date(item.completeBy).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+          <Collapsible collapsed={item.collapsed}>
+            <View style={styles.details}>
+              <Text style={styles.subheader}>Details:</Text>
+              <Text>{item.details}</Text>
+            </View>
+          </Collapsible>
+          {!item.collapsed && <CustomButton text="Delete" onPress={() => onDeleteTaskPressed(item.taskId)}></CustomButton>}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -449,6 +454,9 @@ details: {
 checkbox: {
   transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
   margin: 8,
-}
+},
+itemChecked: {
+  backgroundColor: '#ECECEC',
+},
 });
 export default Form;

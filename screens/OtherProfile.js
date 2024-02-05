@@ -54,7 +54,7 @@ export default function OtherProfile({route}) {
   const fetchProfile = async () => {
     try {
       const token = await _getToken();
-      const response = await fetch(`${backendURL}/posts/viewOther`, {
+      const response = await fetch(`${backendURL}/profile/viewOther`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
