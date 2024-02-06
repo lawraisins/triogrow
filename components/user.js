@@ -32,19 +32,29 @@ const User = () => {
   const [bio, setBio] = useState("");
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
-    const [refreshing, setRefreshing] = useState(false);
+  const [fetchInterval, setFetchInterval] = useState(null);
 
   useEffect(() => {
     fetchProfile();
-  }, [fetchProfile]);
-
-  useEffect(() => {
     fetchFollowingCount();
-  }, [fetchFollowingCount]);
+    fetchFollowerCount();
+  }, [fetchProfile, fetchFollowingCount, fetchFollowerCount]);
+
+  const updateProfile = React.useCallback(() => {
+    setFetchInterval(setInterval(() => {
+      fetchProfile();
+      fetchFollowingCount();
+      fetchFollowerCount();
+    }, 60000)); // fetch every minute
+  }, [fetchProfile, fetchFollowingCount, fetchFollowerCount]);
 
   useEffect(() => {
-    fetchFollowerCount();
-  }, [fetchFollowerCount]);
+    updateProfile();
+  
+    return () => {
+      clearInterval(fetchInterval);
+    };
+  }, [fetchProfile, updateProfile]);
 
 
   const fetchProfile = React.useCallback(async () => {
@@ -136,17 +146,7 @@ const User = () => {
     }
   }, []);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    fetchProfile();
-    fetchFollowingCount();
-    fetchFollowerCount();
-    setRefreshing(false);
-  }, []);
 
-  useEffect(() => {
-    onRefresh();
-  }, []);
 
 
   // Allow users to use camera along with uploading from gallery
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 
   },
   header: {
-    fontSize: 42,
+    fontSize: 40,
     fontFamily: "Poppins-Header",
     textAlign: 'right',
   },

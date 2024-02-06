@@ -86,13 +86,15 @@ export default function Profile() {
           navigation.navigate('EditProfile');
       }
 
+      
+
 
   return (
     <ScrollView style={styles.container}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
-    <View style={styles.User}><User></User></View>
+    <View style={styles.User} refreshing={refreshing} onRefresh={onRefresh}><User></User></View>
     <View style={styles.signout}>
     <View style={styles.edit}>
       <CustomButton text="Edit Profile" onPress={handleSubmit(editProfile)} type="TERTIARY"></CustomButton>

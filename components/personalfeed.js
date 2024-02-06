@@ -5,6 +5,8 @@ import CustomInput from "./CustomInput"
 import {useForm, Controller} from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import heart from '../assets/images/heart.png'
+import comment from '../assets/images/bubble-chat.png'
 import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -62,6 +64,10 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
            <Text style={styles.text}>{item.caption}</Text>
+           <View style={styles.reactions}>
+          <TouchableOpacity><Image source={heart} style={styles.icon}></Image></TouchableOpacity>
+          <TouchableOpacity><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
+        </View>
         </View>
         </TouchableOpacity>
       );
@@ -104,7 +110,18 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         },
         text:{
             fontFamily: "Poppins",
-        }}
+        },
+        icon:{
+          height: 20,
+          width: 20,
+          marginRight: 5,
+
+        },
+        reactions:{
+          margin: 5,
+          flexDirection: 'row'
+        }
+      }
       );
     
 

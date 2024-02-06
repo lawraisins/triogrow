@@ -31,6 +31,29 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
   const [username, setUsername] = useState("DefaultUsername");
   const [handle, setHandle] = useState("farmer");
   const [bio, setBio] = useState("");
+  const [fetchInterval, setFetchInterval] = useState(null);
+
+  useEffect(() => {
+    fetchProfile();
+    // fetchFollowingCount();
+    // fetchFollowerCount();
+  }, [fetchProfile]);
+
+  const updateProfile = React.useCallback(() => {
+    setFetchInterval(setInterval(() => {
+      fetchProfile();
+      // fetchFollowingCount();
+      // fetchFollowerCount();
+    }, 60000)); // fetch every minute
+  }, [fetchProfile]);
+
+  useEffect(() => {
+    updateProfile();
+  
+    return () => {
+      clearInterval(fetchInterval);
+    };
+  }, [fetchProfile, updateProfile]);
   useEffect(() => {
     fetchProfile();
   }, [refreshing, onRefresh]);
@@ -93,7 +116,7 @@ const styles = StyleSheet.create({
 
   },
   header: {
-    fontSize: 42,
+    fontSize: 40,
     fontFamily: "Poppins-Header",
     textAlign: 'right',
   },
