@@ -163,8 +163,8 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
       <Text style={styles.header}>{username}</Text>
         <Text style={styles.subheader}>@{handle}</Text>
         <Text style={styles.subheader}>{bio}</Text>
-        <Text>Followers:{followers}</Text>
-        <Text>Following:{following}</Text>
+        <Text style={styles.follow}>Followers: {followers}</Text>
+        <Text style={styles.follow}>Following: {following}</Text>
       </View>
     </View>
   );
@@ -197,8 +197,11 @@ const styles = StyleSheet.create({
   },
   info:{
     marginRight:10,
-  }
-  
+  },
+  follow:{
+    fontFamily: "Poppins",
+    textAlign: "right",
+  },
 });
 
 export default OtherUser

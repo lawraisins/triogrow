@@ -60,7 +60,6 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
       }, [refreshing]);
     
       const renderItem = ({ item }) => (
-        <TouchableOpacity>
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
            <Text style={styles.text}>{item.caption}</Text>
@@ -69,7 +68,6 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           <TouchableOpacity><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
         </View>
         </View>
-        </TouchableOpacity>
       );
     
       return (

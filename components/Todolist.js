@@ -299,7 +299,10 @@ const renderItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
+    backgroundColor: 'white',
+    width:'100%',
+    height:'100%',
+    padding: 10,
 
   },
   tasksWrapper: {

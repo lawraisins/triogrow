@@ -11,6 +11,7 @@ import { useFonts } from 'expo-font';
 import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunityFeed from '../components/communityfeed';
+import Modalform from '../components/modalform';
 
 
 export default function Home() {
@@ -82,7 +83,8 @@ export default function Home() {
       <Text style={styles.header}>Hello, {username}!</Text>
       <View style={styles.tasklist}>
         <Text style={styles.subheader}>Today's Tasks:</Text>
-        <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" />
+        <Modalform></Modalform>
+        {/* <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" /> */}
       </View>
       <View style={styles.trackers}>
         <Text style={styles.subheader}>Your Planters:</Text>
