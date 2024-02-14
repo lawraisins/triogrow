@@ -90,7 +90,7 @@ export default function Profile() {
 
 
   return (
-    <ScrollView style={styles.container}
+    <View style={styles.container}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
@@ -102,7 +102,7 @@ export default function Profile() {
     </View>
     <PersonalFeed refreshing={refreshing} onRefresh={onRefresh}></PersonalFeed>
     </View>
-  </ScrollView>
+  </View>
   );
 }
 

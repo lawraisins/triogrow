@@ -65,7 +65,7 @@ export default function SearchUsers() {
 
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.header}>Search</Text>
       <View style={styles.searchBar}>
       <TextInput
@@ -85,7 +85,7 @@ export default function SearchUsers() {
         }
       />
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
