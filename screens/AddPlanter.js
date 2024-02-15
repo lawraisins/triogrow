@@ -1,82 +1,41 @@
-import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput } from 'react-native';
-import {StyleSheet, Text, View, Button, TouchableOpacity, Image} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from '../components/CustomButton';
-import {useForm, Controller} from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import backendURL from '../components/backendURL';
-// import Planter from '../components/Planter';
-// import BleManager from 'react-native-ble-manager';
-// import BleManagerInstance from '../components/BleManagerInstance';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import CustomButton from './components/CustomButton';
+import DeviceModal from './DeviceConnectionModal';
+import { useState } from 'react';
+import useBLE from './useBLE';
 
-const AddPlanter = () => {
-//   const { control, handleSubmit, formState: { errors }, watch } = useForm();
-//   const navigation = useNavigation();
-//   const [raspberryPiId, setRaspberryPiId] = useState('');
-//   const [isConnected, setIsConnected] = useState(false);
-//   const manager = BleManagerInstance;
+export default function AddPlanter() {
+  const { requestPermissions, scanForPeripherals, allDevices } = useBLE();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-//   useEffect(() => {
-//     manager.startDeviceScan(null, null, (error, scanResult) => {
-//       if (!error) {
-//         console.log('Scan Result:', scanResult);
+  const openModal = async () => {
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
+      scanForPeripherals(); // Scan for devices after getting permissions
+      setIsModalVisible(true);
+    }
+  };
 
-//         const raspberryPiDevice = scanResult.devices.find(
-//           device => device.name === 'Raspberry Pi'
-//         );
+  return (
+    <View style={styles.container}>
+      <CustomButton text="Scan for Bluetooth Devices" onPress={openModal} />
+      <DeviceModal
+        closeModal={() => setIsModalVisible(false)}
+        visible={isModalVisible}
+        connectToPeripheral={(device) => {}}
+        devices={allDevices}
+      />
+      <StatusBar style="auto" />
+    </View>
+  );
+}
 
-//         if (raspberryPiDevice) {
-//           manager.stopDeviceScan();
-
-//           manager
-//             .connect(raspberryPiDevice.id)
-//             .then(() => {
-//               setIsConnected(true);
-
-//               // Listen for incoming data from the Raspberry Pi
-//               raspberryPiDevice.onData((data) => {
-//                 const receivedRaspberryPiId = data.toString();
-//                 setRaspberryPiId(receivedRaspberryPiId);
-//               });
-//             })
-//             .catch(error => {
-//               console.error('Failed to connect to Raspberry Pi:', error);
-//             });
-//         }
-//       }
-//     });
-//   }, []);
-
-//   const handlePostData = async () => {
-//     const userId = 1; // Replace with the actual logged-in user's ID
-//     const request = {
-//       raspberryPiId: raspberryPiId,
-//       userId: userId
-//     };
-
-//     try {
-//       const response = await fetch('https://your-mysql-database-endpoint/post-data', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(request)
-//       });
-
-//       const responseData = await response.json();
-//       console.log('Data posted successfully:', responseData);
-//     } catch (error) {
-//       console.error('Failed to post data:', error);
-//     }
-//   };
-
-//   return (
-//     <View>
-//       <Text>Raspberry Pi ID: {raspberryPiId}</Text>
-//       <Button title="Post Data" onPress={handlePostData} disabled={!isConnected} />
-//     </View>
-//   );
-};
-
-export default AddPlanter;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
