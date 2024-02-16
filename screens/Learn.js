@@ -31,7 +31,7 @@ export default function Learn() {
   const viewTutorial = () =>  navigation.navigate("Tutorial")
   const viewTutorial2 = () =>  navigation.navigate("Tutorial2")
   return (
-<ScrollView style={styles.container}>
+<View style={styles.container}>
         <Text style={styles.header}>Let's Learn!</Text>
         <View style={styles.videos}>
         <Text style={styles.subheader}>Video Tutorials</Text>
@@ -39,7 +39,7 @@ export default function Learn() {
         <CustomButton text="Tutorial 2: Soil Building" onPress={handleSubmit(viewTutorial2)} type="PRIMARY"></CustomButton>
         </View>
        
-    </ScrollView>
+    </View>
 
   );
 }

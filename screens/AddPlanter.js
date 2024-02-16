@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import CustomButton from './components/CustomButton';
-import DeviceModal from './DeviceConnectionModal';
+import CustomButton from '../components/CustomButton';
+import DeviceModal from '../DeviceConnectionModal';
 import { useState } from 'react';
-import useBLE from './useBLE';
+import useBLE from '../useBLE';
 
 export default function AddPlanter() {
   const { requestPermissions, scanForPeripherals, allDevices } = useBLE();
