@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet, useWindowDimensions} from 'react-native';
-import Logo from '../assets/images/squirtle.png';
+import {View, Text, Image, StyleSheet, useWindowDimensions, TouchableOpacity} from 'react-native';
+import Logo from '../assets/images/Untitled1.png';
 import CustomInput from "../components/CustomInput"
 import CustomButton from "../components/CustomButton"
 import { useNavigation } from '@react-navigation/native';
@@ -96,7 +96,7 @@ const SignInScreen = () => {
     return (
         <View style={styles.root}>
             <Image source = {Logo} style = {[styles.logo, {height: height * 0.3}]} resizeMode = "contain" />
-            <Text style = {styles.header}>Triogrow</Text>
+            {/* <Text style = {styles.header}>Triogrow</Text> */}
             <CustomInput
                 name="username"
                 placeholder="Username"
@@ -115,7 +115,10 @@ const SignInScreen = () => {
 
             <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} type="PRIMARY"/>
             {/* <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="PRIMARY"/> */}
-            <CustomButton text="Create a New Account" onPress={onSignUpPressed} type="PRIMARY"/>
+            <TouchableOpacity onPress={onSignUpPressed}>
+                <Text style={styles.text}>Create a New Account</Text>
+            </TouchableOpacity>
+            {/* <CustomButton text="Create a New Account" onPress={onSignUpPressed} type="TERTIARY"/> */}
         </View>
     )
 }
@@ -124,16 +127,22 @@ const styles = StyleSheet.create({
     root: {
         alignItems: "center",
         padding: 20,
-        backgroundColor: "#BEE4FF",
-        height: "100%"
+        backgroundColor: "#FAF4E6",
+        height: "100%",
+        paddingVertical: 80,
     }, 
     logo: {
-        height: 128,
-        width: 128
+        height: 200,
+        width: 200,
     },
     header: {
         fontSize: 36,
+        color: "#004F18",
         fontFamily: "Poppins-Header",
+    },
+    text: {
+        fontFamily: "Poppins",
+        color: "#4B2209"
     },
 
 })

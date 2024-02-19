@@ -32,7 +32,7 @@ const CustomInput = ({control, name, rules = {}, placeholder, secureTextEntry}) 
                  />
                  </View>
                  {error && (
-                    <Text style={{color:"red", fontFamily:"Poppins"}}>{error.message}</Text>
+                    <Text style={{color:"#F25987", fontFamily:"Poppins"}}>{error.message}</Text>
                  )}
                  </>
                  )}
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        fontFamily: "Poppins"
+        fontFamily: "Poppins",
+        color: "#4B2209",
     }
 })
 export default CustomInput;

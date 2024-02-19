@@ -40,7 +40,6 @@ export default function Landing( {route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
   },
   
 });

@@ -87,12 +87,11 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
     const styles = StyleSheet.create({
         postContainer: {
           padding: 30,
-          borderWidth: 1,
           backgroundColor: 'white',
           borderRadius: 5,
-          borderWidth: 2,
-          borderColor: 'black',
-          borderStyle: "solid",
+          // borderWidth: 2,
+          // borderColor: 'black',
+          // borderStyle: "solid",
           shadowOpacity: 1,
           elevation: 0,
           shadowRadius: 0,
@@ -108,16 +107,18 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         },
         text:{
             fontFamily: "Poppins",
+            color: "#F25987",
         },
         icon:{
           height: 20,
           width: 20,
           marginRight: 5,
+          tintColor: "#F25987",
 
         },
         reactions:{
           margin: 5,
-          flexDirection: 'row'
+          flexDirection: 'row',
         }
       }
       );

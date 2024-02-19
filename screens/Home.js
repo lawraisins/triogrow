@@ -71,9 +71,6 @@ export default function Home() {
   }, []);
 
 
-
-
-  const viewTaskList = () => navigation.navigate("Todo");
   const addPlanter = () => navigation.navigate("AddPlanter");
 
   return (
@@ -81,22 +78,24 @@ export default function Home() {
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
-      <Text style={styles.header}>Hello, {username}!</Text>
+      <Text style={styles.header}>{username}'s farm</Text>
       <View style={styles.tasklist}>
-        <Text style={styles.subheader}>Today's Tasks:</Text>
+        <Text style={styles.subheader}>to-dos</Text>
         <Modalform></Modalform>
         {/* <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" /> */}
       </View>
       <View style={styles.trackers}>
-        <Text style={styles.subheader}>Your Planters:</Text>
+        <Text style={styles.subheader}>my triogros</Text>
         {/* Include your Planter component here */}
         <Planter></Planter>
         <CustomButton text="+ Add Planter" type="PRIMARY" onPress={handleSubmit(addPlanter)}></CustomButton>
       </View>
       <View style={styles.communities}>
-        <Text style={styles.subheader}>Community Updates:</Text>
+        <Text style={styles.subheader}>community</Text>
         <CommunityFeed refreshing={refreshing} onRefresh={onRefresh} ></CommunityFeed>
       </View>
+
+
     </ScrollView>
   );
 }
@@ -104,26 +103,33 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
-    padding: 20,
+    padding: 10,
+    backgroundColor: '#FAF4E6',
   },
   header: {
     fontSize: 42,
     fontFamily: "Poppins-Header",
-    top: 55,
+    color:"#004F18",
+    top: 15,
   },
   subheader: {
     fontSize: 25,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Header",
+    color:"#FAF4E6",
   },
   tasklist: {
-    top: 83,
+    backgroundColor: "#004F18",
+    padding: 10,
   },
   trackers: {
-    top: 103,
+    top: 10,
+    backgroundColor:"#4B2209",
+    padding: 10,
   },
   communities: {
-    top: 118,
+    top: 20,
+    backgroundColor: "#D9839D",
+    padding: 10,
   },
   
 });

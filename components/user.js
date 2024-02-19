@@ -11,7 +11,7 @@ import Planter from '../components/Planter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import CommunityFeed from './communityfeed';
-import Logo from '../assets/images/squirtle.png';
+import Logo from '../assets/images/Untitled.png';
 import backendURL from './backendURL';
 
 
@@ -169,7 +169,7 @@ const User = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#BEE4FF',
+    backgroundColor: '#FAF4E6',
     flexDirection:"row",
     alignItems:"flex-start",
 
@@ -178,11 +178,13 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontFamily: "Poppins-Header",
     textAlign: 'right',
+    color: "#004F18",
   },
   subheader: {
     fontSize: 25,
     fontFamily: "Poppins",
     textAlign: 'right',
+    color:"#4B2209",
   },
   dp:{
     borderRadius:60,
@@ -197,6 +199,7 @@ const styles = StyleSheet.create({
   follow:{
     fontFamily: "Poppins",
     textAlign: "right",
+    color:"#4B2209",
   },
   
 });

@@ -66,9 +66,9 @@ const Planter = () =>  {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>Potato Plant</Text>
+        <Text style={styles.text}>triogro 1</Text>
         <View style={styles.pump}>
-        <Image source={require("../assets/images/potato.jpeg")} style={styles.image}></Image>
+        <Image source={require("../assets/images/potato.png")} style={styles.image}></Image>
         <View style={styles.button}>
         <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
         </View>       
@@ -82,11 +82,11 @@ const Planter = () =>  {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
-    borderColor: "black",
-    borderWidth: 2,
+    backgroundColor: '#FAF4E6',
+    // borderColor: "black",
+    // borderWidth: 2,
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
     shadowColor: "black",
     shadowOffset: {
         width: 4,
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    backgroundColor: "white",
 
   },
   tasksWrapper: {
@@ -103,59 +102,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontFamily: "Poppins-Header",
-  },
-  items: {
-    top: 55,
-  },  
-  writeTaskWrapper: {
-    position: "absolute",
-    bottom: 40,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: "white",
-    borderRadius: 60,
-    borderColor: "#FDF76A",
-    borderWidth: 2,
-    width: 280,
-    shadowColor: "black",
-    shadowOffset: {
-        width: 4,
-        height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: "white",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "#FDF76A",
-    borderWidth: 2,
-    shadowColor: "black",
-    shadowOffset: {
-        width: 4,
-        height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-
-
-
+    color: "#4B2209",
   },
   image: {
-    width:100,
-    height:100,
-    borderColor:"black",
-    borderWidth: 2,
+    width:50,
+    height:50,
+    tintColor: "#4B2209",
+    // borderColor:"black",
+    // borderWidth: 2,
     borderRadius:15,
     shadowColor: "black",
     shadowOffset: {
@@ -172,10 +126,8 @@ const styles = StyleSheet.create({
     alignItems:'flex-start'
   },
   button:{
-    alignContent:'center',
-    justifyContent:'center',
     flex: 1,
-
+    flexDirection:'row-reverse',
   }
 });
 export default Planter;

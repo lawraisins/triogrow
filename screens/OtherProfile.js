@@ -169,7 +169,7 @@ export default function OtherProfile({route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
+    backgroundColor: "#FAF4E6",
     padding: 20,
   },
   User: {
@@ -188,9 +188,9 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     borderRadius: 5,
-    borderColor: "black",
-    borderWidth: 2,
-    backgroundColor: "#FDF76A",
+    // borderColor: "black",
+    // borderWidth: 2,
+    backgroundColor: "#F25987",
     shadowColor: "black",
     shadowOffset: {
         width: 4,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent:'space-between',
   },
   buttonText:{
-            color: "black",
+        color: "#FAF4E6",
         fontFamily: "Poppins",
 
   },

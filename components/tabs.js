@@ -12,7 +12,6 @@ const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
     style={{
-        top: -30,
         justifyContent: "center",
         alignItems: "center",
     }}
@@ -22,7 +21,7 @@ const CustomTabBarButton = ({children, onPress}) => (
             width:70,
             height:70,
             borderRadius: 35,
-            backgroundColor: "black",
+            backgroundColor: "#F25987",
         }}>
             {children}
         </View>
@@ -52,7 +51,6 @@ const Tabs = () => {
                     left: 20,
                     right: 20,
                     elevation: 0,
-                    background: "blue",
                     borderRadius: 15,
                     height: 90,
                     ...styles.shadow
@@ -70,9 +68,9 @@ const Tabs = () => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? "blue" : "black",
+                                        tintColor: focused ? "black" : "#F25987",
                                     }}/>
-                            <Text style={styles.text}>HOME</Text>
+                            {/* <Text style={styles.text}>HOME</Text> */}
                         </View>
                     
                     )
@@ -89,9 +87,9 @@ const Tabs = () => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? "blue" : "black",
+                                        tintColor: focused ? "black" : "#F25987",
                                     }}/>
-                            <Text style={styles.text}>SEARCH</Text>
+                            {/* <Text style={styles.text}>SEARCH</Text> */}
                         </View>
                     
                     )
@@ -121,9 +119,9 @@ const Tabs = () => {
                                                 style={{
                                                     width: 25,
                                                     height: 25,
-                                                    tintColor: focused ? "blue" : "black",
+                                                    tintColor: focused ? "black" : "#F25987",
                                                 }}/>
-                                        <Text style={styles.text}>LEARN</Text>
+                                        {/* <Text style={styles.text}>LEARN</Text> */}
                                     </View>
                                 
                                 )
@@ -137,9 +135,9 @@ const Tabs = () => {
                                                 style={{
                                                     width: 25,
                                                     height: 25,
-                                                    tintColor: focused ? "blue" : "black",
+                                                    tintColor: focused ? "black" : "#F25987",
                                                 }}/>
-                                        <Text style={styles.text}>PROFILE</Text>
+                                        {/* <Text style={styles.text}>PROFILE</Text> */}
                                     </View>
                                 
                                 )

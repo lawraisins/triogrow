@@ -92,11 +92,10 @@ const OtherFeed = ( {userId, refreshing, onRefresh }) => {
     const styles = StyleSheet.create({
         postContainer: {
           padding: 30,
-          borderWidth: 1,
           backgroundColor: 'white',
-          borderRadius: 5,
-          borderWidth: 2,
-          borderColor: 'black',
+          // borderRadius: 5,
+          // borderWidth: 2,
+          // borderColor: 'black',
           borderStyle: "solid",
           shadowOpacity: 1,
           elevation: 0,

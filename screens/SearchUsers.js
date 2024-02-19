@@ -92,22 +92,24 @@ export default function SearchUsers() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#BEE4FF',
+    backgroundColor: '#FAF4E6',
     padding: 20,
   },
   header: {
     fontSize: 42,
     fontFamily: "Poppins-Header",
-    top: 55,
+    color: "#004F18",
+    top: 15,
   },
   searchInput: {
     height: 40,
-    borderColor: 'black',
-    borderWidth: 2,
+    // borderColor: 'black',
+    // borderWidth: 2,
     borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 20,
     fontFamily: 'Poppins',
+    color:"#4B2209",
     backgroundColor: 'white',
     
   },
@@ -117,10 +119,12 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontFamily: 'Poppins-Header',
+    color: "#4B2209",
   },
   name: {
     fontSize: 16,
     fontFamily: 'Poppins',
+    color:"#4B2209",
   },
   emptyContainer: {
     flex: 1,
@@ -130,9 +134,10 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     fontFamily: 'Poppins',
+    color: "#4B2209",
   },
   searchBar: {
-    top: 83,
+    top: 35,
     
 
   }

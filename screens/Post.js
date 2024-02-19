@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, Button, TouchableOpacity, Image, Alert} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Button, TouchableOpacity, Image, Alert, PermissionsAndroid} from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from "../components/CustomInput"
 import {useForm, Controller} from 'react-hook-form';
@@ -22,7 +22,7 @@ const Post = () => {
         }
       };
 
-
+    const formData = new FormData()
     const onPostPressed = async (data) => {
         console.log(data)
         console.log(image)
@@ -32,27 +32,31 @@ const Post = () => {
             // Remember to change the backend server URL accordingly!!
 
             // Data to send in the POST request
-            const postData = {
-                contents: data,
-                imagePath: image
-            };
+            formData.append("contents", data.contents)
+            formData.append("image", {
+              uri:image.uri,
+              type:"image/jpeg",
+              name:`${Date.now()}.jpg`,
+            })
+            
             
             // for debugging
             console.log('Uploading Post...');
             console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
-            console.log('Data to be sent: ', postData);
+            console.log('Data to be sent: ', formData);
             const token = await _getToken();
             // console.log("token: ", token)
 
             // Make a POST request to upload posts
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
-            const response = await axios.post(`${backendURL}/posts/uploadPost`,postData, {
+            const response = await axios.post(`${backendURL}/posts/uploadPost`,formData, {
                 headers: {
                   Authorization: `${token}`, // Access the token from the headers
+                  "Content-Type": "multipart/form-data",
                 }
               });
-              console.log(postData)
+              console.log(formData)
             // Assuming the response contains a token field
             // Parse the JWT token to get user information
             // const decodedToken = jwtDecode(response.data.accessToken);
@@ -78,15 +82,48 @@ const Post = () => {
 
     }
 
+    const requestCameraPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'This app needs access to your camera to take photos.',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You can use the camera');
+        } else {
+          console.log('Camera permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+    
+
     const [image, setImage] = useState(null);
 
     useEffect(() => {
       console.log(image);
     }, [image]);
 
+    useEffect(() => {
+      (async () => {
+        if (Platform.OS !== 'web') {
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+          }
+        }
+      })();
+    }, []);
+
 
     const pickCamera = async () => {
-      // No permissions request is necessary for launching the image library
+      await requestCameraPermission();
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -95,8 +132,7 @@ const Post = () => {
       });
   
       if (!result.canceled) {
-        const imageFileLocalPath = result.assets[0].uri
-        setImage(imageFileLocalPath);
+        setImage(result.assets[0]);
     
       }
     };
@@ -111,8 +147,7 @@ const Post = () => {
       });
   
       if (!result.canceled) {
-        const imageFileLocalPath = result.assets[0].uri
-        setImage(imageFileLocalPath);
+        setImage(result.assets[0]);
     
       }
     };
@@ -127,9 +162,13 @@ const Post = () => {
             name="contents"
             placeholder="Insert caption here!"
             control={control}
-        />
-          <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY"></CustomButton>
+            style={styles.input}/>
           </View>
+          <View style={{marginTop: 100}}>
+          <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY" style={styles.button}></CustomButton>
+          </View>
+
+
           </ScrollView>
     )
 
@@ -156,6 +195,23 @@ const Post = () => {
         tasklist: {
           top: 83,
         },
+        button:{
+          width: '100%',
+          height: 50,
+          marginTop: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        input: {
+          width: '100%',
+          height: 50,
+          marginTop: 20,
+          paddingHorizontal: 10,
+          borderColor: 'gray',
+          borderWidth: 1,
+          borderRadius: 5,
+        }, 
+        
 
         
       });

@@ -61,11 +61,8 @@ export default function Profile() {
       if (response.ok) {
         try {
           const name = data.userProfile[0].name;
-          console.log(name)
           const username = data.userProfile[0].username;
-          console.log(username)
           const bio = data.userProfile[0].bio;
-          console.log(bio)
           setUsername(name);
           setHandle(username);
           setBio(bio);
@@ -109,14 +106,14 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
+    backgroundColor: '#FAF4E6',
     padding: 20,
   },
   User: {
-    top: 55,
+    top: 15,
   },
   signout: {
-    top: 83,
+    top: 25,
   },
   edit:{
     flexDirection: 'row',

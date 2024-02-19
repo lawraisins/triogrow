@@ -101,14 +101,9 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     const styles = StyleSheet.create({
         postContainer: {
           padding: 30,
-          borderWidth: 1,
-          backgroundColor: 'white',
+          backgroundColor: '#FAF4E6',
           borderRadius: 5,
-          borderWidth: 2,
-          borderColor: 'black',
-          borderStyle: "solid",
           shadowOpacity: 1,
-          elevation: 0,
           shadowRadius: 0,
           shadowColor: "black",
           shadowOffset: {
@@ -122,11 +117,13 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         },
         text:{
             fontFamily: "Poppins",
+            color: "#F25987"
         },
         icon:{
           height: 20,
           width: 20,
           marginRight: 5,
+          tintColor: "#F25987",
 
         },
         reactions:{

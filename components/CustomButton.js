@@ -38,9 +38,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
 
         alignItems: "center",
-        borderRadius: 5,
-        borderColor: "black",
-        borderWidth: 2,
+        // borderWidth: 2,
 
 
     },
@@ -52,9 +50,9 @@ const styles = StyleSheet.create({
 
         alignItems: "center",
         borderRadius: 5,
-        borderColor: "black",
-        borderWidth: 2,
-        backgroundColor: "#FDF76A",
+        // borderColor: "black",
+        // borderWidth: 2,
+        backgroundColor: "#F25987",
         shadowColor: "black",
         shadowOffset: {
             width: 4,
@@ -72,9 +70,9 @@ const styles = StyleSheet.create({
 
         alignItems: "center",
         borderRadius: 5,
-        borderColor: "black",
-        borderWidth: 2,
-        backgroundColor: "#FDF76A",
+        // borderColor: "black",
+        // borderWidth: 2,
+        backgroundColor: "#F25987",
         shadowColor: "black",
         shadowOffset: {
             width: 4,
@@ -86,13 +84,13 @@ const styles = StyleSheet.create({
     },
 
     text_TERTIARY:{
-        color: "black",
+        color: "#FAF4E6",
         fontFamily: "Poppins",
     },
 
     text: {
-        fontWeight: "bold",
-        color: "black",
+        // fontWeight: "bold",
+        color: "#FAF4E6",
         fontFamily: "Poppins",
         fontSize: 18,
 

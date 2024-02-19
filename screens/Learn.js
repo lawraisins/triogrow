@@ -47,20 +47,22 @@ export default function Learn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#BEE4FF',
+    backgroundColor: '#FAF4E6',
     padding: 20,
   },
   header: {
     fontSize: 42,
     fontFamily: "Poppins-Header",
-    top: 55,
+    top: 15,
+    color: "#004F18",
   },
   subheader: {
     fontSize: 25,
     fontFamily: "Poppins",
+    color:"#4B2209",
   },
   videos: {
-    top: 83,
+    top: 25,
   },
   
 });

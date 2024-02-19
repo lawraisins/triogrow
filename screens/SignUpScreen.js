@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     root: {
         alignItems: "center",
         padding: 20,
-        backgroundColor: '#BEE4FF',
+        backgroundColor: "#FAF4E6",
         height: "100%"
     }, 
     logo: {
@@ -156,11 +156,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontFamily: "Poppins-Header",
-        color: "#051C60",
+        color: "#004F18",
         margin: 10,
     },
     link: {
-        color: "#FDF76A",
+        color: "#F25987",
 
     }
 })

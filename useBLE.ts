@@ -10,6 +10,8 @@ interface BluetoothLowEnergyApi {
     requestPermissions(): Promise<boolean>;
     scanForPeripherals(): void;
     allDevices: Device[];
+    connectToDevice: (deviceId: Device) => Promise<void>;
+    connectedDevice: Device | null;
 }
 
 //delay function
@@ -22,6 +24,7 @@ function useBLE(): BluetoothLowEnergyApi {
     const bleManager = useMemo(() => new BleManager(), []);
 
     const [allDevices, setAllDevices] = useState<Device[]>([]);
+    const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
 
     const checkBluetoothState = async () => {
         const isBluetoothEnabled = await BluetoothStateManager.getState();
@@ -127,10 +130,25 @@ function useBLE(): BluetoothLowEnergyApi {
 
     };
 
+    const connectToDevice = async(device: Device) => {
+        try {
+            delay(500)
+            const deviceConnection = await bleManager.connectToDevice(device.id);
+            setConnectedDevice(deviceConnection);
+            console.log("Connection established")
+            await deviceConnection.discoverAllServicesAndCharacteristics();
+            bleManager.stopDeviceScan()
+        } catch(e) {
+            console.log("ERROR IN CONNECTION", )
+        }
+    }
+
     return {
         scanForPeripherals,
         requestPermissions,
         allDevices,
+        connectToDevice,
+        connectedDevice,
     };
 };
 
