@@ -37,10 +37,10 @@ export default function AddPlanterS() {
       const unpairedDevices = await BluetoothSerial.discoverUnpairedDevices();
 
       console.log(unpairedDevices)
-      // const discoveredDevices = await BluetoothSerial.list();
-      // console.log(discoveredDevices)
+      const discoveredDevices = await BluetoothSerial.list();
+      console.log(discoveredDevices)
       // const triogrows = filterByValue(unpairedDevices, "triogrow")
-      const devicesWithTriogrow = unpairedDevices.filter(device => device.name === "raspberrypi");
+      const devicesWithTriogrow = discoveredDevices.filter(device => device.name === "raspberrypi");
       console.log(devicesWithTriogrow)
       setDevices(devicesWithTriogrow);
     } catch (error) {
@@ -55,8 +55,16 @@ export default function AddPlanterS() {
       setSelectedDeviceId(deviceId);
       await BluetoothSerial.write('get_ssids');
     } catch (error) {
-      console.log('Error connecting to device with ID:', deviceId, error);
+      console.log('Error connecting to device with ID:', deviceId, error);     
     }
+    try{
+    BluetoothSerial.read((data, subscription) => {
+      console.log("Reading", data)
+    }, "\r\n");
+  } catch (error) {
+    console.log('Error reading data',  error);     
+  }
+
   };
 
   const receiveSsids = (ssids) => {
