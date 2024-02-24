@@ -71,7 +71,7 @@ export default function Home() {
   }, []);
 
 
-  const addPlanter = () => navigation.navigate("AddPlanter");
+  const addPlanter = () => navigation.navigate("AddPlanterS");
 
   return (
     <ScrollView style={styles.container}

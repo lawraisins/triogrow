@@ -14,6 +14,7 @@ import Post from "../screens/Post";
 import EditProfile from "../screens/EditProfile";
 import OtherProfile from "../screens/OtherProfile";
 import AddPlanter from "../screens/AddPlanter";
+import AddPlanterS from "../screens/AddPlanterSerial";
 
 
 const Stack = createNativeStackNavigator();
@@ -34,6 +35,7 @@ const Navigation = () => {
                 <Stack.Screen name="EditProfile" component={EditProfile}/>
                 <Stack.Screen name="OtherProfile" component={OtherProfile}/>
                 <Stack.Screen name="AddPlanter" component={AddPlanter}/>
+                <Stack.Screen name="AddPlanterS" component={AddPlanterS}/>
             </Stack.Navigator>
         </NavigationContainer>
 
