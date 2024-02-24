@@ -25,13 +25,24 @@ export default function AddPlanterS() {
     }
   }, []);
 
+  function filterByValue(array, string) {
+    return array.filter(o =>
+        Object.keys(o).some(k => o[k].toLowerCase().includes(string.toLowerCase())));
+}
+
+
+
   const scanForDevices = async () => {
     try {
       const unpairedDevices = await BluetoothSerial.discoverUnpairedDevices();
+
       console.log(unpairedDevices)
-      const discoveredDevices = await BluetoothSerial.list();
-      console.log(discoveredDevices)
-      setDevices(unpairedDevices);
+      // const discoveredDevices = await BluetoothSerial.list();
+      // console.log(discoveredDevices)
+      // const triogrows = filterByValue(unpairedDevices, "triogrow")
+      const devicesWithTriogrow = unpairedDevices.filter(device => device.name === "raspberrypi");
+      console.log(devicesWithTriogrow)
+      setDevices(devicesWithTriogrow);
     } catch (error) {
       console.log('Error scanning for devices:', error);
     }
