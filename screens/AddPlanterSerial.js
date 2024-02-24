@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Button, TextInput } from 'react-nat
 import CustomButton from '../components/CustomButton';
 import DeviceModal from '../DeviceConnectionModal';
 import { useState, useEffect } from 'react';
-import BluetoothSerial from 'react-native-bluetooth-serial'
+import BluetoothSerial from 'react-native-bluetooth-serial-next'
 import {useForm, Controller} from 'react-hook-form'
 import useBLE from '../useBLE';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,8 @@ export default function AddPlanterS() {
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const [ssids, setSsids] = useState([]);
   const [password, setPassword] = useState('');
+
+  
 
   useEffect(async () => {
     const isPermissionsEnabled = await requestPermissions();
@@ -58,9 +60,12 @@ export default function AddPlanterS() {
       console.log('Error connecting to device with ID:', deviceId, error);     
     }
     try{
-    BluetoothSerial.read((data, subscription) => {
-      console.log("Reading", data)
-    }, "\r\n");
+    console.log("Gonna read")
+    // BluetoothSerial.read((data, subscription) => {
+    //   console.log("Reading", data)
+    // }, "\r\n");
+    const data = await BluetoothSerial.readFromDevice(deviceId)
+    console.log(data)
   } catch (error) {
     console.log('Error reading data',  error);     
   }
