@@ -1,14 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import DeviceModal from '../DeviceConnectionModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BluetoothSerial from 'react-native-bluetooth-serial'
 import {useForm, Controller} from 'react-hook-form'
+import useBLE from '../useBLE';
 import { useNavigation } from '@react-navigation/native';
 
 export default function AddPlanterS() {
-  // const { requestPermissions, scanForPeripherals, allDevices, connectToDevice, connectedDevice } = useBLE();
+  const { requestPermissions } = useBLE();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
@@ -17,15 +18,20 @@ export default function AddPlanterS() {
   const [ssids, setSsids] = useState([]);
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
+  useEffect(async () => {
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
     scanForDevices();
+    }
   }, []);
 
   const scanForDevices = async () => {
     try {
-      await BluetoothSerial.requestPermission();
+      const unpairedDevices = await BluetoothSerial.discoverUnpairedDevices();
+      console.log(unpairedDevices)
       const discoveredDevices = await BluetoothSerial.list();
-      setDevices(discoveredDevices);
+      console.log(discoveredDevices)
+      setDevices(unpairedDevices);
     } catch (error) {
       console.log('Error scanning for devices:', error);
     }
@@ -68,15 +74,34 @@ export default function AddPlanterS() {
   return (
     <View>
       <Text>Available devices:</Text>
-      <ScrollView>
+      <ScrollView style={styles.scanlist}>
         {devices.map((device) => (
           <Button
             key={device.id}
-            title={device.name}
+            title={device.name || 'Unknown'}
             onPress={() => connectToSelectedDevice(device.id)}
           />
         ))}
       </ScrollView>
+      {selectedDeviceId && (
+        <View>
+          <Text>Select WiFi network:</Text>
+          <ScrollView>
+            {ssids.map((ssid) => (
+              <Button
+                key={ssid}
+                title={ssid}
+                onPress={() => connectToWifi(ssid, password)}
+              />
+            ))}
+          </ScrollView>
+          <TextInput
+            placeholder="WiFi password"
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -87,4 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  scanlist: {
+    height: "100%",
+  }
 });
