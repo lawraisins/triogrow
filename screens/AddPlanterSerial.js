@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, TextInput } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import DeviceModal from '../DeviceConnectionModal';
 import { useState, useEffect } from 'react';
@@ -25,10 +25,10 @@ export default function AddPlanterS() {
     }
   }, []);
 
-  function filterByValue(array, string) {
-    return array.filter(o =>
-        Object.keys(o).some(k => o[k].toLowerCase().includes(string.toLowerCase())));
-}
+//   function filterByValue(array, string) {
+//     return array.filter(o =>
+//         Object.keys(o).some(k => o[k].toLowerCase().includes(string.toLowerCase())));
+// }
 
 
 
@@ -75,7 +75,7 @@ export default function AddPlanterS() {
 
   const connectToWifi = async (ssid, password) => {
     try {
-      await BluetoothSerial.write(`connect_wifi:${ssid}:${password}`);
+      await BluetoothSerial.write(`bless`);
       console.log('Connected to WiFi network:', ssid);
     } catch (error) {
       console.log('Error connecting to WiFi network:', ssid, error);
