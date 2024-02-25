@@ -20,7 +20,7 @@ export default function AddPlanterS() {
   // const [ssids, setSsids] = useState([]);
   const [password, setPassword] = useState('');
   const [showWifiModal, setShowWifiModal] = useState(false);
-  const ssids = [{"ssid": "eduroam", "authentication": "WPA2", "password": ""}, {"ssid": "SUTD_Guest", "authentication": "", "password": ""}, {"ssid": "SUTD_Wifi", "authentication": "WPA2", "password": ""}]
+  const ssids = [{"ssid": "eduroam", "authentication": "WPA2", "password": ""}, {"ssid": "SUTD_Guest", "authentication": "", "password": ""}, {"ssid": "SUTD_Wifi", "authentication": "WPA2", "password": ""}, {"ssid": "SUTD_Wifi", "authentication": "WPA2", "password": ""}]
 
   
 
@@ -44,6 +44,18 @@ export default function AddPlanterS() {
     return () => clearInterval(interval);
   }, []
 );
+
+const removeDuplicates = (objects) => {
+  const uniqueSet = new Set(objects.flatMap(obj => obj.ssid));
+  console.log(uniqueSet)
+  const uniqueArray = Array.from(uniqueSet);
+  console.log(uniqueArray)
+  return uniqueArray;
+};
+
+const uniqueSSIDs = removeDuplicates(ssids)
+console.log("Filtered:", uniqueSSIDs)
+
 
 
   const scanForDevices = async () => {
@@ -136,7 +148,7 @@ export default function AddPlanterS() {
       </ScrollView>
           {showWifiModal && (
       <ModalWifi
-        ssids={ssids}
+        ssids={uniqueSSIDs}
         connectToWifi={connectToWifi}
         onClose={() => setShowWifiModal(false)}
       />

@@ -50,9 +50,9 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
             data={ssids}
             renderItem={({ item }) => (
               <CustomButton
-                key={item.ssid}
-                text={item.ssid}
-                onPress={() => handleSSIDPress(item.ssid)}
+                key={item}
+                text={item}
+                onPress={() => handleSSIDPress(item)}
                 type="PRIMARY"
               />
             )}
