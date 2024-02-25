@@ -10,18 +10,28 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
   const {control, handleSubmit, formState: {errors},} = useForm();
   const [modalVisible, setModalVisible] = useState(true);
   const [inputVisible, setInputVisible] = useState(false)
+  const [selectedSSID, setSelectedSSID] = useState('');
 
   const handleCloseModal = () => {
     setModalVisible(false);
   };
 
   const handleSSIDPress = (ssid) => {
+    setSelectedSSID(ssid);
     setInputVisible(true);
   };
 
   const handleInputClose = (ssid) => {
     setInputVisible(false);
   };
+
+  const onConnectPressed = async(data) => {
+    console.log(data.password)
+    console.log(selectedSSID)
+    setInputVisible(false)
+    const password = data.password;
+    connectToWifi(selectedSSID, password);
+  }
 
   return (
     <Modal
@@ -76,7 +86,7 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
             <CustomButton
               text="Connect"
               type="TERTIARY"
-              onPress={handleSubmit(connectToWifi)}
+              onPress={handleSubmit(onConnectPressed)}
             ></CustomButton>
               <Pressable
             style={[styles.button, styles.buttonClose]}

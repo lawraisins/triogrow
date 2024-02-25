@@ -100,7 +100,8 @@ export default function AddPlanterS() {
 
   const connectToWifi = async (ssid, password) => {
     try {
-      await BluetoothSerial.write(`bless`);
+      console.log("Connecting to:", ssid, "Password:", password)
+      await BluetoothSerial.write(password);
       console.log('Connected to WiFi network:', ssid);
     } catch (error) {
       console.log('Error connecting to WiFi network:', ssid, error);
