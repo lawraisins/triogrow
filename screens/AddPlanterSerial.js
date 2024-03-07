@@ -54,6 +54,7 @@ const removeDuplicates = (objects) => {
 };
 
 const uniqueSSIDs = removeDuplicates(ssids)
+console.log("Original:",ssids)
 console.log("Filtered:", uniqueSSIDs)
 
 

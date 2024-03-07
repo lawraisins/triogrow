@@ -6,47 +6,29 @@ import CustomButton from './CustomButton';
 import CustomInput from './CustomInput';
 import {useForm, Controller} from 'react-hook-form';
 
-const ModalWifi = ({ ssids, connectToWifi }) => {
+const ModalComments = ({ postId, showCommentModal, onClose }) => {
   const {control, handleSubmit, formState: {errors},} = useForm();
   const [modalVisible, setModalVisible] = useState(true);
-  const [inputVisible, setInputVisible] = useState(false)
-  const [selectedSSID, setSelectedSSID] = useState('');
+
 
   const handleCloseModal = () => {
     setModalVisible(false);
+    onClose();
   };
 
-  const handleSSIDPress = (ssid) => {
-    setSelectedSSID(ssid);
-    setInputVisible(true);
-  };
-
-  const handleInputClose = (ssid) => {
-    setInputVisible(false);
-  };
-
-  const onConnectPressed = async(data) => {
-    console.log(data.password)
-    console.log("SSID", selectedSSID)
-    setInputVisible(false)
-    const password = data.password;
-    connectToWifi(selectedSSID, password);
-  }
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}
+      visible={showCommentModal}
+      onRequestClose={onClose}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           {/* Flatlist of detected Wifi by RPi */}
-          <Text style={styles.header}>Wifi Available</Text>
-          <FlatList
+          <Text style={styles.header}>Comments</Text>
+          {/* <FlatList
             data={ssids}
             renderItem={({ item }) => (
               <CustomButton
@@ -54,10 +36,10 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
                 text={item}
                 onPress={() => handleSSIDPress(item)}
                 type="PRIMARY"
-              />
-            )}
+              /> */}
+            {/* )}
             keyExtractor={item => item.ssid}
-          />
+          /> */}
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={handleCloseModal}
@@ -66,7 +48,7 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
           </Pressable>
         </View>
       </View>
-      {inputVisible && (
+      {/* {inputVisible && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -98,7 +80,7 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
             </View>
           </View>
         </Modal>
-      )}
+      )} */}
     </Modal>
     
   );
@@ -117,7 +99,7 @@ const styles = StyleSheet.create({
     // Adjusting the Size of the Pop up
     backgroundColor: '#FAF4E6',
     borderRadius: 20,
-    height: '85%',
+    height: '95%',
     width: '95%',
     alignItems: 'center',
     shadowColor: '#000',
@@ -188,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalWifi;
+export default ModalComments;

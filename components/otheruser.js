@@ -41,21 +41,21 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
     fetchFollowerCount();
   }, [fetchProfile, fetchFollowingCount, fetchFollowerCount]);
 
-  const updateProfile = React.useCallback(() => {
-    setFetchInterval(setInterval(() => {
-      fetchProfile();
-      fetchFollowingCount();
-      fetchFollowerCount();
-    }, 5000)); // fetch every 5 seconds
-  }, [fetchProfile, fetchFollowingCount, fetchFollowerCount]);
+  // const updateProfile = React.useCallback(() => {
+  //   setFetchInterval(setInterval(() => {
+  //     fetchProfile();
+  //     fetchFollowingCount();
+  //     fetchFollowerCount();
+  //   }, 5000)); // fetch every 5 seconds
+  // }, [fetchProfile, fetchFollowingCount, fetchFollowerCount]);
 
-  useEffect(() => {
-    updateProfile();
+  // useEffect(() => {
+  //   updateProfile();
   
-    return () => {
-      clearInterval(fetchInterval);
-    };
-  }, [fetchProfile, updateProfile]);
+  //   return () => {
+  //     clearInterval(fetchInterval);
+  //   };
+  // }, [fetchProfile, updateProfile]);
   useEffect(() => {
     fetchProfile();
   }, [refreshing, onRefresh]);
@@ -173,7 +173,7 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FAF4E6",
+    backgroundColor: '#FAF4E6',
     flexDirection:"row",
     alignItems:"flex-start",
 
@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Header",
     textAlign: 'right',
     color: "#004F18",
-
   },
   subheader: {
     fontSize: 25,
@@ -206,6 +205,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color:"#4B2209",
   },
+  
 });
 
 export default OtherUser

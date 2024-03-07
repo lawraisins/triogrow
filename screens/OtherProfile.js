@@ -11,7 +11,6 @@ import CustomButton from '../components/CustomButton';
 import OtherUser from '../components/otheruser';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PersonalFeed from '../components/personalfeed';
 import OtherFeed from '../components/otherfeed';
 
 //This is to obtain the profile of other users
@@ -152,7 +151,7 @@ export default function OtherProfile({route}) {
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
     <View style={styles.User}><OtherUser onRefresh={handleRefresh} userId={id}></OtherUser></View>
-    <View style={styles.Other}>
+    <View>
     <TouchableOpacity onPress={onFollowPressed}>
     <View style={styles.button}>
       <Text style={styles.buttonText}>{isFollowing ? "Following" : "Follow"}</Text>
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   User: {
-    top: 55,
+    top: 15,
   },
 
   edit:{
@@ -183,9 +182,7 @@ const styles = StyleSheet.create({
   button:{
     width: "100%",
     padding: 15,
-    marginVertical: 5,
-
-
+    marginVertical: 10,
     alignItems: "center",
     borderRadius: 5,
     // borderColor: "black",
@@ -200,6 +197,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     flex: 1,
     justifyContent:'space-between',
+    
   },
   buttonText:{
         color: "#FAF4E6",
@@ -207,7 +205,7 @@ const styles = StyleSheet.create({
 
   },
   Other:{
-    top: 83,
+    top: 15,
   },
   
 });

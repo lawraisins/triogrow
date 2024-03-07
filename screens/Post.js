@@ -24,7 +24,7 @@ const Post = () => {
 
     const formData = new FormData()
     const onPostPressed = async (data) => {
-        console.log(data)
+        console.log("data", data)
         console.log(image)
         
 

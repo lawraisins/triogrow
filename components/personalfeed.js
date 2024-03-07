@@ -1,17 +1,23 @@
 import React,{useState, useEffect, useCallback} from 'react';
-import {StyleSheet, Text, View, Button, TouchableOpacity, Image,  FlatList, Pressable} from 'react-native';
+import {StyleSheet, Text, View, Button, TouchableOpacity, Image,  FlatList, Pressable, Alert} from 'react-native';
 import CustomButton from './CustomButton';
 import CustomInput from "./CustomInput"
 import {useForm, Controller} from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import heart from '../assets/images/heart.png'
+import like from '../assets/images/like.png'
 import comment from '../assets/images/bubble-chat.png'
 import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PersonalFeed = ( {refreshing, onRefresh }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
+    const [isLiked, setLiked] = useState(false);
+    const { control, handleSubmit, formState: { errors }, watch } = useForm();
+    const [likedPosts, setLikedPosts] = useState([]);
+    const [likeCount, setLikeCount] = useState(0);
+    const [likedPostsStorage, setLikedPostsStorage] = useState([]);
 
 
     const _getToken = async () => {
@@ -43,8 +49,9 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           console.log(data)
           if (response.ok) {
             // Update the state with the retrieved posts
-            console.log(data)
+            console.log(data.content)
             setPosts(data.content)
+            
           } else {
             console.error('Failed to retrieve posts:', data.error);
           }
@@ -58,17 +65,83 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           fetchPosts();
         }
       }, [refreshing]);
+
+      useEffect(() => {
+        const fetchLikedPosts = async () => {
+          try {
+            const storedLikedPosts = await AsyncStorage.getItem('likedPosts');
+            if (storedLikedPosts) {
+              setLikedPostsStorage(JSON.parse(storedLikedPosts));
+            }
+          } catch (error) {
+            console.error('Error fetching liked posts from AsyncStorage:', error);
+          }
+        };
+        fetchLikedPosts();
+      }, []);
+
+      const likePost = async (postId) => {
+        try {
+          const token = await _getToken();
+          const response = await axios.post(`${backendURL}/posts/likePost`, { postId }, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          if (response.data.message === "Successfully liked post") {
+            console.log("Post liked successfully:", response.data);
+            setLikedPosts((prevLikedPosts) =>
+              prevLikedPosts.some((lp) => lp.postId === postId)
+                ? prevLikedPosts
+                : [...prevLikedPosts, { postId: postId }]
+            );
+            setLikedPostsStorage((prevLikedPostsStorage) =>
+              prevLikedPostsStorage.some((lp) => lp.postId === postId)
+                ? prevLikedPostsStorage
+                : [...prevLikedPostsStorage, { postId: postId }]
+            );
+            setLiked(true);
+            setLikeCount((prevLikeCount) => prevLikeCount + 1);
+          } else if (response.data.message === "Successfully unliked post") {
+            console.log("Post unliked successfully:", response.data);
+            setLikedPosts((prevLikedPosts) =>
+              prevLikedPosts.filter((lp) => lp.postId !== postId)
+            );
+            setLikedPostsStorage((prevLikedPostsStorage) =>
+              prevLikedPostsStorage.filter((lp) => lp.postId !== postId)
+            );
+            setLiked(false);
+            setLikeCount((prevLikeCount) => prevLikeCount - 1);
+          } else {
+            console.error("Failed to like post:", response.data);
+          }
+          fetchPosts();
+        } catch (error) {
+          console.error("Error liking post:", error);
+        }
+      };
+  
     
-      const renderItem = ({ item }) => (
-        <View style={styles.postContainer}>
-          <Text style={styles.text}>@{item.username}</Text>
-           <Text style={styles.text}>{item.caption}</Text>
-           <View style={styles.reactions}>
-          <TouchableOpacity><Image source={heart} style={styles.icon}></Image></TouchableOpacity>
-          <TouchableOpacity><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
-        </View>
-        </View>
-      );
+      const renderItem = ({ item }) => {
+        const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
+        const imagesource = isLiked ? like : heart;
+        console.log("http://124.155.214.143:3000"+item.imagePath)
+      
+        return (
+            <View style={styles.postContainer}>
+              <Text style={styles.text}>@{item.username}</Text>
+              <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image>
+              <Text style={styles.text}>{item.caption}</Text>
+              <View style={styles.reactions}>
+                <TouchableOpacity onPress={async () => likePost(item.postId)}>
+                  <Image source={imagesource} style={styles.icon}></Image>
+                  <Text>{item.likeCount}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
+              </View>
+            </View>
+        );
+      };
     
       return (
         <FlatList
@@ -87,13 +160,9 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
     const styles = StyleSheet.create({
         postContainer: {
           padding: 30,
-          backgroundColor: 'white',
+          backgroundColor: '#FAF4E6',
           borderRadius: 5,
-          // borderWidth: 2,
-          // borderColor: 'black',
-          // borderStyle: "solid",
           shadowOpacity: 1,
-          elevation: 0,
           shadowRadius: 0,
           shadowColor: "black",
           shadowOffset: {
@@ -102,12 +171,12 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2,
-          margin:10,
+          marginRight:10,
 
         },
         text:{
             fontFamily: "Poppins",
-            color: "#F25987",
+            color: "#F25987"
         },
         icon:{
           height: 20,
@@ -118,7 +187,7 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         },
         reactions:{
           margin: 5,
-          flexDirection: 'row',
+          flexDirection: 'row'
         }
       }
       );
