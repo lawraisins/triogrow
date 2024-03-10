@@ -143,13 +143,18 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
   const renderItem = ({ item }) => {
     const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
     const imagesource = isLiked ? like : heart;
-    console.log("http://124.155.214.143:3000"+item.imagePath)
+    // console.log("http://124.155.214.143:3000"+item.imagePath)
   
     return (
       <TouchableOpacity>
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
-          <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image>
+          {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 100, height: 100 }} />
+          {/* {item.imagePath && (
+            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
+          )
+          } */}
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
