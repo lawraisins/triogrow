@@ -92,59 +92,125 @@ export default function EditProfile() {
     };
     const cancel = () =>  navigation.navigate("Profile")
 
-    const onSaveChangesPressed = async (data) => {
-        console.log(data);
-        const rusername = data.Name;
-        const rhandle = data.Handle;
-        const rbio = data.Bio;
+    const onPostPressed = async (data) => {
+      console.log("data", data)
+      console.log(image)
       
-        try {
+
+      try {
           // Remember to change the backend server URL accordingly!!
-      
+
           // Data to send in the POST request
-          const userData = {
-            name: rusername,
-            username: rhandle,
-            bio: rbio,
-          };
-      
+          formData.append("contents", data.contents)
+          formData.append("image", {
+            uri:image.uri,
+            type:"image/jpeg",
+            name:`${Date.now()}.jpg`,
+          })
+          
+          
           // for debugging
-          console.log('Sending a POST request to save profile changes...');
-          console.log('Request URL: ', `${backendURL}/profile/update`);
+          console.log('Uploading Post...');
+          console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
+          console.log('Data to be sent: ', formData);
           const token = await _getToken();
-          console.log('Data to be sent: ', userData);
-      
-          // Make a POST request to update user profile
-          const response = await axios.post(`${backendURL}/profile/update`, userData, {
-            headers: {
-              Authorization: `${token}`, // Access the token from the headers
-            },
-          });
-      
+          // console.log("token: ", token)
+
+          // Make a POST request to upload posts
+          // ERROR  Registration error:  [AxiosError: Network Error]
+          // probably happening on this line
+          const response = await axios.post(`${backendURL}/posts/uploadPost`,formData, {
+              headers: {
+                Authorization: `${token}`, // Access the token from the headers
+                "Content-Type": "multipart/form-data",
+              }
+            });
+            console.log(formData)
           // Assuming the response contains a token field
           // Parse the JWT token to get user information
           // const decodedToken = jwtDecode(response.data.accessToken);
-      
+
           // Handle the response, e.g. show a success message or navigate to a new screen
-          console.log('Profile Updated: ', response.data);
-          // Go to Landing
-          Alert.alert("Changes have been saved!");
-          navigation.navigate('Profile');
-        } catch (error) {
+          console.log('Post successful: ', response.data);
+          Alert.alert("Post Successful!")
+      
+      } catch (error) {
           // Handle any errors that occur during the registration process
-          console.error('Update error: ', error);
+          console.error('Posting error: ', error.response.data);
           if (error.response) {
-            // The request was made, but the server responded with an error
-            console.error('Server error: ', error.response.data);
+              // The request was made, but the server responded with an error
+              console.error('Server error: ', error.response.data);
           } else if (error.request) {
-            // The request was made but no response was received
-            console.error('No response received from the server', error);
+              // The request was made but no response was received
+              console.error('No response received from the server', error);
           } else {
-            // Something happened in setting up the request
-            console.error('Request setup error: ', error);
+              // Something happened in setting up the request
+              console.error('Request setup error: ', error);
           }
-        }
-      };
+      }
+
+  }
+
+
+  const onSaveChangesPressed = async (data) => {
+    console.log(data);
+    const rusername = data.Name;
+    const rhandle = data.Handle;
+    const rbio = data.Bio;
+    const image = image;
+  
+    try {
+      // Remember to change the backend server URL accordingly!!
+  
+      // Create a FormData object to send the image and user data
+      const formData = new FormData();
+      formData.append('image', {
+        uri: image.uri,
+        type: 'image/jpeg',
+        name: `${Date.now()}.jpg`,
+      });
+      formData.append('name', rusername);
+      formData.append('username', rhandle);
+      formData.append('bio', rbio);
+  
+      // for debugging
+      console.log('Sending a POST request to save profile changes...');
+      console.log('Request URL: ', `${backendURL}/profile/update`);
+      const token = await _getToken();
+      console.log('Data to be sent: ', formData);
+  
+      // Make a POST request to update user profile
+      const response = await axios.post(`${backendURL}/profile/update`, formData, {
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      // Assuming the response contains a token field
+      // Parse the JWT token to get user information
+      // const decodedToken = jwtDecode(response.data.accessToken);
+  
+      // Handle the response, e.g. show a success message or navigate to a new screen
+      console.log('Profile Updated: ', response.data);
+      // Go to Landing
+      Alert.alert("Changes have been saved!");
+      navigation.navigate('Profile');
+    } catch (error) {
+      // Handle any errors that occur during the registration process
+      console.error('Update error: ', error);
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        console.error('Server error: ', error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received from the server', error);
+      } else {
+        // Something happened in setting up the request
+        console.error('Request setup error: ', error);
+      }
+    }
+  };
 
 
 
@@ -204,14 +270,13 @@ export default function EditProfile() {
       header: {
         fontSize: 42,
         fontFamily: "Poppins-Header",
-        top: 55,
+        top: 15,
       },
       subheader: {
         fontSize: 18,
         fontFamily: "Poppins",
       },
     profile:{
-        top:80,
     }
     
   });

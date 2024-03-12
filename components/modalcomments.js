@@ -285,8 +285,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon:{
-    height: 30,
-    width: 30,
+    height: 20,
+    width: 20,
     marginLeft: 15,
     tintColor: "#F25987",
 

@@ -10,6 +10,8 @@ import like from '../assets/images/like.png'
 import comment from '../assets/images/bubble-chat.png'
 import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updateLikedPostsStorage } from './likePost';
+import ModalComments from './modalcomments';
 
 const OtherFeed = ( {refreshing, onRefresh, userId }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
@@ -18,6 +20,9 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
     const [likedPosts, setLikedPosts] = useState([]);
     const [likeCount, setLikeCount] = useState(0);
     const [likedPostsStorage, setLikedPostsStorage] = useState([]);
+    const [showCommentModal, setShowCommentModal] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+    
 
 
     const _getToken = async () => {
@@ -30,24 +35,25 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
       };
 
     const [posts, setPosts] = useState([]);
+    
 
       useEffect(() => {
         // Fetch posts when the component mounts
         fetchPosts();
       }, []);
-
-
+    
       const fetchPosts = async () => {
         try {
           const token = await _getToken();
-          console.log(userId.userId)
+          console.log(userId)
+          id = userId.userId
           const response = await fetch(`${backendURL}/posts/getOtherPosts`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               Authorization: `${token}`,
             },
-            body: JSON.stringify(userId.userId),
+            body: JSON.stringify({userId}), // Pass userId as an object with a single property
           });
           const data = await response.json();
           console.log(data)
@@ -63,11 +69,35 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
           console.error('Error fetching posts:', error.message);
         }
       };
-  
+
+      useEffect(() => {
+        if (refreshing) {
+          fetchPosts();
+        }
+      }, [refreshing]);
+
+      useEffect(() => {
+        const fetchLikedPosts = async () => {
+          try {
+            const storedLikedPosts = await AsyncStorage.getItem('likedPosts');
+            if (storedLikedPosts) {
+              setLikedPostsStorage(JSON.parse(storedLikedPosts));
+            }
+          } catch (error) {
+            console.error('Error fetching liked posts from AsyncStorage:', error);
+          }
+        };
+        fetchLikedPosts();
+      }, []);
+
       const likePost = async (postId) => {
         try {
+          console.log("PostId", postId);
+          const likeData = {
+            postId: postId,
+          };
           const token = await _getToken();
-          const response = await axios.post(`${backendURL}/posts/likePost`, { postId }, {
+          const response = await axios.post(`${backendURL}/posts/likePost`, likeData, {
             headers: {
               Authorization: `${token}`,
             },
@@ -75,70 +105,106 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
           if (response.data.message === "Successfully liked post") {
             console.log("Post liked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
-              prevLikedPosts.some((lp) => lp.postId === postId)
-                ? prevLikedPosts
-                : [...prevLikedPosts, { postId: postId }]
-            );
-            setLikedPostsStorage((prevLikedPostsStorage) =>
-              prevLikedPostsStorage.some((lp) => lp.postId === postId)
-                ? prevLikedPostsStorage
-                : [...prevLikedPostsStorage, { postId: postId }]
-            );
-            setLiked(true);
-            setLikeCount((prevLikeCount) => prevLikeCount + 1);
+            prevLikedPosts.some((lp) => lp.postId === postId)
+              ? prevLikedPosts
+              : [...prevLikedPosts, { postId: postId }]
+          );
+          setLikedPostsStorage((prevLikedPostsStorage) =>
+            prevLikedPostsStorage.some((lp) => lp.postId === postId)
+              ? prevLikedPostsStorage
+              : [...prevLikedPostsStorage, { postId: postId }]
+          );
+            setLikeCount((prevLikeCount) => (isLiked ? prevLikeCount - 1 : prevLikeCount + 1));
+            setLiked((prevLiked) => !prevLiked);
           } else if (response.data.message === "Successfully unliked post") {
             console.log("Post unliked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
-              prevLikedPosts.filter((lp) => lp.postId !== postId)
-            );
-            setLikedPostsStorage((prevLikedPostsStorage) =>
-              prevLikedPostsStorage.filter((lp) => lp.postId !== postId)
-            );
+            prevLikedPosts.filter((lp) => lp.postId !== postId)
+          );
+          setLikedPostsStorage((prevLikedPostsStorage) =>
+            prevLikedPostsStorage.filter((lp) => lp.postId !== postId)
+          );
+            setLikeCount((prevLikeCount) => (isLiked ? prevLikeCount + 1 : prevLikeCount - 1));
             setLiked(false);
-            setLikeCount((prevLikeCount) => prevLikeCount - 1);
+            await AsyncStorage.setItem('likedPosts', JSON.stringify([...likedPostsStorage, { postId: postId }]));
           } else {
             console.error("Failed to like post:", response.data);
           }
           fetchPosts();
+
         } catch (error) {
           console.error("Error liking post:", error);
         }
-      };  
-    
-      const renderItem = ({ item }) => {
-        const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
-        const imagesource = isLiked ? like : heart;
-        console.log("http://124.155.214.143:3000"+item.imagePath)
-      
-        return (
-            <View style={styles.postContainer}>
-              <Text style={styles.text}>@{item.username}</Text>
-              <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image>
-              <Text style={styles.text}>{item.caption}</Text>
-              <View style={styles.reactions}>
-                <TouchableOpacity onPress={async () => likePost(item.postId)}>
-                  <Image source={imagesource} style={styles.icon}></Image>
-                  <Text>{item.likeCount}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
-              </View>
-            </View>
-        );
       };
+
+  const showcomments = (post) => {
+    console.log("Opening comments for post", post.postId)
+    setSelectedPost(post);
+    setShowCommentModal(true)
+  }
+  
     
-      return (
-        <FlatList
-          data={posts}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          refreshing={refreshing}
-          onRefresh={async () => {
-            // Fetch posts again when refreshing
-            await fetchPosts();
-            onRefresh();
-          }}
+  const renderItem = ({ item }) => {
+    const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
+    const imagesource = isLiked ? like : heart;
+    // console.log("http://124.155.214.143:3000"+item.imagePath)
+  
+    return (
+      <TouchableOpacity>
+        <View style={styles.postContainer}>
+          <Text style={styles.text}>@{item.username}</Text>
+          {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 100, height: 100 }} />
+          {/* {item.imagePath && (
+            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
+          )
+          } */}
+          <Text style={styles.text}>{item.caption}</Text>
+          <View style={styles.reactions}>
+            <TouchableOpacity onPress={async () => likePost(item.postId)}>
+              <Image source={imagesource} style={styles.icon}></Image>
+              <Text>{item.likeCount}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => showcomments(item)}><Image source={comment} style={styles.icon}></Image></TouchableOpacity>
+            {selectedPost && selectedPost.postId === item.postId && (
+              <ModalComments
+                postId={item.postId}
+                showCommentModal={showCommentModal}
+                onClose={() => {
+                  setSelectedPost(null);
+                  setShowCommentModal(false);
+                }}
+              />
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+    
+  return (
+    <>
+      <FlatList
+        data={posts}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        refreshing={refreshing}
+        onRefresh={async () => {
+          // Fetch posts again when refreshing
+          await fetchPosts();
+          onRefresh();
+        }}
+      />
+      {selectedPost && (
+        <ModalComments
+          postId={selectedPost.postId}
+          onClose={() => {setSelectedPost(null);
+            setShowCommentModal(false);}}
+          
         />
-      );
+      )}
+    </>
+  );
     };
     const styles = StyleSheet.create({
         postContainer: {
