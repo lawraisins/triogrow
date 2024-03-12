@@ -11,7 +11,7 @@ import { useFonts } from 'expo-font';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import Logo from '../assets/images/squirtle.png';
+import Logo from '../assets/images/Untitled.png';
 import CustomInput from '../components/CustomInput';
 
 const _getToken = async () => {
@@ -27,6 +27,7 @@ export default function EditProfile() {
     const [username, setUsername] = useState("DefaultUsername");
     const [handle, setHandle] = useState("farmer");
     const [bio, setBio] = useState("");
+    const [imageStream, setImageStream] = useState("")
     const {control, handleSubmit, formState: {errors}, watch} = useForm();
     const navigation = useNavigation();
     useEffect(() => {
@@ -53,10 +54,12 @@ export default function EditProfile() {
               const username = data.userProfile[0].username;
               console.log(username)
               const bio = data.userProfile[0].bio;
+              const imageStream = data.userProfile[0].imageStream;
               console.log(bio)
               setUsername(name);
               setHandle(username);
               setBio(bio);
+              setImageStream(imageStream);
               // You can use the username and bio values here as needed
             } catch (error) {
               console.error("Error retrieving profile data from AsyncStorage:", error);
@@ -87,132 +90,60 @@ export default function EditProfile() {
       console.log(result);
   
       if (!result.canceled) {
-        setImage(result.assets[0].uri);
+        setImage(result.assets[0]);
+        console.log("Image:", image.uri)
       }
     };
     const cancel = () =>  navigation.navigate("Profile")
-
-    const onPostPressed = async (data) => {
-      console.log("data", data)
-      console.log(image)
-      
-
-      try {
-          // Remember to change the backend server URL accordingly!!
-
-          // Data to send in the POST request
-          formData.append("contents", data.contents)
-          formData.append("image", {
-            uri:image.uri,
-            type:"image/jpeg",
-            name:`${Date.now()}.jpg`,
-          })
-          
-          
-          // for debugging
-          console.log('Uploading Post...');
-          console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
-          console.log('Data to be sent: ', formData);
-          const token = await _getToken();
-          // console.log("token: ", token)
-
-          // Make a POST request to upload posts
-          // ERROR  Registration error:  [AxiosError: Network Error]
-          // probably happening on this line
-          const response = await axios.post(`${backendURL}/posts/uploadPost`,formData, {
-              headers: {
-                Authorization: `${token}`, // Access the token from the headers
-                "Content-Type": "multipart/form-data",
-              }
-            });
-            console.log(formData)
-          // Assuming the response contains a token field
-          // Parse the JWT token to get user information
-          // const decodedToken = jwtDecode(response.data.accessToken);
-
-          // Handle the response, e.g. show a success message or navigate to a new screen
-          console.log('Post successful: ', response.data);
-          Alert.alert("Post Successful!")
-      
-      } catch (error) {
-          // Handle any errors that occur during the registration process
-          console.error('Posting error: ', error.response.data);
-          if (error.response) {
-              // The request was made, but the server responded with an error
-              console.error('Server error: ', error.response.data);
-          } else if (error.request) {
-              // The request was made but no response was received
-              console.error('No response received from the server', error);
-          } else {
-              // Something happened in setting up the request
-              console.error('Request setup error: ', error);
-          }
-      }
-
-  }
-
-
+  
+  const formData = new FormData();
   const onSaveChangesPressed = async (data) => {
-    console.log(data);
-    const rusername = data.Name;
-    const rhandle = data.Handle;
-    const rbio = data.Bio;
-    const image = image;
+    const rusername = data.Name || username;
+    const rhandle = data.Handle || handle;
+    const rbio = data.Bio || bio;
   
     try {
-      // Remember to change the backend server URL accordingly!!
-  
-      // Create a FormData object to send the image and user data
+      const token = await _getToken();
       const formData = new FormData();
-      formData.append('image', {
-        uri: image.uri,
-        type: 'image/jpeg',
-        name: `${Date.now()}.jpg`,
-      });
+  
       formData.append('name', rusername);
       formData.append('username', rhandle);
       formData.append('bio', rbio);
   
-      // for debugging
+      if (image) {
+        formData.append('image', {
+          uri: image.uri,
+          type: 'image/jpeg',
+          name: `${Date.now()}.jpg`,
+        });
+      }
+  
       console.log('Sending a POST request to save profile changes...');
       console.log('Request URL: ', `${backendURL}/profile/update`);
-      const token = await _getToken();
       console.log('Data to be sent: ', formData);
   
-      // Make a POST request to update user profile
       const response = await axios.post(`${backendURL}/profile/update`, formData, {
         headers: {
-          Authorization: `${token}`, // Access the token from the headers
+          Authorization: `${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
   
-      // Assuming the response contains a token field
-      // Parse the JWT token to get user information
-      // const decodedToken = jwtDecode(response.data.accessToken);
-  
-      // Handle the response, e.g. show a success message or navigate to a new screen
       console.log('Profile Updated: ', response.data);
-      // Go to Landing
-      Alert.alert("Changes have been saved!");
+      Alert.alert('Changes have been saved!');
       navigation.navigate('Profile');
     } catch (error) {
-      // Handle any errors that occur during the registration process
       console.error('Update error: ', error);
       if (error.response) {
-        // The request was made, but the server responded with an error
         console.error('Server error: ', error.response.data);
       } else if (error.request) {
-        // The request was made but no response was received
         console.error('No response received from the server', error);
       } else {
-        // Something happened in setting up the request
         console.error('Request setup error: ', error);
       }
     }
   };
-
-
+  
 
 
     return (
@@ -220,7 +151,13 @@ export default function EditProfile() {
       <View>
       <Text style={styles.header}>Edit Profile</Text>
       <View style={styles.profile}>
-      <TouchableOpacity onPress={handleSubmit(pickImage)}><Image style={styles.dp} source={{uri: image}}></Image></TouchableOpacity>
+      <TouchableOpacity onPress={handleSubmit(pickImage)}>
+      {imageStream ? (
+        <Image source={{ uri: `data:image/jpeg;base64,${imageStream}` }} style={styles.dp} />
+      ) : (
+        <Image source={Logo} style={styles.dp} />
+      )}
+        </TouchableOpacity>
       <View style={styles.input}>
         <Text style={styles.subheader}>Name</Text>
       <CustomInput name="Name" placeholder={username} control={control}></CustomInput>

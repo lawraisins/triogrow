@@ -30,6 +30,7 @@ const User = () => {
   const [username, setUsername] = useState("DefaultUsername");
   const [handle, setHandle] = useState("farmer");
   const [bio, setBio] = useState("");
+  const [imageStream, setImageStream] = useState("")
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [fetchInterval, setFetchInterval] = useState(null);
@@ -75,10 +76,12 @@ const User = () => {
           const username = data.userProfile[0].username;
           console.log(username)
           const bio = data.userProfile[0].bio;
+          const imageStream = data.userProfile[0].imageStream;
           console.log(bio)
           setUsername(name);
           setHandle(username);
           setBio(bio);
+          setImageStream(imageStream);
           // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving profile data from AsyncStorage:", error);
@@ -154,7 +157,11 @@ const User = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.dp} source={Logo}></Image>
+      {imageStream ? (
+        <Image source={{ uri: `data:image/jpeg;base64,${imageStream}` }} style={styles.dp} />
+      ) : (
+        <Image source={Logo} style={styles.dp} />
+      )}
       <View style={styles.info}>
         <Text style={styles.header}>{username}</Text>
         <Text style={styles.subheader}>@{handle}</Text>
