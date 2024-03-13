@@ -46,16 +46,18 @@ export default function AddPlanterS() {
 );
 
 const removeDuplicates = (objects) => {
-  const uniqueSet = new Set(objects.flatMap(obj => obj.ssid));
-  console.log(uniqueSet)
-  const uniqueArray = Array.from(uniqueSet);
-  console.log(uniqueArray)
+  // Create a Set using a custom comparison key (SSID + Authentication)
+  const uniqueSet = new Set(objects.map(obj => JSON.stringify({ ssid: obj.ssid, authentication: obj.authentication })));
+  
+  // Convert the Set back to an array of objects
+  const uniqueArray = Array.from(uniqueSet, str => JSON.parse(str));
+  
   return uniqueArray;
 };
 
-const uniqueSSIDs = removeDuplicates(ssids)
-console.log("Original:",ssids)
-console.log("Filtered:", uniqueSSIDs)
+const uniqueSSIDs = removeDuplicates(ssids);
+console.log("Original:", ssids);
+console.log("Filtered:", uniqueSSIDs);
 
 
 
@@ -111,10 +113,10 @@ console.log("Filtered:", uniqueSSIDs)
   //   }
   // });
 
-  const connectToWifi = async (ssid, password) => {
+  const connectToWifi = async (ssid, authentication, password) => {
     try {
-      console.log("Connecting to:", ssid, "Password:", password)
-      await BluetoothSerial.write([{"ssid": ssid, "password": password}]);
+      console.log("Connecting to:", ssid, "Authentication:", authentication, "Password:", password)
+      await BluetoothSerial.write({"ssid": ssid, "authentication": authentication, "password": password});
       console.log('Connected to WiFi network:', ssid);
     } catch (error) {
       console.log('Error connecting to WiFi network:', ssid, error);

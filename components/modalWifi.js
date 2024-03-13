@@ -11,13 +11,15 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [inputVisible, setInputVisible] = useState(false)
   const [selectedSSID, setSelectedSSID] = useState('');
+  const [selectedAuthentication, setSelectedAuthentication] = useState('')
 
   const handleCloseModal = () => {
     setModalVisible(false);
   };
 
-  const handleSSIDPress = (ssid) => {
+  const handleSSIDPress = (ssid, authentication) => {
     setSelectedSSID(ssid);
+    setSelectedAuthentication(authentication);
     setInputVisible(true);
   };
 
@@ -28,9 +30,10 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
   const onConnectPressed = async(data) => {
     console.log(data.password)
     console.log("SSID", selectedSSID)
+    console.log("Authentication", selectedAuthentication)
     setInputVisible(false)
     const password = data.password;
-    connectToWifi(selectedSSID, password);
+    connectToWifi(selectedSSID, selectedAuthentication, password);
   }
 
   return (
@@ -50,9 +53,9 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
             data={ssids}
             renderItem={({ item }) => (
               <CustomButton
-                key={item}
-                text={item}
-                onPress={() => handleSSIDPress(item)}
+                key={item.ssid}
+                text={item.ssid}
+                onPress={() => handleSSIDPress(item.ssid, item.authentication)}
                 type="PRIMARY"
               />
             )}
