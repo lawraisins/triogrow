@@ -44,13 +44,11 @@ export default function Home() {
         },
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
           const name = data.userProfile[0].name;
           setUsername(name);
-          console.log("Name", name)
           // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving profile data from AsyncStorage:", error);

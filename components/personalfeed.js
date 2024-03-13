@@ -52,10 +52,8 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
             }
           });
           const data = await response.json();
-          console.log(data)
           if (response.ok) {
             // Update the state with the retrieved posts
-            console.log(data.content)
             setPosts(data.content)
             
           } else {

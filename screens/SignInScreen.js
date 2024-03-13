@@ -18,7 +18,6 @@ const SignInScreen = () => {
     const navigation = useNavigation();
 
     const onSignInPressed = async (data) => {
-        console.log(data)
         rpassword = data.password
         rusername = data.username
 

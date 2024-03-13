@@ -57,7 +57,6 @@ export default function Profile() {
         },
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         try {
           const name = data.userProfile[0].name;

@@ -6,12 +6,63 @@ import CustomButton from './CustomButton';
 import {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
 import backendURL from './backendURL';
+import io from 'socket.io-client'
 
 
 const Planter = () =>  {
+  const [socketId, setSocketId] = useState("");
+  const _getToken = async () => {
+    try {
+      const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
+      return storedToken;
+    } catch (error) {
+      console.error('Error fetching token from AsyncStorage:', error);
+    }
+  };
     const {control, handleSubmit, formState: {errors},} = useForm();
     // const navigation = useNavigation();
     const [pump, setPump] = useState(0);
+    // Get the socketId from the DB
+    const getSocketId = async () => {
+      try {
+        // Replace 'your-backend-url' with the actual URL of your backend server
+        const token = await _getToken();
+        const response = await fetch(`${backendURL}/getSocketId`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({"RPI_ID":"Testing"}), // Pass userId as an object with a single property
+        });
+        const data = await response.json();
+        console.log(data)
+        if (response.ok) {
+          // Update the state with the retrieved posts
+          console.log(data.socketId)
+          setSocketId(data.socketId)
+          console.log(socketId)
+          
+        } else {
+          console.error('Failed to retrieve posts:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error.message);
+      }
+    };
+
+    useEffect(() => {
+      // Fetch posts when the component mounts
+      getSocketId();
+      const socket = io('http://124.155.214.143:5000');
+      // Listen for 'connect' event
+      socket.on('connect', () => {
+        console.log('Connected to socket server');
+      });
+      socket.emit('pump_command', socketId);
+    }, []);
+
+    //Need to pass the socketId to the backend so that it can send the pump value to the RPi
     const onPumpPressed = async () => {
         if (pump == 0) {
             setPump(1)
@@ -38,6 +89,7 @@ const Planter = () =>  {
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
             const response = await axios.post(`${backendURL}/updatePump`, pumpData);
+            // const response = await axios.post(`124.155.214.143/socketId`, pumpData)
 
             // Handle the response, e.g. show a success message or navigate to a new screen
             console.log('Pump Value Updated: ', response.data);
