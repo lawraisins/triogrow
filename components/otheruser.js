@@ -31,6 +31,7 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
   const [username, setUsername] = useState("DefaultUsername");
   const [handle, setHandle] = useState("farmer");
   const [bio, setBio] = useState("");
+  const [imageStream, setImageStream] = useState("")
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [fetchInterval, setFetchInterval] = useState(null);
@@ -60,7 +61,9 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
     fetchProfile();
   }, [refreshing, onRefresh]);
 
-  const fetchProfile = async () => {
+
+
+  const fetchProfile = React.useCallback(async () => {
     try {
       const token = await _getToken();
       const response = await fetch(`${backendURL}/profile/viewOther`, {
@@ -74,13 +77,20 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        // Update the state with the retrieved profile data
         try {
           const name = data.userProfile[0].name;
+          console.log(name)
           const username = data.userProfile[0].username;
+          console.log(username)
           const bio = data.userProfile[0].bio;
+          const imageStream = data.userProfile[0].imageStream;
+          console.log(bio)
           setUsername(name);
           setHandle(username);
           setBio(bio);
+          setImageStream(imageStream);
+          // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving profile data from AsyncStorage:", error);
         }
@@ -90,7 +100,8 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
     } catch (error) {
       console.error('Error fetching user profile:', error.message);
     }
-  };
+  }, []);
+
 
   const fetchFollowingCount = React.useCallback(async () => {
     try {
@@ -157,10 +168,14 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
   // Resolve FTP connection issues, make sure can post to and retrieve from FTP server
 
   return (
-    <View style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
-      <Image style={styles.dp} source={Logo}></Image>
+    <View style={styles.container}>
+      {imageStream ? (
+        <Image source={{ uri: `data:image/jpeg;base64,${imageStream}` }} style={styles.dp} />
+      ) : (
+        <Image source={Logo} style={styles.dp} />
+      )}
       <View style={styles.info}>
-      <Text style={styles.header}>{username}</Text>
+        <Text style={styles.header}>{username}</Text>
         <Text style={styles.subheader}>@{handle}</Text>
         <Text style={styles.subheader}>{bio}</Text>
         <Text style={styles.follow}>Followers: {followers}</Text>

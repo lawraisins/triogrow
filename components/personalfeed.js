@@ -1,5 +1,5 @@
 import React,{useState, useEffect, useCallback} from 'react';
-import {StyleSheet, Text, View, Button, TouchableOpacity, Image,  FlatList, Pressable, Alert} from 'react-native';
+import {StyleSheet, Text, View, Button, TouchableOpacity, Image,  FlatList, Pressable, Alert, ScrollView} from 'react-native';
 import CustomButton from './CustomButton';
 import CustomInput from "./CustomInput"
 import {useForm, Controller} from 'react-hook-form';
@@ -179,7 +179,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
   };
     
   return (
-    <>
+    <ScrollView>
       <FlatList
         data={posts}
         renderItem={renderItem}
@@ -199,7 +199,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           
         />
       )}
-    </>
+    </ScrollView>
   );
     };
     const styles = StyleSheet.create({

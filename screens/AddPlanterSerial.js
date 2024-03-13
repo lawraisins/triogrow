@@ -114,7 +114,7 @@ console.log("Filtered:", uniqueSSIDs)
   const connectToWifi = async (ssid, password) => {
     try {
       console.log("Connecting to:", ssid, "Password:", password)
-      await BluetoothSerial.write(password);
+      await BluetoothSerial.write([{"ssid": ssid, "password": password}]);
       console.log('Connected to WiFi network:', ssid);
     } catch (error) {
       console.log('Error connecting to WiFi network:', ssid, error);
