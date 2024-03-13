@@ -25,7 +25,7 @@ const _getToken = async () => {
 
 const OtherUser = ({ userId, refreshing, onRefresh }) => {
   const id = userId;
-  console.log(userId);
+  // console.log(userId);
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("DefaultUsername");
@@ -75,17 +75,17 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
         body: JSON.stringify({ id }),
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
           const name = data.userProfile[0].name;
-          console.log(name)
+          // console.log(name)
           const username = data.userProfile[0].username;
-          console.log(username)
+          // console.log(username)
           const bio = data.userProfile[0].bio;
           const imageStream = data.userProfile[0].imageStream;
-          console.log(bio)
+          // console.log(bio)
           setUsername(name);
           setHandle(username);
           setBio(bio);
@@ -118,7 +118,7 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
-          console.log(data.results[0]['COUNT(*)'])
+          // console.log(data.results[0]['COUNT(*)'])
           setFollowing(data.results[0]['COUNT(*)'])
           // You can use the username and bio values here as needed
         } catch (error) {
@@ -148,7 +148,7 @@ const OtherUser = ({ userId, refreshing, onRefresh }) => {
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
-          console.log(data.results[0]['COUNT(*)'])
+          // console.log(data.results[0]['COUNT(*)'])
           setFollowers(data.results[0]['COUNT(*)'])
           // You can use the username and bio values here as needed
         } catch (error) {

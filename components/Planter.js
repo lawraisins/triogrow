@@ -75,24 +75,24 @@ const Planter = () =>  {
 
         try {
             // Data to send in the POST request
-            const pumpData = 
-                {"newPumpNumber": pump}
-            ;
+            // const pumpData = 
+            //     {"newPumpNumber": pump}
+            // ;
             
 
             // for debugging
-            console.log('Sending a POST request to change pump value...');
-            console.log('Request URL: ', `${backendURL}/updatePump`);
-            console.log('Data to be sent: ', pumpData);
+            // console.log('Sending a POST request to change pump value...');
+            // console.log('Request URL: ', `${backendURL}/updatePump`);
+            // console.log('Data to be sent: ', pumpData);
 
             // Make a POST request to register the user
             // ERROR  Registration error:  [AxiosError: Network Error]
             // probably happening on this line
-            const response = await axios.post(`${backendURL}/updatePump`, pumpData);
+            // const response = await axios.post(`${backendURL}/updatePump`, pumpData);
             // const response = await axios.post(`124.155.214.143/socketId`, pumpData)
 
             // Handle the response, e.g. show a success message or navigate to a new screen
-            console.log('Pump Value Updated: ', response.data);
+            // console.log('Pump Value Updated: ', response.data);
         
         } catch (error) {
             // Handle any errors that occur during the registration process

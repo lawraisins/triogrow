@@ -1,7 +1,7 @@
 const fetchPosts = async () => {
     try {
       const token = await _getToken();
-      console.log(userId)
+      // console.log(userId)
       id = userId.userId
       const response = await fetch(`${backendURL}/posts/getOtherPosts`, {
         method: 'POST',
@@ -12,10 +12,10 @@ const fetchPosts = async () => {
         body: JSON.stringify({userId}), // Pass userId as an object with a single property
       });
       const data = await response.json();
-      console.log(data)
+      // console.log(data)
       if (response.ok) {
         // Update the state with the retrieved posts
-        console.log(data.content)
+        // console.log(data.content)
         setPosts(data.content)
         
       } else {

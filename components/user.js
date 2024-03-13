@@ -67,17 +67,17 @@ const User = () => {
         },
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
           const name = data.userProfile[0].name;
-          console.log(name)
+          // console.log(name)
           const username = data.userProfile[0].username;
-          console.log(username)
+          // console.log(username)
           const bio = data.userProfile[0].bio;
           const imageStream = data.userProfile[0].imageStream;
-          console.log(bio)
+          // console.log(bio)
           setUsername(name);
           setHandle(username);
           setBio(bio);
@@ -108,7 +108,7 @@ const User = () => {
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
-          console.log(data.results[0]['COUNT(*)'])
+          // console.log(data.results[0]['COUNT(*)'])
           setFollowing(data.results[0]['COUNT(*)'])
           // You can use the username and bio values here as needed
         } catch (error) {
@@ -135,7 +135,7 @@ const User = () => {
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
-          console.log(data.results[0]['COUNT(*)'])
+          // console.log(data.results[0]['COUNT(*)'])
           setFollowers(data.results[0]['COUNT(*)'])
           // You can use the username and bio values here as needed
         } catch (error) {

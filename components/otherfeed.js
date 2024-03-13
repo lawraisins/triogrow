@@ -45,7 +45,7 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
       const fetchPosts = async () => {
         try {
           const token = await _getToken();
-          console.log(userId)
+          // console.log(userId)
           id = userId.userId
           const response = await fetch(`${backendURL}/posts/getOtherPosts`, {
             method: 'POST',
@@ -56,10 +56,10 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
             body: JSON.stringify({userId}), // Pass userId as an object with a single property
           });
           const data = await response.json();
-          console.log(data)
+          // console.log(data)
           if (response.ok) {
             // Update the state with the retrieved posts
-            console.log(data.content)
+            // console.log(data.content)
             setPosts(data.content)
             
           } else {
@@ -92,7 +92,7 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
 
       const likePost = async (postId) => {
         try {
-          console.log("PostId", postId);
+          // console.log("PostId", postId);
           const likeData = {
             postId: postId,
           };
@@ -103,7 +103,7 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
             },
           });
           if (response.data.message === "Successfully liked post") {
-            console.log("Post liked successfully:", response.data);
+            // console.log("Post liked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
             prevLikedPosts.some((lp) => lp.postId === postId)
               ? prevLikedPosts
@@ -117,7 +117,7 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
             setLikeCount((prevLikeCount) => (isLiked ? prevLikeCount - 1 : prevLikeCount + 1));
             setLiked((prevLiked) => !prevLiked);
           } else if (response.data.message === "Successfully unliked post") {
-            console.log("Post unliked successfully:", response.data);
+            // console.log("Post unliked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
             prevLikedPosts.filter((lp) => lp.postId !== postId)
           );
@@ -138,7 +138,7 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
       };
 
   const showcomments = (post) => {
-    console.log("Opening comments for post", post.postId)
+    // console.log("Opening comments for post", post.postId)
     setSelectedPost(post);
     setShowCommentModal(true)
   }

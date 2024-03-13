@@ -24,8 +24,8 @@ const Post = () => {
 
     const formData = new FormData()
     const onPostPressed = async (data) => {
-        console.log("data", data)
-        console.log(image)
+        // console.log("data", data)
+        // console.log(image)
         
 
         try {
@@ -41,9 +41,9 @@ const Post = () => {
             
             
             // for debugging
-            console.log('Uploading Post...');
-            console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
-            console.log('Data to be sent: ', formData);
+            // console.log('Uploading Post...');
+            // console.log('Request URL: ', `${backendURL}/posts/uploadPost`);
+            // console.log('Data to be sent: ', formData);
             const token = await _getToken();
             // console.log("token: ", token)
 
@@ -56,13 +56,13 @@ const Post = () => {
                   "Content-Type": "multipart/form-data",
                 }
               });
-              console.log(formData)
+              // console.log(formData)
             // Assuming the response contains a token field
             // Parse the JWT token to get user information
             // const decodedToken = jwtDecode(response.data.accessToken);
 
             // Handle the response, e.g. show a success message or navigate to a new screen
-            console.log('Post successful: ', response.data);
+            // console.log('Post successful: ', response.data);
             Alert.alert("Post Successful!")
         
         } catch (error) {
@@ -94,9 +94,9 @@ const Post = () => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('You can use the camera');
+          // console.log('You can use the camera');
         } else {
-          console.log('Camera permission denied');
+          // console.log('Camera permission denied');
         }
       } catch (err) {
         console.warn(err);
@@ -107,7 +107,7 @@ const Post = () => {
     const [image, setImage] = useState(null);
 
     useEffect(() => {
-      console.log(image);
+      // console.log(image);
     }, [image]);
 
     useEffect(() => {

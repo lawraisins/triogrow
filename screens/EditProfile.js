@@ -45,17 +45,17 @@ export default function EditProfile() {
             },
           });
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           if (response.ok) {
             // Update the state with the retrieved profile data
             try {
               const name = data.userProfile[0].name;
-              console.log(name)
+              // console.log(name)
               const username = data.userProfile[0].username;
-              console.log(username)
+              // console.log(username)
               const bio = data.userProfile[0].bio;
               const imageStream = data.userProfile[0].imageStream;
-              console.log(bio)
+              // console.log(bio)
               setUsername(name);
               setHandle(username);
               setBio(bio);
@@ -87,11 +87,11 @@ export default function EditProfile() {
         quality: 1,
       });
   
-      console.log(result);
+      // console.log(result);
   
       if (!result.canceled) {
         setImage(result.assets[0]);
-        console.log("Image:", image.uri)
+        // console.log("Image:", image.uri)
       }
     };
     const cancel = () =>  navigation.navigate("Profile")
@@ -118,9 +118,9 @@ export default function EditProfile() {
         });
       }
   
-      console.log('Sending a POST request to save profile changes...');
-      console.log('Request URL: ', `${backendURL}/profile/update`);
-      console.log('Data to be sent: ', formData);
+      // console.log('Sending a POST request to save profile changes...');
+      // console.log('Request URL: ', `${backendURL}/profile/update`);
+      // console.log('Data to be sent: ', formData);
   
       const response = await axios.post(`${backendURL}/profile/update`, formData, {
         headers: {
@@ -129,7 +129,7 @@ export default function EditProfile() {
         },
       });
   
-      console.log('Profile Updated: ', response.data);
+      // console.log('Profile Updated: ', response.data);
       Alert.alert('Changes have been saved!');
       navigation.navigate('Profile');
     } catch (error) {

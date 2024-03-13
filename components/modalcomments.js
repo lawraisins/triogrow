@@ -38,7 +38,7 @@ const ModalComments = ({ postId, showCommentModal, onClose }) => {
 
 
   const onPostCommentPressed = async (data) => {
-    console.log(data);
+    // console.log(data);
     const contents = data.Comment;
   
     try {
@@ -51,10 +51,10 @@ const ModalComments = ({ postId, showCommentModal, onClose }) => {
       };
   
       // for debugging
-      console.log('Sending a POST request to save add new task...');
-      console.log('Request URL: ', `${backendURL}/posts/commentPost`);
+      // console.log('Sending a POST request to save add new task...');
+      // console.log('Request URL: ', `${backendURL}/posts/commentPost`);
       const token = await _getToken();
-      console.log('Data to be sent: ', userData);
+      // console.log('Data to be sent: ', userData);
   
       // Make a POST request to update user profile
       const response = await axios.post(`${backendURL}/posts/commentPost`, userData, {
@@ -68,7 +68,7 @@ const ModalComments = ({ postId, showCommentModal, onClose }) => {
       // const decodedToken = jwtDecode(response.data.accessToken);
   
       // Handle the response, e.g. show a success message or navigate to a new screen
-      console.log('Comment Posted: ', response.data);
+      // console.log('Comment Posted: ', response.data);
       // Go to Landing
       fetchComments();
     } catch (error) {
@@ -103,14 +103,14 @@ const ModalComments = ({ postId, showCommentModal, onClose }) => {
         body: JSON.stringify({ uploadPostId }),
       });
       const data = await response.json();
-      console.log(data.comments)
+      // console.log(data.comments)
       const updatedComments = data.comments.map(item => ({ ...item}));
       setComments(updatedComments || []);
 
       if (response.ok) {
         // Update the state with the retrieved profile data
         try {
-          console.log("Can fetch comments")
+          // console.log("Can fetch comments")
           // You can use the username and bio values here as needed
         } catch (error) {
           console.error("Error retrieving comments", error);

@@ -26,7 +26,7 @@ const _getToken = async () => {
 
 export default function OtherProfile({route}) {
     const id = route.params.userId;
-    console.log(route.params)
+  //  console.log(route.params)
   const [refreshing, setRefreshing] = useState(false);
   const {control, handleSubmit, formState: {errors}, watch} = useForm();
   const navigation = useNavigation();
@@ -61,7 +61,7 @@ export default function OtherProfile({route}) {
             Authorization: `${token}`,
           },
         });
-        console.log(response.data)
+        // console.log(response.data)
         setIsFollowing(response.data.isFollowing);
       } catch (error) {
         console.error('Error checking if following: ', error);
@@ -82,7 +82,7 @@ export default function OtherProfile({route}) {
         body: JSON.stringify({ id }),
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (response.ok) {
         try {
           const name = data.userProfile[0].name;
@@ -113,10 +113,10 @@ export default function OtherProfile({route}) {
       };
   
       // for debugging
-      console.log('Sending a POST request to follow user...');
-      console.log('Request URL: ', `${backendURL}/users/${id}/follow`);
+      // console.log('Sending a POST request to follow user...');
+      // console.log('Request URL: ', `${backendURL}/users/${id}/follow`);
       const token = await _getToken();
-      console.log('Data to be sent: ', followData);
+      // console.log('Data to be sent: ', followData);
   
       // Make a POST request to update user profile
       const response = await axios.post(`${backendURL}/users/${id}/follow`, followData, {
@@ -126,7 +126,7 @@ export default function OtherProfile({route}) {
       });
   
       // Handle the response, e.g. show a success message or navigate to a new screen
-      console.log('Following: ', response.data);
+      // console.log('Following: ', response.data);
       setIsFollowing(!isFollowing); // Toggle the isFollowing state here
       Alert.alert(isFollowing ? "Unfollowed this user" : "Following this user");
     } catch (error) {

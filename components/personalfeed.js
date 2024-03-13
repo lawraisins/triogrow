@@ -86,7 +86,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
       const likePost = async (postId) => {
         try {
-          console.log("PostId", postId);
+          // console.log("PostId", postId);
           const likeData = {
             postId: postId,
           };
@@ -97,7 +97,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
             },
           });
           if (response.data.message === "Successfully liked post") {
-            console.log("Post liked successfully:", response.data);
+            // console.log("Post liked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
             prevLikedPosts.some((lp) => lp.postId === postId)
               ? prevLikedPosts
@@ -111,7 +111,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
             setLikeCount((prevLikeCount) => (isLiked ? prevLikeCount - 1 : prevLikeCount + 1));
             setLiked((prevLiked) => !prevLiked);
           } else if (response.data.message === "Successfully unliked post") {
-            console.log("Post unliked successfully:", response.data);
+            // console.log("Post unliked successfully:", response.data);
             setLikedPosts((prevLikedPosts) =>
             prevLikedPosts.filter((lp) => lp.postId !== postId)
           );
@@ -132,7 +132,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       };
 
   const showcomments = (post) => {
-    console.log("Opening comments for post", post.postId)
+    // console.log("Opening comments for post", post.postId)
     setSelectedPost(post);
     setShowCommentModal(true)
   }
