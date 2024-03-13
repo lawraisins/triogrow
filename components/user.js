@@ -157,11 +157,10 @@ const User = () => {
 
   return (
     <View style={styles.container}>
-      {imageStream ? (
-        <Image source={{ uri: `data:image/jpeg;base64,${imageStream}` }} style={styles.dp} />
-      ) : (
-        <Image source={Logo} style={styles.dp} />
-      )}
+      {/* Image on the left */}
+      <Image source={{ uri: `data:image/jpeg;base64,${imageStream}` }} style={styles.dp} />
+
+      {/* Text on the right */}
       <View style={styles.info}>
         <Text style={styles.header}>{username}</Text>
         <Text style={styles.subheader}>@{handle}</Text>
@@ -173,42 +172,36 @@ const User = () => {
   );
 }; 
 
-
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row', // Horizontal layout
+    alignItems: 'flex-start', // Align items at the start (top) of the container
     backgroundColor: '#FAF4E6',
-    flexDirection:"row",
-    alignItems:"flex-start",
-
   },
   header: {
     fontSize: 40,
-    fontFamily: "Poppins-Header",
-    textAlign: 'right',
-    color: "#004F18",
+    fontFamily: 'Poppins-Header',
+    color: '#004F18',
   },
   subheader: {
     fontSize: 25,
-    fontFamily: "Poppins",
-    textAlign: 'right',
-    color:"#4B2209",
+    fontFamily: 'Poppins',
+    color: '#4B2209',
   },
-  dp:{
-    borderRadius:60,
-    backgroundColor: "white",
+  dp: {
+    borderRadius: 60,
+    backgroundColor: 'white',
     width: 120,
     height: 120,
-
+    marginRight: 10, // Add some margin to separate the image from the text
   },
-  info:{
-    marginRight:10,
+  info: {
+    flex: 1, // Take remaining space in the row
   },
-  follow:{
-    fontFamily: "Poppins",
-    textAlign: "right",
-    color:"#4B2209",
+  follow: {
+    fontFamily: 'Poppins',
+    color: '#4B2209',
   },
-  
 });
 
-export default User
+export default User;

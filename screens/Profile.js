@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   },
   User: {
     top: 15,
+    width: "100%",
   },
   signout: {
     top: 25,

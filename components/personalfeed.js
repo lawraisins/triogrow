@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateLikedPostsStorage } from './likePost';
 import ModalComments from './modalcomments';
 
-const CommunityFeed = ( {refreshing, onRefresh }) => {
+const PersonalFeed = ( {refreshing, onRefresh }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
     const [isLiked, setLiked] = useState(false);
     const { control, handleSubmit, formState: { errors }, watch } = useForm();
@@ -148,11 +148,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
           {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
-          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 100, height: 100 }} />
-          {/* {item.imagePath && (
-            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
-          )
-          } */}
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
@@ -177,7 +173,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
   };
     
   return (
-    <ScrollView>
+    <>
       <FlatList
         data={posts}
         renderItem={renderItem}
@@ -188,6 +184,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           await fetchPosts();
           onRefresh();
         }}
+        style={styles.feed}
       />
       {selectedPost && (
         <ModalComments
@@ -197,24 +194,15 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           
         />
       )}
-    </ScrollView>
+    </>
   );
     };
     const styles = StyleSheet.create({
         postContainer: {
-          padding: 30,
-          backgroundColor: '#FAF4E6',
+          padding: 10,
+          backgroundColor: 'white',
           borderRadius: 5,
-          shadowOpacity: 1,
-          shadowRadius: 0,
-          shadowColor: "black",
-          shadowOffset: {
-              width: 4,
-              height: 4,
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 2,
-          marginRight:10,
+          margin:10,
 
         },
         text:{
@@ -231,6 +219,10 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         reactions:{
           margin: 5,
           flexDirection: 'row'
+        },
+        feed: {
+          paddingBottom: 50,
+          height: "60%",
         }
       }
       );
@@ -243,4 +235,4 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
 
 
-export default CommunityFeed
+export default PersonalFeed

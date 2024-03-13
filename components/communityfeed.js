@@ -144,7 +144,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
           {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
-          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 100, height: 100 }} />
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
           {/* {item.imagePath && (
             <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
           )
