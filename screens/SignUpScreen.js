@@ -71,7 +71,7 @@ const SignUpScreen = () => {
     };
 
     const onSignUpPressed = () => {
-        navigation.navigate("SignUp")
+        navigation.navigate("SignIn")
     }
 
 

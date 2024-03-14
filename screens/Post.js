@@ -8,10 +8,12 @@ import axios from 'axios';
 import backendURL from '../components/backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import camera from '../assets/images/camera.png'
+import gallery from '../assets/images/image-gallery.png'
 // import * as FileSystem from 'expo-file-system';
 
 const Post = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, setValue, formState: { errors } } = useForm();
 
     const _getToken = async () => {
         try {
@@ -63,6 +65,8 @@ const Post = () => {
 
             // Handle the response, e.g. show a success message or navigate to a new screen
             // console.log('Post successful: ', response.data);
+            setValue("contents", "")
+            setImage(null)
             Alert.alert("Post Successful!")
         
         } catch (error) {
@@ -127,7 +131,7 @@ const Post = () => {
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
         quality: 1,
       });
   
@@ -142,7 +146,7 @@ const Post = () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
         quality: 1,
       });
   
@@ -156,15 +160,31 @@ const Post = () => {
         <ScrollView style={styles.container}>
             <Text style = {styles.header}>Post</Text>
             <View style={styles.tasklist}>
-            <CustomButton name="imagePath" text="Use Camera" type="PRIMARY" onPress={handleSubmit(pickCamera)} control={control}></CustomButton>
-            <CustomButton name="imagePath" text="Choose Image" type="PRIMARY" onPress={handleSubmit(pickImage)} control={control}></CustomButton>
-            <CustomInput
+            <View style={styles.picker}>
+            <TouchableOpacity onPress={pickCamera}>
+            <Image source={camera} style={styles.image}></Image>
+            <Text style={styles.subheader}>Use Camera</Text>
+            </TouchableOpacity>
+            </View>
+            <View style={styles.picker}>
+            <TouchableOpacity onPress={pickImage}>
+            <Image source={gallery} style={styles.image}></Image>
+            <Text style={styles.subheader}>Choose From Gallery</Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{marginTop: 100, width:"90%", alignSelf:"center"}}>
+          {image && (
+            <Image
+              source={{ uri: image.uri }}
+              style={{ height: 200, width:200, alignSelf:"center"}}
+            />
+          )}
+          <CustomInput
             name="contents"
             placeholder="Insert caption here!"
             control={control}
             style={styles.input}/>
-          </View>
-          <View style={{marginTop: 100}}>
           <CustomButton text="Post" onPress={handleSubmit(onPostPressed)} type="PRIMARY" style={styles.button}></CustomButton>
           </View>
 
@@ -180,27 +200,38 @@ const Post = () => {
     const styles = StyleSheet.create({
         container: {
           flex: 1 ,
-          backgroundColor: '#BEE4FF',
+          backgroundColor: '#FAF4E6',
           padding: 20,
         },
         header: {
           fontSize: 42,
           fontFamily: "Poppins-Header",
-          top: 55,
+          top: 15,
+          color:"#004F18",
         },
         subheader: {
           fontSize: 25,
           fontFamily: "Poppins",
+          textAlign:"center",
+          color: "#4B2209"
+
         },
         tasklist: {
           top: 83,
+          justifyContent:"center",
+          flexDirection:"row",
+          
+        },
+        picker:{
+          alignItems: 'center',
+          padding: 20,
         },
         button:{
           width: '100%',
           height: 50,
           marginTop: 100,
           justifyContent: 'center',
-          alignItems: 'center',
+          
         },
         input: {
           width: '100%',
@@ -211,6 +242,12 @@ const Post = () => {
           borderWidth: 1,
           borderRadius: 5,
         }, 
+        image: {
+          width: 100,
+          height: 100,
+          alignSelf: "center",
+          tintColor: "#F25987",
+        }
         
 
         

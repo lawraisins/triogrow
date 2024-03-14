@@ -179,7 +179,7 @@ export default function EditProfile() {
   const styles = StyleSheet.create({
     container: {
       flex: 1 ,
-      backgroundColor: '#BEE4FF',
+      backgroundColor: '#FAF4E6',
       padding: 20,
     },
     buttons: {
@@ -208,10 +208,13 @@ export default function EditProfile() {
         fontSize: 42,
         fontFamily: "Poppins-Header",
         top: 15,
+        color:"#004F18",
       },
       subheader: {
         fontSize: 18,
         fontFamily: "Poppins",
+        color:"#4B2209",
+        
       },
     profile:{
     }

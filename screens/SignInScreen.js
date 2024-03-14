@@ -9,13 +9,16 @@ import { useFonts } from 'expo-font';
 import axios from 'axios';
 import backendURL from '../components/backendURL';
 import { jwtDecode } from 'jwt-decode';
+import show from '../assets/images/view.png'
+import hide from '../assets/images/hide.png'
 
 
 
 const SignInScreen = () => {    
-    const {control, handleSubmit, formState: {errors},} = useForm();
+    const {control, handleSubmit, setValue, formState: {errors},} = useForm();
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+    const [isPasswordSecure, setPasswordSecure] = useState(true); // State to track secure text entry
 
     const onSignInPressed = async (data) => {
         rpassword = data.password
@@ -45,10 +48,13 @@ const SignInScreen = () => {
             // const decodedToken = jwtDecode(response.data.accessToken);
 
             // Handle the response, e.g. show a success message or navigate to a new screen
-            console.log('Registration successful: ', response.data);
+            console.log('Login successful: ', response.data);
             // Go to Landing
             console.log(userData.username)
             navigation.navigate('Landing', {username: response.data.user.fullName, id:response.data.user.id, handle:userData.username, token: response.data.accessToken })
+            // Clear input fields after successful login
+            setValue("username", "");
+            setValue("password", "");
         
         } catch (error) {
             // Handle any errors that occur during the registration process
@@ -91,28 +97,40 @@ const SignInScreen = () => {
           return undefined
       }
 
+      const togglePasswordVisibility = () => {
+        setPasswordSecure(!isPasswordSecure); // Toggle the state
+    }
+
+    const visiblesource = isPasswordSecure ? show : hide;
+
 
     return (
         <View style={styles.root}>
             <Image source = {Logo} style = {[styles.logo, {height: height * 0.3}]} resizeMode = "contain" />
-            {/* <Text style = {styles.header}>Triogrow</Text> */}
+            <View style={styles.username}>
             <CustomInput
                 name="username"
                 placeholder="Username"
                 control={control}
                 rules={{required: "Username is required."}}
             />
-
+            </View>
+        <View style={styles.password}>
             <CustomInput
                 name="password"
                 placeholder="Password"
                 control={control}
-                secureTextEntry
-                rules={{required: "Password is required. "}}
+                secureTextEntry={isPasswordSecure} // Set secureTextEntry based on state
+                rules={{ required: "Password is required. " }}
             />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Image source={visiblesource} style={styles.visible}></Image>
+            </TouchableOpacity>
+            </View>
 
-
+            <View style={styles.button}>
             <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} type="PRIMARY"/>
+            </View>
             {/* <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="PRIMARY"/> */}
             <TouchableOpacity onPress={onSignUpPressed}>
                 <Text style={styles.text}>Create a New Account</Text>
@@ -143,6 +161,30 @@ const styles = StyleSheet.create({
         fontFamily: "Poppins",
         color: "#4B2209"
     },
+    visible: {
+        width: 40,
+        height: 40,
+        tintColor: "#F25987",
+        margin: 5,
+    },
+    username: {
+        flexDirection: 'row',
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+    password: {
+        flexDirection: 'row',
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+      button: {
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+
 
 })
 
