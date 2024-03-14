@@ -12,6 +12,7 @@ import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateLikedPostsStorage } from './likePost';
 import ModalComments from './modalcomments';
+import moment from 'moment';
 
 const CommunityFeed = ( {refreshing, onRefresh }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
@@ -35,6 +36,14 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       };
 
     const [posts, setPosts] = useState([]);
+
+    const communities = [
+      "North",
+      "South",
+      "East",
+      "West",
+      "Central"
+    ];
     
 
       useEffect(() => {
@@ -54,8 +63,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           const data = await response.json();
           if (response.ok) {
             // Update the state with the retrieved posts
-            setPosts(data.content)
-            
+            setPosts(data.content)            
           } else {
             console.error('Failed to retrieve posts:', data.error);
           }
@@ -137,12 +145,17 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
   const renderItem = ({ item }) => {
     const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
     const imagesource = isLiked ? like : heart;
-    // console.log("http://124.155.214.143:3000"+item.imagePath)
+    const timeDifference = moment().diff(moment(item.uploadDateTime), 'seconds');
+    const timeAgo =
+    timeDifference <= 1
+      ? 'just now'
+      : moment(item.uploadDateTime).fromNow();
   
     return (
       <TouchableOpacity>
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
+          <Text style={styles.text}>{timeAgo}</Text>
           {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
           <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
           {/* {item.imagePath && (
@@ -171,6 +184,33 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       </TouchableOpacity>
     );
   };
+
+  const renderCommunity = ({ item }) => {
+    // Filter posts based on the current community
+    console.log(item)
+    const postsInCommunity = posts.filter(post => post.location === item);
+  
+    // Find the most recent post in the community
+    const mostRecentPost = postsInCommunity.reduce((prev, current) =>
+    !prev || moment(prev.uploadDateTime).isBefore(moment(current.uploadDateTime)) ? current : prev
+  , null);
+  
+    // Render the most recent post in the community
+    return (
+      <TouchableOpacity>
+        <View style={styles.postContainer}>
+          {mostRecentPost && (
+            <>
+              <Image source={{ uri: `data:image/jpeg;base64,${mostRecentPost.imageStream}` }} style={{ width: 200, height: 200 }} />
+              <Text style={styles.communitytext}>{item}</Text>
+            </>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  
+    
     
   return (
     <>
@@ -194,6 +234,18 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           
         />
       )}
+      <FlatList
+        data={communities}
+        renderItem={renderCommunity}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal
+        refreshing={refreshing}
+        onRefresh={async () => {
+          // Fetch posts again when refreshing
+          await fetchPosts();
+          onRefresh();
+        }}
+      />
     </>
   );
     };
@@ -217,6 +269,11 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         text:{
             fontFamily: "Poppins",
             color: "#F25987"
+        },
+        communitytext:{
+          fontFamily: "Poppins-Header",
+          color: "#F25987",
+          alignSelf:"center",
         },
         icon:{
           height: 20,

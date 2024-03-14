@@ -118,8 +118,8 @@ const Planter = () =>  {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>triogro 1</Text>
         <View style={styles.pump}>
+        <Text style={styles.text}>triogro 1</Text>
         <Image source={require("../assets/images/potato.png")} style={styles.image}></Image>
         <View style={styles.button}>
         <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
@@ -135,9 +135,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1 ,
     backgroundColor: '#FAF4E6',
-    // borderColor: "black",
-    // borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 15,
     padding: 5,
     shadowColor: "black",
     shadowOffset: {
@@ -146,10 +144,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    width:"80%",
+    paddingVertical: 15,
 
-  },
-  tasksWrapper: {
-    paddingHorizontal: 20
   },
   text: {
     fontSize: 16,
@@ -160,26 +157,16 @@ const styles = StyleSheet.create({
     width:50,
     height:50,
     tintColor: "#4B2209",
-    // borderColor:"black",
-    // borderWidth: 2,
-    borderRadius:15,
-    shadowColor: "black",
-    shadowOffset: {
-        width: 4,
-        height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
     
 
   },
   pump:{
-    flexDirection:'row',
-    alignItems:'flex-start'
+    justifyContent:"center",
+    alignItems:"flex-start",
   },
   button:{
     flex: 1,
-    flexDirection:'row-reverse',
+    width: "30%"
   }
 });
 export default Planter;

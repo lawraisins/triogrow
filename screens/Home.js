@@ -83,10 +83,14 @@ export default function Home() {
         {/* <CustomButton text="View Outstanding Tasks" onPress={handleSubmit(viewTaskList)} type="PRIMARY" /> */}
       </View>
       <View style={styles.trackers}>
+        <View style={styles.addPlanter}>
         <Text style={styles.subheader}>my triogros</Text>
+        <CustomButton text="+ Add Planter" type="TERTIARY" onPress={handleSubmit(addPlanter)}></CustomButton>
+        </View>
         {/* Include your Planter component here */}
+      <View style={styles.planter}>
         <Planter></Planter>
-        <CustomButton text="+ Add Planter" type="PRIMARY" onPress={handleSubmit(addPlanter)}></CustomButton>
+      </View>
       </View>
       <View style={styles.communities}>
         <Text style={styles.subheader}>community</Text>
@@ -132,5 +136,13 @@ const styles = StyleSheet.create({
     paddingBottom: 300,
     height: "80%"
   },
+  addPlanter: {
+    flexDirection:"row",
+    justifyContent: 'space-between',
+  },
+  planter:{
+    alignItems:"center",
+    padding: 10,
+  }
   
 });

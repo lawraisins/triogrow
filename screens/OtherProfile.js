@@ -146,7 +146,7 @@ export default function OtherProfile({route}) {
   };
 
   return (
-    <ScrollView style={styles.container}
+    <View style={styles.container}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     } >
@@ -161,7 +161,7 @@ export default function OtherProfile({route}) {
     <OtherFeed refreshing={refreshing} onRefresh={onRefresh} userId={id}></OtherFeed>
     </View>
 
-  </ScrollView>
+  </View>
   );
 }
 
@@ -171,41 +171,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAF4E6",
     padding: 20,
   },
-  User: {
-    top: 15,
-  },
 
-  edit:{
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  button:{
+  button: {
     width: "100%",
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     marginVertical: 10,
     alignItems: "center",
     borderRadius: 5,
-    // borderColor: "black",
-    // borderWidth: 2,
     backgroundColor: "#F25987",
     shadowColor: "black",
     shadowOffset: {
-        width: 4,
-        height: 4,
+      width: 2,
+      height: 2,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
-    flex: 1,
-    justifyContent:'space-between',
-    
   },
+  
   buttonText:{
         color: "#FAF4E6",
         fontFamily: "Poppins",
 
-  },
-  Other:{
-    top: 15,
-  },
+  }
   
 });

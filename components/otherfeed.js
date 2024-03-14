@@ -11,6 +11,7 @@ import comment from '../assets/images/bubble-chat.png'
 import backendURL from './backendURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateLikedPostsStorage } from './likePost';
+import moment from 'moment';
 import ModalComments from './modalcomments';
 
 const OtherFeed = ( {refreshing, onRefresh, userId }) => {
@@ -148,13 +149,23 @@ const OtherFeed = ( {refreshing, onRefresh, userId }) => {
     const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
     const imagesource = isLiked ? like : heart;
     // console.log("http://124.155.214.143:3000"+item.imagePath)
+    const timeDifference = moment().diff(moment(item.uploadDateTime), 'seconds');
+    const timeAgo =
+    timeDifference <= 1
+      ? 'just now'
+      : moment(item.uploadDateTime).fromNow();
   
     return (
       <TouchableOpacity>
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
+          <Text style={styles.text}>{timeAgo}</Text>
           {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
           <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
+          {/* {item.imagePath && (
+            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
+          )
+          } */}
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
