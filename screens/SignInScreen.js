@@ -101,7 +101,7 @@ const SignInScreen = () => {
         setPasswordSecure(!isPasswordSecure); // Toggle the state
     }
 
-    const visiblesource = isPasswordSecure ? show : hide;
+    const visiblesource = isPasswordSecure ? hide : show;
 
 
     return (

@@ -268,7 +268,7 @@ const renderItem = ({ item }) => {
             <Text style={styles.subheader}>Notes</Text>
             <CustomInput name="Details" control={control}></CustomInput>
             <Text style={styles.subheader}>Complete By</Text>
-            <DateTimePicker display="calendar" value={date} is24Hour={true} onChange={onChange} />
+            {/* <DateTimePicker display="calendar" value={date} is24Hour={true} onChange={onChange} /> */}
         <CustomButton text="Confirm" type="TERTIARY"
         onPress={handleSubmit(onAddTaskPressed)}>
       </CustomButton>

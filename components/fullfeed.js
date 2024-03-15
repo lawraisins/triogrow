@@ -11,7 +11,7 @@ import ModalComments from './modalcomments';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
-const CommunityFeed = ( {refreshing, onRefresh }) => {
+const FullFeed = ( {refreshing, onRefresh, community }) => {
     const [rectangleVisible, setRectangleVisible] = useState(false);
     const [isLiked, setLiked] = useState(false);
     const { control, handleSubmit, formState: { errors }, watch } = useForm();
@@ -20,7 +20,8 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     const [likedPostsStorage, setLikedPostsStorage] = useState([]);
     const [showCommentModal, setShowCommentModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
-    const navigation = useNavigation();
+    const [postsInCommunity, setPostsInCommunity] = useState("")
+
     
 
 
@@ -35,15 +36,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
     const [posts, setPosts] = useState([]);
 
-    const communities = [
-      "North",
-      "South",
-      "East",
-      "West",
-      "Central"
-    ];
     
-
       useEffect(() => {
         // Fetch posts when the component mounts
         fetchPosts();
@@ -51,7 +44,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     
       const fetchPosts = async () => {
         try {
-          // Replace 'your-backend-url' with the actual URL of your backend server
           const token = await _getToken();
           const response = await fetch(`${backendURL}/posts/getPosts`,{
             headers: {
@@ -61,7 +53,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           const data = await response.json();
           if (response.ok) {
             // Update the state with the retrieved posts
-            setPosts(data.content)            
+            setPosts(data.content);
           } else {
             console.error('Failed to retrieve posts:', data.error);
           }
@@ -69,6 +61,15 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           console.error('Error fetching posts:', error.message);
         }
       };
+      
+
+      useEffect(() => {
+        // Filter the posts based on the community when the 'posts' state changes
+        const postsInCommunity = posts.filter(post => post.location === community);   
+        setPostsInCommunity(postsInCommunity);
+      }, [posts, community]);
+      
+      
 
       useEffect(() => {
         if (refreshing) {
@@ -139,12 +140,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     setShowCommentModal(true)
   }
 
-  const navigateToViewCommunityPost = (community) => {
-    navigation.navigate('ViewPosts', { community: community });
-  };
-
-
-
   
     
   const renderItem = ({ item }) => {
@@ -161,12 +156,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
           <Text style={styles.text}>{timeAgo}</Text>
-          {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
           <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
-          {/* {item.imagePath && (
-            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
-          )
-          } */}
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
@@ -189,61 +179,13 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       </TouchableOpacity>
     );
   };
-
-  const renderCommunity = ({ item }) => {
-    // Filter posts based on the current community
-    console.log(item)
-    const postsInCommunity = posts.filter(post => post.location === item);
-  
-    // Find the most recent post in the community
-    const mostRecentPost = postsInCommunity.reduce((prev, current) =>
-    !prev || moment(prev.uploadDateTime).isBefore(moment(current.uploadDateTime)) ? current : prev
-  , null);
-  
-    // Render the most recent post in the community
-    return (
-      <TouchableOpacity onPress={()=> navigateToViewCommunityPost(item)}>
-        <View style={styles.postContainer}>
-          {mostRecentPost && (
-            <>
-              <Image source={{ uri: `data:image/jpeg;base64,${mostRecentPost.imageStream}` }} style={{ width: 200, height: 200 }} />
-              <Text style={styles.communitytext}>{item}</Text>
-            </>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
-  };
-  
-    
     
   return (
     <>
-      {/* <FlatList
-        data={posts}
+      <FlatList
+        data={postsInCommunity}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        horizontal
-        refreshing={refreshing}
-        onRefresh={async () => {
-          // Fetch posts again when refreshing
-          await fetchPosts();
-          onRefresh();
-        }}
-      /> */}
-      {/* {selectedPost && (
-        <ModalComments
-          postId={selectedPost.postId}
-          onClose={() => {setSelectedPost(null);
-            setShowCommentModal(false);}}
-          
-        />
-      )} */}
-      <FlatList
-        data={communities}
-        renderItem={renderCommunity}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal
         refreshing={refreshing}
         onRefresh={async () => {
           // Fetch posts again when refreshing
@@ -251,6 +193,14 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           onRefresh();
         }}
       />
+      {selectedPost && (
+        <ModalComments
+          postId={selectedPost.postId}
+          onClose={() => {setSelectedPost(null);
+            setShowCommentModal(false);}}
+          
+        />
+      )}
     </>
   );
     };
@@ -302,4 +252,4 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
 
 
-export default CommunityFeed
+export default FullFeed
