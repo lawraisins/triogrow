@@ -22,6 +22,7 @@ buildscript {
         // implementation project(':react-native-bluetooth-serial')
         // compile project(':react-native-bluetooth-serial-next')
     }
+    
 }
 
 allprojects {

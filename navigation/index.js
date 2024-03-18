@@ -15,6 +15,12 @@ import EditProfile from "../screens/EditProfile";
 import OtherProfile from "../screens/OtherProfile";
 import AddPlanterS from "../screens/AddPlanterSerial";
 import ViewPosts from "../screens/ViewCommunityPost";
+import FAQ from "../screens/FAQ";
+import Content1 from "../screens/content1";
+import Content2 from "../screens/content2";
+import Content3 from "../screens/content3";
+import Content4 from "../screens/content4";
+import Content5 from "../screens/content5";
 
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +42,12 @@ const Navigation = () => {
                 <Stack.Screen name="OtherProfile" component={OtherProfile}/>
                 <Stack.Screen name="AddPlanterS" component={AddPlanterS}/>
                 <Stack.Screen name="ViewPosts" component={ViewPosts}/>
+                <Stack.Screen name="FAQ" component={FAQ}/>
+                <Stack.Screen name="content1" component={Content1}/>
+                <Stack.Screen name="content2" component={Content2}/>
+                <Stack.Screen name="content3" component={Content3}/>
+                <Stack.Screen name="content4" component={Content4}/>
+                <Stack.Screen name="content5" component={Content5}/>
             </Stack.Navigator>
         </NavigationContainer>
 

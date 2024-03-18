@@ -2,7 +2,6 @@ import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import Home from "../screens/Home"
-import Learn from "../screens/Learn"
 import FAQ from "../screens/FAQ"
 import Profile from "../screens/Profile"
 import Post from "../screens/Post"
@@ -110,7 +109,7 @@ const Tabs = () => {
                                     <CustomTabBarButton {...props} />
                                 )
                             }}></Tab.Screen>
-            <Tab.Screen name="Learn" component={Learn} 
+            <Tab.Screen name="Learn" component={FAQ} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
                                     <View style={{alignItems: "center", justifyContent: "center", top: 10}}>

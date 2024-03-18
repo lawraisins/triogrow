@@ -12,12 +12,12 @@ export default function Landing( {route}) {
   const { username, id, token, handle } = route.params;
   // console.log(username, id, token);
   
-  // console.log(id);
   const _storeUserData = async () => {
     try {
       await AsyncStorage.setItem('Name', JSON.stringify(username));
       await AsyncStorage.setItem('token', JSON.stringify(token));
       await AsyncStorage.setItem('Handle', JSON.stringify(handle));
+      await AsyncStorage.setItem('userId', JSON.stringify(id));
     } catch (error) {
       console.error('Error saving username to AsyncStorage:', error);
     }
@@ -26,7 +26,7 @@ export default function Landing( {route}) {
 
   useEffect(() => {
     _storeUserData();
-  }, [username, token, handle]); // Add username to dependency array to ensure _storeName is called whenever username changes
+  }, [username, token, handle, id]); // Add username to dependency array to ensure _storeName is called whenever username changes
   
   
 

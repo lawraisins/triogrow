@@ -52,7 +52,7 @@ const ViewPosts = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Posts in {community}</Text>
+      <Text style={styles.header}>Posts in the  {community}</Text>
       <FullFeed refreshing={refreshing} onRefresh={onRefresh} community={community} />
     </View>
   );
@@ -63,6 +63,12 @@ const styles = StyleSheet.create({
     flex: 1 ,
     backgroundColor: '#FAF4E6',
     padding: 20,
+  },
+  header: {
+    fontSize: 42,
+    fontFamily: "Poppins-Header",
+    color:"#004F18",
+    top: 15,
   },
   User: {
     top: 15,

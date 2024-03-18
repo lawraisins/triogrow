@@ -20,6 +20,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     const [likedPostsStorage, setLikedPostsStorage] = useState([]);
     const [showCommentModal, setShowCommentModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [following, setFollowing] = useState(null);
     const navigation = useNavigation();
     
 
@@ -48,6 +49,36 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         // Fetch posts when the component mounts
         fetchPosts();
       }, []);
+
+      useEffect(() => {
+        // Fetch posts when the component mounts
+        fetchFollowing();
+      }, []);
+
+      const fetchFollowing = async () => {
+        try {
+          // Replace 'your-backend-url' with the actual URL of your backend server
+          const token = await _getToken();
+          const response = await fetch(`${backendURL}/users/following`, {
+            headers: {
+              Authorization: `${token}`, // Access the token from the headers
+            }
+          });
+          const data = await response.json();
+          if (response.ok) {
+            // Update the state with the retrieved posts         
+            const followingIds = data.results.map(result => result.followingId);
+            setFollowing(followingIds);
+            console.log("Following:", following);
+          } else {
+            console.error('Failed to retrieve following list:', data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching following list:', error.message);
+        }
+      };
+      
+
     
       const fetchPosts = async () => {
         try {
@@ -143,6 +174,8 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     navigation.navigate('ViewPosts', { community: community });
   };
 
+  const anyPostFromFollowing = posts.some(post => following.includes(post.userId));
+
 
 
   
@@ -155,6 +188,14 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     timeDifference <= 1
       ? 'just now'
       : moment(item.uploadDateTime).fromNow();
+    
+    // Check if the user is following the author of the post
+    const isFollowingAuthor = following && following.includes(item.userId);
+
+    // Render the post only if the user is following the author
+    if (!isFollowingAuthor) {
+      return null;
+    }
   
     return (
       <TouchableOpacity>
@@ -192,7 +233,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
   const renderCommunity = ({ item }) => {
     // Filter posts based on the current community
-    console.log(item)
     const postsInCommunity = posts.filter(post => post.location === item);
   
     // Find the most recent post in the community
@@ -219,7 +259,10 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     
   return (
     <>
-      {/* <FlatList
+      {(posts.length === 0 || !anyPostFromFollowing) && (
+        <Text style={styles.emptyFeedText}>No updates from those you follow</Text>
+      )}
+      <FlatList
         data={posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
@@ -230,15 +273,15 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           await fetchPosts();
           onRefresh();
         }}
-      /> */}
-      {/* {selectedPost && (
+      />
+      {selectedPost && (
         <ModalComments
           postId={selectedPost.postId}
           onClose={() => {setSelectedPost(null);
             setShowCommentModal(false);}}
           
         />
-      )} */}
+      )}
       <FlatList
         data={communities}
         renderItem={renderCommunity}
@@ -275,6 +318,13 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
             fontFamily: "Poppins",
             color: "#F25987"
         },
+        emptyFeedText:{
+          fontFamily: "Poppins",
+          color: "#4B2209",
+          alignSelf:"center",
+          fontSize: 18,
+          marginTop: 10,
+      },
         communitytext:{
           fontFamily: "Poppins-Header",
           color: "#F25987",

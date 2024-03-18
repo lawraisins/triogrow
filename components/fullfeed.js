@@ -205,22 +205,13 @@ const FullFeed = ( {refreshing, onRefresh, community }) => {
   );
     };
     const styles = StyleSheet.create({
-        postContainer: {
-          padding: 30,
-          backgroundColor: '#FAF4E6',
-          borderRadius: 5,
-          shadowOpacity: 1,
-          shadowRadius: 0,
-          shadowColor: "black",
-          shadowOffset: {
-              width: 4,
-              height: 4,
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 2,
-          marginRight:10,
+      postContainer: {
+        padding: 10,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        margin:10,
 
-        },
+      },
         text:{
             fontFamily: "Poppins",
             color: "#F25987"

@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {KeyboardAvoidingView, TextInput, Alert } from 'react-native';
+import {KeyboardAvoidingView, TextInput, Alert, FlatList } from 'react-native';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from './CustomButton';
@@ -7,10 +7,13 @@ import {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
 import backendURL from './backendURL';
 import io from 'socket.io-client'
+import LinearGauge from './linearGauge';
 
 
 const Planter = () =>  {
   const [socketId, setSocketId] = useState("");
+  const [planters, setPlanters] = useState([]);
+
   const _getToken = async () => {
     try {
       const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
@@ -20,14 +23,20 @@ const Planter = () =>  {
     }
   };
     const {control, handleSubmit, formState: {errors},} = useForm();
-    // const navigation = useNavigation();
     const [pump, setPump] = useState(0);
+
+  
+  const capitalizeFirstLetter = (str) => {
+    return str.replace(/^\w/, (c) => c.toUpperCase());
+  };
+
+
     // Get the socketId from the DB
     const getSocketId = async () => {
       try {
         // Replace 'your-backend-url' with the actual URL of your backend server
         const token = await _getToken();
-        const response = await fetch(`${backendURL}/getSocketId`, {
+        const response = await fetch(`${backendURL}/planter/getSocketId`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -36,10 +45,8 @@ const Planter = () =>  {
           body: JSON.stringify({"RPI_ID":"Testing"}), // Pass userId as an object with a single property
         });
         const data = await response.json();
-        console.log(data)
         if (response.ok) {
           // Update the state with the retrieved posts
-          console.log(data.socketId)
           setSocketId(data.socketId)
           console.log(socketId)
           
@@ -50,17 +57,12 @@ const Planter = () =>  {
         console.error('Error fetching posts:', error.message);
       }
     };
-
-    useEffect(() => {
-      // Fetch posts when the component mounts
-      getSocketId();
-      const socket = io('http://124.155.214.143:5000');
-      // Listen for 'connect' event
-      socket.on('connect', () => {
-        console.log('Connected to socket server');
-      });
-      socket.emit('pump_command', socketId);
-    }, []);
+    
+    const socket = io('http://124.155.214.143:5000');
+    // Listen for 'connect' event
+    socket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
 
     //Need to pass the socketId to the backend so that it can send the pump value to the RPi
     const onPumpPressed = async () => {
@@ -71,28 +73,12 @@ const Planter = () =>  {
             setPump(0)
             Alert.alert("Pump has been turned on!")
         }
-        console.log("Current pump value", pump)
+        // console.log("Current pump value", pump)
 
         try {
             // Data to send in the POST request
-            // const pumpData = 
-            //     {"newPumpNumber": pump}
-            // ;
-            
-
-            // for debugging
-            // console.log('Sending a POST request to change pump value...');
-            // console.log('Request URL: ', `${backendURL}/updatePump`);
-            // console.log('Data to be sent: ', pumpData);
-
-            // Make a POST request to register the user
-            // ERROR  Registration error:  [AxiosError: Network Error]
-            // probably happening on this line
-            // const response = await axios.post(`${backendURL}/updatePump`, pumpData);
-            // const response = await axios.post(`124.155.214.143/socketId`, pumpData)
-
-            // Handle the response, e.g. show a success message or navigate to a new screen
-            // console.log('Pump Value Updated: ', response.data);
+            getSocketId()
+            socket.emit('pump_command', socketId);
         
         } catch (error) {
             // Handle any errors that occur during the registration process
@@ -110,22 +96,71 @@ const Planter = () =>  {
         }
     }
 
-    
+
+    const fetchPlanters = async () => {
+      try {
+        // Replace 'your-backend-url' with the actual URL of your backend server
+        const token = await _getToken();
+        const response = await fetch(`${backendURL}/planter/getPlanterData`,{
+          headers: {
+            Authorization: `${token}`, // Access the token from the headers
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          // Update the state with the retrieved posts
+          setPlanters(data.content)            
+        } else {
+          console.error('Failed to retrieve planters:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching planters:', error.message);
+      }
+    };
 
 
+    useEffect(() => {
+      // Fetch posts when the component mounts
+      fetchPlanters();
+    }, []);
 
 
-
-  return (
-    <View style={styles.container}>
+    const renderItem = ({ item }) => {
+      return (
+        <View style={styles.container}>
         <View style={styles.pump}>
         <Text style={styles.text}>triogro 1</Text>
-        <Image source={require("../assets/images/potato.png")} style={styles.image}></Image>
-        <View style={styles.button}>
+        <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
         <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
-        </View>       
         </View>
-    </View>
+        <View style={styles.sensors}>
+        <LinearGauge label="Nitrogen" value={item.nitrogen} maxValue={100} />
+        <LinearGauge label="Phosphorus" value={item.phosphorus} maxValue={100} />
+        <LinearGauge label="Potassium" value={item.potassium} maxValue={100} />
+        <Text style={styles.text}>Water Level</Text>
+        <Text style={{ color: item.waterLevel === "high" ? "green" : item.waterLevel === "low" ? "red" : "black" }}>
+          {capitalizeFirstLetter(item.waterLevel)}
+        </Text>
+
+        </View>     
+        </View>
+      );
+    };
+  
+
+  return (
+    <FlatList
+    data={planters}
+    renderItem={renderItem}
+    keyExtractor={(item, index) => index.toString()}
+    horizontal
+    // onRefresh={async () => {
+    //   // Fetch posts again when refreshing
+    //   await fetchPosts();
+    //   onRefresh();
+    // }}
+  />
+
   );
     }
 
@@ -133,19 +168,11 @@ const Planter = () =>  {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 ,
     backgroundColor: '#FAF4E6',
     borderRadius: 15,
-    padding: 5,
-    shadowColor: "black",
-    shadowOffset: {
-        width: 4,
-        height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    width:"80%",
-    paddingVertical: 15,
+    padding: 10,
+    width:"100%",
+    flexDirection:"row",
 
   },
   text: {
@@ -160,9 +187,10 @@ const styles = StyleSheet.create({
     
 
   },
-  pump:{
-    justifyContent:"center",
-    alignItems:"flex-start",
+  pump: {
+    marginRight: 10, // Add margin to separate pump and sensor views
+  },
+  sensors: {
   },
   button:{
     flex: 1,

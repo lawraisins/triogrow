@@ -31,7 +31,7 @@ export default function Learn() {
   const viewTutorial = () =>  navigation.navigate("Tutorial")
   const viewTutorial2 = () =>  navigation.navigate("Tutorial2")
   return (
-<View style={styles.container}>
+<ScrollView style={styles.container}>
         <Text style={styles.header}>Let's Learn!</Text>
         <View style={styles.videos}>
         <Text style={styles.subheader}>Video Tutorials</Text>
@@ -39,7 +39,7 @@ export default function Learn() {
         <CustomButton text="Tutorial 2: Soil Building" onPress={handleSubmit(viewTutorial2)} type="PRIMARY"></CustomButton>
         </View>
        
-    </View>
+    </ScrollView>
 
   );
 }
@@ -47,22 +47,20 @@ export default function Learn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: '#FAF4E6',
+    backgroundColor: '#BEE4FF',
     padding: 20,
   },
   header: {
     fontSize: 42,
     fontFamily: "Poppins-Header",
-    top: 15,
-    color: "#004F18",
+    top: 55,
   },
   subheader: {
     fontSize: 25,
     fontFamily: "Poppins",
-    color:"#4B2209",
   },
   videos: {
-    top: 25,
+    top: 83,
   },
   
 });

@@ -10,12 +10,23 @@ export default function SearchUsers() {
   const [searchTerm, setSearchTerm] = useState('');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [id, setId] = useState(null)
   const navigation = useNavigation();
 
   const _getToken = async () => {
     try {
       const storedToken = JSON.parse(await AsyncStorage.getItem('token'));
       return storedToken;
+    } catch (error) {
+      console.error('Error fetching token from AsyncStorage:', error);
+    }
+  };
+  const _getUserId = async () => {
+    try {
+      const userId = JSON.parse(await AsyncStorage.getItem('userId'));
+      console.log(userId)
+      setId(userId)
+      console.log("User ID",id)
     } catch (error) {
       console.error('Error fetching token from AsyncStorage:', error);
     }
@@ -48,19 +59,32 @@ export default function SearchUsers() {
     }
   }, [searchTerm]);
 
+  useEffect(() => {
+    _getUserId();
+  }, []);
+
   const handleSearch = (text) => {
     setSearchTerm(text);
   };
 
-  const renderUser = ({ item }) => (
-    <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('OtherProfile', { userId: item.userId })}>
-      <View>
-      <Text style={styles.username}>{JSON.stringify(item.Username).replace(/['"]+/g, '')}</Text>
-      <Text style={styles.name}>{JSON.stringify(item.Name).replace(/['"]+/g, '')}</Text>
-      {/* <Text style={styles.name}>{item.userProfile[0].name}</Text> */}
-      </View>
-    </TouchableOpacity>
-  );
+  const renderUser = ({ item }) => {
+    const navigateToProfile = () => {
+      if (item.userId === id) {
+        navigation.navigate('Profile');
+      } else {
+        navigation.navigate('OtherProfile', { userId: item.userId });
+      }
+    };
+
+    return (
+      <TouchableOpacity style={styles.userContainer} onPress={navigateToProfile}>
+        <View>
+          <Text style={styles.username}>{JSON.stringify(item.Username).replace(/['"]+/g, '')}</Text>
+          <Text style={styles.name}>{JSON.stringify(item.Name).replace(/['"]+/g, '')}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
 
 
