@@ -36,6 +36,8 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
     connectToWifi(selectedSSID, selectedAuthentication, password);
   }
 
+  console.log("SSIDS:", ssids)
+
   return (
     <Modal
       animationType="slide"
@@ -53,7 +55,7 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
             data={ssids}
             renderItem={({ item }) => (
               <CustomButton
-                key={item.ssid}
+                key={item}
                 text={item.ssid}
                 onPress={() => handleSSIDPress(item.ssid, item.authentication)}
                 type="PRIMARY"

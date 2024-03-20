@@ -21,6 +21,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
     const [showCommentModal, setShowCommentModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
     const [following, setFollowing] = useState(null);
+    const [id, setId] = useState(null)
     const navigation = useNavigation();
     
 
@@ -33,6 +34,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           console.error('Error fetching token from AsyncStorage:', error);
         }
       };
+
 
     const [posts, setPosts] = useState([]);
 
@@ -66,10 +68,17 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           });
           const data = await response.json();
           if (response.ok) {
-            // Update the state with the retrieved posts         
+            // Update the state with the retrieved following list
             const followingIds = data.results.map(result => result.followingId);
+            
+            // Add your own ID to the following list
+            const userId = JSON.parse(await AsyncStorage.getItem('userId'));
+            if (!followingIds.includes(userId)) {
+              followingIds.push(userId);
+            }
+      
             setFollowing(followingIds);
-            console.log("Following:", following);
+            console.log("Following:", followingIds);
           } else {
             console.error('Failed to retrieve following list:', data.error);
           }
@@ -178,7 +187,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
 
 
 
-  
     
   const renderItem = ({ item }) => {
     const isLiked = likedPostsStorage.some((likedPost) => likedPost.postId === item.postId);
@@ -190,7 +198,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
       : moment(item.uploadDateTime).fromNow();
     
     // Check if the user is following the author of the post
-    const isFollowingAuthor = following && following.includes(item.userId);
+    const isFollowingAuthor = following.includes(item.userId);
 
     // Render the post only if the user is following the author
     if (!isFollowingAuthor) {
@@ -202,12 +210,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
           <Text style={styles.text}>{timeAgo}</Text>
-          {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
           <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
-          {/* {item.imagePath && (
-            <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
-          )
-          } */}
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
@@ -271,6 +274,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         onRefresh={async () => {
           // Fetch posts again when refreshing
           await fetchPosts();
+          await fetchFollowing();
           onRefresh();
         }}
       />
@@ -282,6 +286,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           
         />
       )}
+      <Text style={styles.emptyFeedText}>Explore communities around Singapore!</Text>
       <FlatList
         data={communities}
         renderItem={renderCommunity}

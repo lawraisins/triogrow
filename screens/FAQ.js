@@ -1,31 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import { useFonts } from 'expo-font';
+
 import { useNavigation } from '@react-navigation/native';
 
 
 export default function FAQ() {
   navigation = useNavigation();
 
-
   const FAQ = [
     {
       id: 1,
-      title: '01 | What is TrioGrow ?',
+      title: '01 | What is Triogro ?',
       onPress: () => {
         navigation.navigate('content1');
       },
     },
     {
       id: 2,
-      title: '02 | How does TrioGrow work ?',
+      title: '02 | How does Triogro work ?',
       onPress: () => {
         navigation.navigate('content2');
       },
     },
     {
       id: 3,
-      title: '03 | Recommended plants for TrioGrow ?',
+      title: '03 | Recommended plants for Triogro ?',
       onPress: () => {
         navigation.navigate('content3'); // Assuming content3 exists
       },
@@ -68,6 +67,7 @@ export default function FAQ() {
 
   return (
     <ScrollView style={styles.container}>
+      <Text style={styles.header}>Learn</Text>
       <View style={styles.headingBox}>
         <Text style={styles.heading}>Frequently Asked Questions</Text>
       </View>
@@ -150,5 +150,11 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+  },
+  header: {
+    fontSize: 42,
+    fontFamily: "Poppins-Header",
+    color:"#004F18",
+    top: 15,
   },
 });

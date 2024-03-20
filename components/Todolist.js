@@ -21,6 +21,7 @@ const Form = () =>  {
   const [modalVisible, setModalVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [isChecked, setChecked] = useState(false);
+  const [chosenDate, setChosenDate] = useState('Choose Date'); // State variable to store chosen date
 
   //Get security token
   const _getToken = async () => {
@@ -95,12 +96,10 @@ const Form = () =>  {
     fetchTasks();
   }, []);
 
-const onChange = (e, selectedDate) => {
-  console.log(selectedDate)
-  setDate(selectedDate)
-
-
-}
+  const onChange = (e, selectedDate) => {
+    setDate(selectedDate);
+    setChosenDate(moment(selectedDate).format('YYYY-MM-DD')); // Update chosenDate when date is selected
+  };
 
 
 
@@ -117,6 +116,28 @@ const renderItem = ({ item }) => {
         <View style={[styles.item, item.isChecked && styles.itemChecked]}>
           <Text style={styles.taskheader}>{item.name}</Text>
           <Text>Complete By: {new Date(item.completeBy).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+          <Modal
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    Alert.alert('Modal has been closed.');
+    setModalVisible(!modalVisible);
+  }}>
+  <View style={styles.centeredView}>
+    <View style={styles.modalView}>
+      <Text style={styles.subheader}>Task</Text>
+      <CustomInput name="Name" control={control}></CustomInput>
+      <Text style={styles.subheader}>Notes</Text>
+      <CustomInput name="Details" control={control}></CustomInput>
+      <Text style={styles.subheader}>Complete By</Text>
+
+      <CustomButton text="Confirm" type="TERTIARY" onPress={handleSubmit(onAddTaskPressed)}></CustomButton>
+      <CustomButton text="Cancel" type="TERTIARY" onPress={() => setModalVisible(!modalVisible)}></CustomButton>
+    </View>
+  </View>
+</Modal>
+
           <Collapsible collapsed={item.collapsed}>
             <View style={styles.details}>
               <Text style={styles.subheader}>Details:</Text>
@@ -239,60 +260,63 @@ const renderItem = ({ item }) => {
 
 
   return (
-
     <View style={styles.container}>
       <View style={styles.tasksWrapper}></View>
-     <Text style = {styles.header}>My Tasks</Text>
-     <View style = {styles.items}>
-      <FlatList 
-        data={taskItems}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.name.toString()}
-        style={{ paddingBottom: 20, height: '80%' }}>
-        </FlatList>
-
+      <Text style={styles.header}>My Tasks</Text>
+      <View style={styles.items}>
+        <FlatList 
+          data={taskItems}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.name.toString()}
+          style={{ paddingBottom: 20, height: '80%' }}
+        />
       </View>   
       <View style={styles.bottomView}>
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.subheader}>Task</Text>
-            <CustomInput name="Name" control={control}></CustomInput>
-            <Text style={styles.subheader}>Notes</Text>
-            <CustomInput name="Details" control={control}></CustomInput>
-            <Text style={styles.subheader}>Complete By</Text>
-            {/* <DateTimePicker display="calendar" value={date} is24Hour={true} onChange={onChange} /> */}
-        <CustomButton text="Confirm" type="TERTIARY"
-        onPress={handleSubmit(onAddTaskPressed)}>
-      </CustomButton>
-      <CustomButton text="Cancel" type="TERTIARY"
-        onPress={() => setModalVisible(!modalVisible)}>
-      </CustomButton>
-          </View>
-        </View>
-      </Modal>
-     <CustomButton text="Add Task" type="PRIMARY"
-        onPress={() => setModalVisible(true)}>
-      </CustomButton>
-    </View>
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    Alert.alert('Modal has been closed.');
+    setModalVisible(!modalVisible);
+  }}>
+  <View style={styles.centeredView}>
+    <View style={styles.modalView}>
+      <Text style={styles.subheader}>Task</Text>
+      <CustomInput name="Name" control={control}></CustomInput>
+      <Text style={styles.subheader}>Notes</Text>
+      <CustomInput name="Details" control={control}></CustomInput>
+      <Text style={styles.subheader}>Complete By</Text>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.chooseDate}>{String(chosenDate)}</Text>
+      </TouchableOpacity>
 
-            {/* <TextInput style={styles.input} placeholder={'Write a task'} value = {task} onChangeText={text => setTask(text)}></TextInput>
-            <TouchableOpacity onPress={() => handleAddTask()}>
-                <View style={styles.addWrapper}>
-                    <Image source={require("../assets/images/plus.png")} style={{width: 25, height:25 }} /> */}
-                {/* </View>
-            </TouchableOpacity> */}
-        
+      {/* DateTimePicker inside the Modal */}
+      {modalVisible && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="datetime"
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+      
+      <CustomButton text="Confirm" type="TERTIARY" onPress={handleSubmit(onAddTaskPressed)} />
+      <CustomButton text="Cancel" type="TERTIARY" onPress={() => setModalVisible(!modalVisible)} />
+    </View>
+  </View>
+</Modal>
+
+
+
+
+        <CustomButton text="Add Task" type="PRIMARY" onPress={() => setModalVisible(true)} />
+      </View>
     </View>
   );
-    }
+}
 
   
 

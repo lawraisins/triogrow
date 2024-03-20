@@ -23,9 +23,7 @@ const Planter = () =>  {
     }
   };
     const {control, handleSubmit, formState: {errors},} = useForm();
-    const [pump, setPump] = useState(0);
 
-  
   const capitalizeFirstLetter = (str) => {
     return str.replace(/^\w/, (c) => c.toUpperCase());
   };
@@ -42,7 +40,7 @@ const Planter = () =>  {
             'Content-Type': 'application/json',
             Authorization: `${token}`,
           },
-          body: JSON.stringify({"RPI_ID":"Testing"}), // Pass userId as an object with a single property
+          body: JSON.stringify({"RPI_ID":"10000000fa14f7fb"}), // Pass userId as an object with a single property
         });
         const data = await response.json();
         if (response.ok) {
@@ -66,15 +64,6 @@ const Planter = () =>  {
 
     //Need to pass the socketId to the backend so that it can send the pump value to the RPi
     const onPumpPressed = async () => {
-        if (pump == 0) {
-            setPump(1)
-            Alert.alert("Pump has been turned off!")
-        } else {
-            setPump(0)
-            Alert.alert("Pump has been turned on!")
-        }
-        // console.log("Current pump value", pump)
-
         try {
             // Data to send in the POST request
             getSocketId()
