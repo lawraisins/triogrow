@@ -8,6 +8,9 @@ import {useForm, Controller} from 'react-hook-form'
 import useBLE from '../useBLE';
 import { useNavigation } from '@react-navigation/native';
 import ModalWifi from '../components/modalWifi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import backendURL from '../components/backendURL';
 
 export default function AddPlanterS() {
   const { requestPermissions } = useBLE(); 
@@ -21,6 +24,7 @@ export default function AddPlanterS() {
   const [password, setPassword] = useState('');
   const [showWifiModal, setShowWifiModal] = useState(false);
   const [ssids, setSsids] = useState(null) 
+  const [rpiId, setRpiId] = useState("")
 
   const _getToken = async () => {
     try {
@@ -31,14 +35,31 @@ export default function AddPlanterS() {
     }
   };
 
+  useEffect(() => {
+    console.log('rpiId:', rpiId);
+  }, [rpiId]); // Will trigger whenever rpiId changes
+
+  useEffect(() => {
+    const sendRpiIdToBackend = async () => {
+      if (rpiId !== "") { // Ensure rpiId is not empty
+        console.log("Sending RPI_ID to backend:", rpiId);
+        await addPlanter(rpiId);
+      }
+    };
+  
+    sendRpiIdToBackend();
+  }, [rpiId]); // Run whenever rpiId changes
+  
+
   const addPlanter = async (RPI_ID) => {
     try {        
         const token = await _getToken();
-        const response = await axios.post(`${backendURL}/planter/addPlanter`,RPI_ID, {
+        const response = await axios.post(`${backendURL}/planter/addPlanter`,{RPI_ID}, {
             headers: {
               Authorization: `${token}`, // Access the token from the headers
             }
           });
+        console.log("RPI_ID to be sent:", RPI_ID);
         Alert.alert("Planter Added Successfully!")
     
     } catch (error) {
@@ -128,7 +149,7 @@ export default function AddPlanterS() {
           await new Promise(resolve => setTimeout(resolve, 5000));
           console.log("Waited 5 seconds")
           //1 second delay?
-          data = await BluetoothSerial.readFromDevice(deviceId);
+          data = await BluetoothSerial.readFromDevice(selectedDeviceId);
           if (data !== null) {
             await new Promise(resolve => setTimeout(resolve, 5000));
             console.log("Waited 5 seconds")
@@ -161,15 +182,7 @@ export default function AddPlanterS() {
   };
   
   
-  // BluetoothSerial.on('data', (data) => {
-  //   if (selectedDeviceId && data.includes('ssids')) {
-  //     const startIndex = data.indexOf('ssids:') + 'ssids:'.length;
-  //     const endIndex = data.indexOf('end_ssids');
-  //     const ssidsString = data.slice(startIndex, endIndex);
-  //     const parsedSsids = JSON.parse(ssidsString);
-  //     receiveSsids(parsedSsids);
-  //   }
-  // });
+
 
   const connectToWifi = async (ssid, authentication, password) => {
     try {
@@ -186,13 +199,36 @@ export default function AddPlanterS() {
       while (retries > 0) {
         try {
           console.log("Waiting for response from device...");
-          await new Promise(resolve => setTimeout(resolve, 5000));
-          data = await BluetoothSerial.readFromDevice(deviceId);
-          if (data !== undefined) {
-            console.log("Received response from device:", data);
-            // Handle the response here
-            //Upload the planter data to the DB
-            await addPlanter(data)
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          data = await BluetoothSerial.readFromDevice(selectedDeviceId);
+          if (data == "ACK") {
+            console.log("Received ACK from device:", data);
+            await new Promise(resolve => setTimeout(resolve, 20000));
+            //Next message after ACK should be RPI ID
+            data = await BluetoothSerial.readFromDevice(selectedDeviceId);
+            if (data !== undefined) {
+              let setRpiIdSuccess = false;
+              let rpiIdRetryCount = 3; // Number of retries for setting rpiId
+              while (rpiIdRetryCount > 0 && !setRpiIdSuccess) {
+                try {
+                  console.log("Setting RPI ID:", data);
+                  setRpiId(data);
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  setRpiIdSuccess = true; // Mark success to exit loop
+
+                } catch (error) {
+                  console.log("Error setting RPI ID. Retrying...");
+                  rpiIdRetryCount--; // Decrement retry count
+                  await new Promise(resolve => setTimeout(resolve, 3000)); // Wait before retry
+                }
+              }
+              if (!setRpiIdSuccess) {
+                console.log("Maximum retries reached. Unable to set RPI ID.");
+                // Handle the case where maximum retries are reached
+                // You can display an error message or take appropriate action here
+                break; // Exit the loop if unable to set RPI ID
+              }
+            }
             break; // Exit the loop if data is received
           } else {
             retries--; // Decrement retries if data is null

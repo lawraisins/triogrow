@@ -20,7 +20,12 @@ const ModalWifi = ({ ssids, connectToWifi }) => {
   const handleSSIDPress = (ssid, authentication) => {
     setSelectedSSID(ssid);
     setSelectedAuthentication(authentication);
-    setInputVisible(true);
+    if (selectedAuthentication != ""){
+      setInputVisible(true);
+    } else {
+      connectToWifi(selectedSSID, selectedAuthentication, "")
+    }
+
   };
 
   const handleInputClose = (ssid) => {
