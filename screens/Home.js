@@ -89,7 +89,7 @@ export default function Home() {
         </View>
         {/* Include your Planter component here */}
       <View style={styles.planter}>
-        <Planter></Planter>
+        <Planter refreshing={refreshing} onRefresh={onRefresh}></Planter>
       </View>
       </View>
       <View style={styles.communities}>
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   planter:{
-    alignItems:"center",
-    padding: 10,
+    // alignItems:"center",
+    padding: 30,
   }
   
 });
