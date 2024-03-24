@@ -10,7 +10,7 @@ import io from 'socket.io-client'
 import LinearGauge from './linearGauge';
 
 
-const Planter = () =>  {
+const Planter = ({refreshing, onRefresh }) =>  {
   const [socketId, setSocketId] = useState("");
   const [planters, setPlanters] = useState([]);
 
@@ -30,7 +30,7 @@ const Planter = () =>  {
 
 
     // Get the socketId from the DB
-    const getSocketId = async () => {
+    const getSocketId = async (id) => {
       try {
         // Replace 'your-backend-url' with the actual URL of your backend server
         const token = await _getToken();
@@ -40,7 +40,7 @@ const Planter = () =>  {
             'Content-Type': 'application/json',
             Authorization: `${token}`,
           },
-          body: JSON.stringify({"RPI_ID":"10000000fa14f7fb"}), // Pass userId as an object with a single property
+          body: JSON.stringify({"RPI_ID":id}), // Pass userId as an object with a single property
         });
         const data = await response.json();
         if (response.ok) {
@@ -63,10 +63,10 @@ const Planter = () =>  {
     });
 
     //Need to pass the socketId to the backend so that it can send the pump value to the RPi
-    const onPumpPressed = async () => {
+    const onPumpPressed = async (id) => {
         try {
             // Data to send in the POST request
-            getSocketId()
+            getSocketId(id)
             socket.emit('pump_command', socketId);
         
         } catch (error) {
@@ -106,21 +106,26 @@ const Planter = () =>  {
         console.error('Error fetching planters:', error.message);
       }
     };
-
+;
 
     useEffect(() => {
       // Fetch posts when the component mounts
       fetchPlanters();
     }, []);
+    useEffect(() => {
+      if (refreshing) {
+        fetchPlanters();
+      }
+    }, [refreshing]);
 
 
     const renderItem = ({ item }) => {
+      console.log(item.id)
       return (
         <View style={styles.container}>
         <View style={styles.pump}>
-        <Text style={styles.text}>triogro 1</Text>
         <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
-        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed)} type="TERTIARY" style={styles.button} ></CustomButton>
+        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed(item.id))} type="TERTIARY" style={styles.button} ></CustomButton>
         </View>
         <View style={styles.sensors}>
         <LinearGauge label="Nitrogen" value={item.nitrogen} maxValue={100} />
@@ -143,11 +148,13 @@ const Planter = () =>  {
     renderItem={renderItem}
     keyExtractor={(item, index) => index.toString()}
     horizontal
-    // onRefresh={async () => {
-    //   // Fetch posts again when refreshing
-    //   await fetchPosts();
-    //   onRefresh();
-    // }}
+    refreshing={refreshing}
+    onRefresh={async () => {
+      // Fetch posts again when refreshing
+      await fetchPlanters();
+      onRefresh();
+    }}
+    style={styles.planters}
   />
 
   );
@@ -159,8 +166,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FAF4E6',
     borderRadius: 15,
-    padding: 10,
-    width:"100%",
+    padding: 20,
+    marginRight: 10,
     flexDirection:"row",
 
   },
@@ -170,8 +177,8 @@ const styles = StyleSheet.create({
     color: "#4B2209",
   },
   image: {
-    width:50,
-    height:50,
+    width:30,
+    height:30,
     tintColor: "#4B2209",
     
 
@@ -184,6 +191,9 @@ const styles = StyleSheet.create({
   button:{
     flex: 1,
     width: "30%"
+  },
+  planters:{
+    // padding: 20,
   }
 });
 export default Planter;
