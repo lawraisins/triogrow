@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 40,
-    fontFamily: 'Poppins-Header',
+    fontFamily: 'Arial-Rounded',
     color: '#004F18',
   },
   subheader: {
     fontSize: 25,
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
     color: '#4B2209',
   },
   dp: {
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     flex: 1, // Take remaining space in the row
   },
   follow: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
     color: '#4B2209',
   },
 });

@@ -17,10 +17,11 @@ const CustomTabBarButton = ({children, onPress}) => (
     onPress = {onPress}
     >
         <View style={{
-            width:70,
-            height:70,
+            width:40,
+            height:40,
             borderRadius: 35,
             backgroundColor: "#F25987",
+            marginHorizontal: 20,
         }}>
             {children}
         </View>
@@ -30,7 +31,8 @@ const Tabs = () => {
     const [fontsLoaded] = useFonts (
         {
              "Poppins-Header": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
-             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf")
+             "Poppins": require("../assets/fonts/Poppins/Poppins-Regular.ttf"),
+             "Arial-Rounded": require("../assets/fonts/Poppins/Arial-Rounded.ttf")
       }
       );
       
@@ -46,13 +48,14 @@ const Tabs = () => {
                   },
                 tabBarStyle: {
                     position: "absolute",
-                    bottom: 25,
-                    left: 20,
-                    right: 20,
                     elevation: 0,
-                    borderRadius: 15,
-                    height: 90,
-                    ...styles.shadow
+                    // alignContent: "center",
+                    alignItems: "center",
+                    height: 70,
+                    ...styles.shadow,
+                    backgroundColor: '#FAF4E6',
+                    justifyContent:"space-around"
+                    
 
                 }
             }}>
@@ -61,17 +64,20 @@ const Tabs = () => {
                 component={Home}
                 options={{headerShown: false,
                     tabBarIcon: ({focused}) => (
-                        <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
+                        <View style={{alignItems: "center", justifyContent: "center"}}>
                             <Image source={require("../assets/images/home.png")}
                                     resizeMode="contain"
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? "black" : "#F25987",
+                                        tintColor: focused ? "black" : '#FAF4E6',
                                     }}/>
                             {/* <Text style={styles.text}>HOME</Text> */}
                         </View>
                     
+                    ),
+                    tabBarButton: (props) => (
+                        <CustomTabBarButton {...props} />
                     )
 
                 }} />
@@ -80,17 +86,21 @@ const Tabs = () => {
                 component={SearchUsers}
                 options={{headerShown: false,
                     tabBarIcon: ({focused}) => (
-                        <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
+                        <View style={{alignItems: "center", justifyContent: "center"}}>
                             <Image source={require("../assets/images/search.png")}
                                     resizeMode="contain"
                                     style={{
-                                        width: 25,
-                                        height: 25,
-                                        tintColor: focused ? "black" : "#F25987",
+                                        width: 20,
+                                        height: 20,
+                                        tintColor: focused ? "black" :'#FAF4E6',
                                     }}/>
+                        
                             {/* <Text style={styles.text}>SEARCH</Text> */}
                         </View>
                     
+                    ),
+                    tabBarButton: (props) => (
+                        <CustomTabBarButton {...props} />
                     )
 
                 }} />
@@ -100,9 +110,9 @@ const Tabs = () => {
                                     <Image source={require("../assets/images/plus.png")}
                                     resizeMode="contain"
                                     style={{
-                                        width: 30,
-                                        height: 30,
-                                        tintColor: "#fff",
+                                        width: 20,
+                                        height: 20,
+                                        tintColor: focused ? "black" :'#FAF4E6',
                                     }}></Image>
                                 ),
                                 tabBarButton: (props) => (
@@ -112,33 +122,39 @@ const Tabs = () => {
             <Tab.Screen name="Learn" component={FAQ} 
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
-                                    <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
+                                    <View style={{alignItems: "center", justifyContent: "center"}}>
                                         <Image source={require("../assets/images/brainstorm.png")}
                                                 resizeMode="contain"
                                                 style={{
-                                                    width: 25,
-                                                    height: 25,
-                                                    tintColor: focused ? "black" : "#F25987",
+                                                    width: 20,
+                                                    height: 20,
+                                                    tintColor: focused ? "black" :'#FAF4E6',
                                                 }}/>
                                         {/* <Text style={styles.text}>LEARN</Text> */}
                                     </View>
                                 
+                                ),
+                                tabBarButton: (props) => (
+                                    <CustomTabBarButton {...props} />
                                 )
                             }}/>
             <Tab.Screen name="Profile" component={Profile}
                             options={{headerShown: false,
                                 tabBarIcon: ({focused}) => (
-                                    <View style={{alignItems: "center", justifyContent: "center", top: 10}}>
+                                    <View style={{alignItems: "center", justifyContent: "center"}}>
                                         <Image source={require("../assets/images/user.png")}
                                                 resizeMode="contain"
                                                 style={{
-                                                    width: 25,
-                                                    height: 25,
-                                                    tintColor: focused ? "black" : "#F25987",
+                                                    width: 20,
+                                                    height: 20,
+                                                    tintColor: focused ? "black" :'#FAF4E6',
                                                 }}/>
                                         {/* <Text style={styles.text}>PROFILE</Text> */}
                                     </View>
                                 
+                                ),
+                                tabBarButton: (props) => (
+                                    <CustomTabBarButton {...props} />
                                 )
                             }}/>
         </Tab.Navigator>

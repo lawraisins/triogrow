@@ -195,13 +195,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 40,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
     textAlign: 'right',
     color: "#004F18",
   },
   subheader: {
     fontSize: 25,
-    fontFamily: "Poppins",
+    fontFamily: "Arial-Rounded",
     textAlign: 'right',
     color:"#4B2209",
   },
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     marginRight:10,
   },
   follow:{
-    fontFamily: "Poppins",
+    fontFamily: "Arial-Rounded",
     textAlign: "right",
     color:"#4B2209",
   },

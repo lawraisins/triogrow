@@ -210,7 +210,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           <Text style={styles.text}>@{item.username}</Text>
           <Text style={styles.text}>{timeAgo}</Text>
-          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 300, height: 300, borderRadius: 20, alignSelf:"center" }} />
           <Text style={styles.text}>{item.caption}</Text>
           <View style={styles.reactions}>
             <TouchableOpacity onPress={async () => likePost(item.postId)}>
@@ -249,7 +249,7 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         <View style={styles.postContainer}>
           {mostRecentPost && (
             <>
-              <Image source={{ uri: `data:image/jpeg;base64,${mostRecentPost.imageStream}` }} style={{ width: 200, height: 200 }} />
+              <Image source={{ uri: `data:image/jpeg;base64,${mostRecentPost.imageStream}` }} style={{ width: 200, height: 200, borderRadius: 20 }} />
               <Text style={styles.communitytext}>{item}</Text>
             </>
           )}
@@ -269,7 +269,6 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
         data={posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        horizontal
         refreshing={refreshing}
         onRefresh={async () => {
           // Fetch posts again when refreshing
@@ -277,6 +276,11 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           await fetchFollowing();
           onRefresh();
         }}
+        style={
+          {
+            paddingBottom: 450,
+          }
+        }
       />
       {selectedPost && (
         <ModalComments
@@ -298,15 +302,17 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           await fetchPosts();
           onRefresh();
         }}
+        
       />
     </>
   );
     };
     const styles = StyleSheet.create({
         postContainer: {
-          padding: 30,
+          padding: 10,
           backgroundColor: '#FAF4E6',
-          borderRadius: 5,
+          alignContent: "center",
+          borderRadius: 20,
           shadowOpacity: 1,
           shadowRadius: 0,
           shadowColor: "black",
@@ -317,21 +323,22 @@ const CommunityFeed = ( {refreshing, onRefresh }) => {
           shadowOpacity: 0.2,
           shadowRadius: 2,
           marginRight:10,
+          marginVertical: 5,
 
         },
         text:{
-            fontFamily: "Poppins",
+            fontFamily: "Arial-Rounded",
             color: "#F25987"
         },
         emptyFeedText:{
-          fontFamily: "Poppins",
+          fontFamily: "Arial-Rounded",
           color: "#4B2209",
           alignSelf:"center",
           fontSize: 18,
           marginTop: 10,
       },
         communitytext:{
-          fontFamily: "Poppins-Header",
+          fontFamily: "Arial-Rounded",
           color: "#F25987",
           alignSelf:"center",
         },

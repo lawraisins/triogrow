@@ -184,19 +184,20 @@ const styles = StyleSheet.create({
     },
     header: {
       fontSize: 42,
-      fontFamily: "Poppins-Header",
+      fontFamily: "Arial-Rounded",
       top: 15,
       color:"#004F18",
     },
     subheader: {
-      fontSize: 25,
-      fontFamily: "Poppins",
+      fontSize: 15,
+      fontFamily: "Arial-Rounded",
+      marginTop: 5,
       textAlign:"center",
       color: "#4B2209"
     },
     tasklist: {
       top: 83,
-      justifyContent:"center",
+      justifyContent:"space-between",
       flexDirection:"row",
     },
     picker:{
@@ -219,8 +220,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     }, 
     image: {
-      width: 100,
-      height: 100,
+      width: 70,
+      height: 70,
       alignSelf: "center",
       tintColor: "#F25987",
     }

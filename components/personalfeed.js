@@ -155,7 +155,7 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
           <Text style={styles.text}>@{item.username}</Text>
           <Text style={styles.text}>{timeAgo}</Text>
           {/* <Image source={{uri: `http://124.155.214.143/${item.imagePath}`}} style={{ width: 200, height: 200 }}></Image> */}
-          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
+          <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 280, height: 280, alignSelf: 'center', borderRadius:20 }} />
           {/* {item.imagePath && (
             <Image source={item.imagePath} style={{ width: 100, height: 100 }} />
           )
@@ -212,7 +212,7 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         postContainer: {
           padding: 10,
           backgroundColor: 'white',
-          borderRadius: 5,
+          borderRadius: 20,
           margin:10,
 
         },

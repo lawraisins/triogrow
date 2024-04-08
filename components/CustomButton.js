@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         padding: 15,
-        marginVertical: 5,
+        // marginVertical: 5,
 
         alignItems: "center",
         // borderWidth: 2,
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
 
     container_PRIMARY: {
         width: "100%",
-        padding: 15,
+        padding: 10,
         marginVertical: 5,
 
         alignItems: "center",
-        borderRadius: 5,
+        borderRadius: 25,
         // borderColor: "black",
         // borderWidth: 2,
         backgroundColor: "#F25987",
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
     container_TERTIARY: {
         width: "50%",
         padding: 5,
-        margin: 5,
+        marginVertical: 5,
 
         alignItems: "center",
-        borderRadius: 5,
+        borderRadius: 15,
         // borderColor: "black",
         // borderWidth: 2,
         backgroundColor: "#F25987",
@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
 
     text_TERTIARY:{
         color: "#FAF4E6",
-        fontFamily: "Poppins",
+        fontFamily: "Arial-Rounded",
     },
 
     text: {
         // fontWeight: "bold",
         color: "#FAF4E6",
-        fontFamily: "Poppins",
+        fontFamily: "Arial-Rounded",
         fontSize: 18,
 
     }

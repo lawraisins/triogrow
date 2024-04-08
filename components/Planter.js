@@ -46,7 +46,7 @@ const Planter = ({refreshing, onRefresh }) =>  {
         if (response.ok) {
           // Update the state with the retrieved posts
           setSocketId(data.socketId)
-          console.log(socketId)
+          // console.log(socketId)
           
         } else {
           console.error('Failed to retrieve posts:', data.error);
@@ -56,18 +56,20 @@ const Planter = ({refreshing, onRefresh }) =>  {
       }
     };
     
-    const socket = io('http://124.155.214.143:5000');
-    // Listen for 'connect' event
-    socket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
+
 
     //Need to pass the socketId to the backend so that it can send the pump value to the RPi
     const onPumpPressed = async (id) => {
         try {
             // Data to send in the POST request
-            getSocketId(id)
-            socket.emit('pump_command', socketId);
+            // getSocketId(id)
+            // const socket = io('http://124.155.214.143:5000');
+            // // Listen for 'connect' event
+            // socket.on('connect', () => {
+            //   console.log('Connected to socket server');
+            // });
+            // socket.emit('pump_command', socketId);
+            // socket.close()
         
         } catch (error) {
             // Handle any errors that occur during the registration process
@@ -120,12 +122,12 @@ const Planter = ({refreshing, onRefresh }) =>  {
 
 
     const renderItem = ({ item }) => {
-      console.log(item.id)
+      // console.log(item.id)
       return (
         <View style={styles.container}>
         <View style={styles.pump}>
-        <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 200, height: 200 }} />
-        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed(item.id))} type="TERTIARY" style={styles.button} ></CustomButton>
+        <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 150, height: 150, borderRadius: 20 }} />
+        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed(item.id))} type="PRIMARY" style={styles.button} ></CustomButton>
         </View>
         <View style={styles.sensors}>
         <LinearGauge label="Nitrogen" value={item.nitrogen} maxValue={100} />
@@ -166,14 +168,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FAF4E6',
     borderRadius: 15,
-    padding: 20,
+    padding: 5,
     marginRight: 10,
     flexDirection:"row",
+    alignContent:"center",
 
   },
   text: {
     fontSize: 16,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
     color: "#4B2209",
   },
   image: {
@@ -187,6 +190,7 @@ const styles = StyleSheet.create({
     marginRight: 10, // Add margin to separate pump and sensor views
   },
   sensors: {
+    // width: "80%"
   },
   button:{
     flex: 1,

@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 12,
-    height: '30%',
+    // marginTop: 12,
+    // height: '30%',
   },
   modalView: {
     // Adjusting the Size of the Pop up 

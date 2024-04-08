@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 42,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
     color: "#004F18",
     top: 15,
   },
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 20,
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
     color:"#4B2209",
     backgroundColor: 'white',
     
@@ -142,12 +142,12 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 18,
-    fontFamily: 'Poppins-Header',
+    fontFamily: 'Arial-Rounded',
     color: "#4B2209",
   },
   name: {
     fontSize: 16,
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
     color:"#4B2209",
   },
   emptyContainer: {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
     color: "#4B2209",
   },
   searchBar: {

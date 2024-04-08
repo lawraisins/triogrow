@@ -110,30 +110,33 @@ const styles = StyleSheet.create({
     height:"100%"
   },
   header: {
-    fontSize: 42,
-    fontFamily: "Poppins-Header",
+    fontSize: 35,
+    fontFamily: "Arial-Rounded",
     color:"#004F18",
-    top: 15,
+    // top: 15,
   },
   subheader: {
-    fontSize: 25,
-    fontFamily: "Poppins-Header",
+    fontSize: 20,
+    fontFamily: "Arial-Rounded",
     color:"#FAF4E6",
   },
   tasklist: {
     backgroundColor: "#004F18",
     padding: 10,
+    borderRadius: 20,
   },
   trackers: {
     top: 10,
     backgroundColor:"#4B2209",
     padding: 10,
+    borderRadius: 20,
   },
   communities: {
     top: 20,
+    borderRadius: 20,
     backgroundColor: "#D9839D",
     padding: 10,
-    paddingBottom: 300,
+    paddingBottom: 100,
     height: "80%"
   },
   addPlanter: {
@@ -141,8 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   planter:{
-    // alignItems:"center",
-    padding: 30,
+    borderRadius:20,
   }
   
 });
