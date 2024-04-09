@@ -1,64 +1,40 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, WebView } from 'react-native';
-import { Button, StyleSheet } from 'react-native';
-import Form from '../components/Todolist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoading from "expo-app-loading";
+import React from 'react';
+import { ScrollView, Image, StyleSheet } from 'react-native';
 import Triogro from '../assets/images/Triogro.jpg';
-import pdf from '../assets/images/Growing.pdf';
+import manual1 from '../assets/images/manual/manual1.png';
+import manual2 from '../assets/images/manual/manual2.png';
+import manual3 from '../assets/images/manual/manual3.png';
+import manual4 from '../assets/images/manual/manual4.png';
+import manual5 from '../assets/images/manual/manual5.png';
+import manual6 from '../assets/images/manual/manual6.png';
+import manual7 from '../assets/images/manual/manual7.png';
+import manual8 from '../assets/images/manual/manual8.png';
 
 export default function Content4() {
-  const [isLoading, setIsLoading] = useState(true);
-  
-  if (isLoading) {
-    return <AppLoading startAsync={() => {}} onFinish={() => setIsLoading(false)} />;
-  }
-  
-  const openPdf = () => {
-    const html = `
-      <iframe
-        src="${pdf}"
-        style="width:100%; height:500px;"
-        frameborder="0"
-      >
-      </iframe>
-    `;
-    this.webview.injectJavaScript(`document.documentElement.innerHTML = '${html}'`);
-  };
+  const images = [manual1, manual2, manual3, manual4, manual5, manual6, manual7, manual8];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>5 Easy to Grow Low Main</Text>
-      <Image source={Triogro} style={{width:300, height:250}} />
-      <TouchableOpacity onPress={openPdf}>
-        <Text style={styles.buttonText}>Open Growing Guide</Text>
-      </TouchableOpacity>
-      <WebView
-        ref={(ref) => { this.webview = ref; }}
-        source={{ html: '' }}
-      />
-    </View>
+    <ScrollView
+      horizontal
+      contentContainerStyle={styles.container}
+    >
+      {images.map((image, index) => (
+        <Image key={index} source={image} style={styles.image} />
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 ,
-    backgroundColor: '#BEE4FF',
+    flexGrow: 1,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  buttonText: {
-    fontSize: 24,
-    textAlign: 'center',
-    marginTop: 20,
-    color: 'blue',
-    textDecorationLine: 'underline',
+  image: {
+    width: 400,
+    height: 600,
+    marginHorizontal: 10,
   },
 });

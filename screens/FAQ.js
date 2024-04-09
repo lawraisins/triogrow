@@ -34,16 +34,9 @@ export default function FAQ() {
   const tutorials = [
     {
       id: 4,
-      title: '01 | 5 Easy to Grow Low Maintenance Perennials ?',
+      title: '01 | Triogro Assembly Guide',
       onPress: () => {
         navigation.navigate('content4');
-      },
-    },
-    {
-      id: 5,
-      title: '02 | How to build your own soil ?',
-      onPress: () => {
-        navigation.navigate('content5');
       },
     },
     // ... other tutorial items
@@ -53,14 +46,23 @@ export default function FAQ() {
     {
       id: 7,
       title: '01 | Video 1',
+      onPress: () => {
+        navigation.navigate('Tutorial');
+      },
     },
     {
       id: 8,
       title: '02 | Video 2',
+      onPress: () => {
+        navigation.navigate('Tutorial');
+      },
     },
     {
       id: 9,
       title: '03 | Video 3',
+      onPress: () => {
+        navigation.navigate('Tutorial');
+      },
     },
     // ... other video items
   ];
