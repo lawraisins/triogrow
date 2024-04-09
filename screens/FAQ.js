@@ -39,26 +39,41 @@ export default function FAQ() {
         navigation.navigate('content4');
       },
     },
+    {
+      id: 5,
+      title: '02 | Video 1',
+      onPress: () => {
+        navigation.navigate('Tutorial');
+      },
+    },
+    {
+      id: 6,
+      title: '03 | Video 2',
+      onPress: () => {
+        navigation.navigate('Tutorial2');
+      },
+    },
+    
     // ... other tutorial items
   ];
 
   const video = [
     {
-      id: 7,
+      id: 5,
       title: '01 | Video 1',
       onPress: () => {
         navigation.navigate('Tutorial');
       },
     },
     {
-      id: 8,
+      id: 6,
       title: '02 | Video 2',
       onPress: () => {
         navigation.navigate('Tutorial');
       },
     },
     {
-      id: 9,
+      id: 7,
       title: '03 | Video 3',
       onPress: () => {
         navigation.navigate('Tutorial');
