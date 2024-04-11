@@ -185,11 +185,10 @@ const styles = StyleSheet.create({
     header: {
       fontSize: 42,
       fontFamily: "Arial-Rounded",
-      top: 15,
       color:"#004F18",
     },
     subheader: {
-      fontSize: 15,
+      fontSize: 20,
       fontFamily: "Arial-Rounded",
       marginTop: 5,
       textAlign:"center",
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     },
     tasklist: {
       top: 83,
-      justifyContent:"space-between",
+      justifyContent:"center",
       flexDirection:"row",
     },
     picker:{
@@ -220,8 +219,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     }, 
     image: {
-      width: 70,
-      height: 70,
+      width: 100,
+      height: 100,
       alignSelf: "center",
       tintColor: "#F25987",
     }

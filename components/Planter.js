@@ -8,6 +8,7 @@ import axios from 'axios';
 import backendURL from './backendURL';
 import io from 'socket.io-client'
 import LinearGauge from './linearGauge';
+import Droplet from '../assets/images/greendroplet.png'
 
 
 const Planter = ({refreshing, onRefresh }) =>  {
@@ -122,27 +123,33 @@ const Planter = ({refreshing, onRefresh }) =>  {
 
 
     const renderItem = ({ item }) => {
-      // console.log(item.id)
+      const dropletCount =
+        item.waterLevel === "high" ? 3 :
+        item.waterLevel === "low" ? 1 : 0;
+    
+      const dropletIcons = Array.from({ length: dropletCount }).map((_, index) => (
+        <Image key={index} source={Droplet} style={styles.image} />
+      ));
+    
       return (
         <View style={styles.container}>
-        <View style={styles.pump}>
-        <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 150, height: 150, borderRadius: 20 }} />
-        <CustomButton text = "Pump" onPress={handleSubmit(onPumpPressed(item.id))} type="PRIMARY" style={styles.button} ></CustomButton>
-        </View>
-        <View style={styles.sensors}>
-        <LinearGauge label="Nitrogen" value={item.nitrogen} maxValue={100} />
-        <LinearGauge label="Phosphorus" value={item.phosphorus} maxValue={100} />
-        <LinearGauge label="Potassium" value={item.potassium} maxValue={100} />
-        <Text style={styles.text}>Water Level</Text>
-        <Text style={{ color: item.waterLevel === "high" ? "green" : item.waterLevel === "low" ? "red" : "black" }}>
-          {capitalizeFirstLetter(item.waterLevel)}
-        </Text>
-
-        </View>     
+          <View style={styles.pump}>
+            <Image source={{ uri: `data:image/jpeg;base64,${item.imageStream}` }} style={{ width: 150, height: 150, borderRadius: 20 }} />
+            <CustomButton text="Pump" onPress={handleSubmit(onPumpPressed(item.id))} type="PRIMARY" style={styles.button} />
+          </View>
+          <View style={styles.sensors}>
+            <LinearGauge label="Nitrogen" value={item.nitrogen} maxValue={100} />
+            <LinearGauge label="Phosphorus" value={item.phosphorus} maxValue={100} />
+            <LinearGauge label="Potassium" value={item.potassium} maxValue={100} />
+            <Text style={styles.text}>Water Level</Text>
+            <View style={styles.dropletContainer}>
+              {dropletIcons}
+            </View>
+          </View>     
         </View>
       );
     };
-  
+    
 
   return (
     <FlatList
@@ -182,7 +189,9 @@ const styles = StyleSheet.create({
   image: {
     width:30,
     height:30,
-    tintColor: "#4B2209",
+    marginRight: 5,
+    resizeMode: "contain",
+    // tintColor: "#4B2209",
     
 
   },
@@ -196,8 +205,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "30%"
   },
-  planters:{
-    // padding: 20,
+  dropletContainer:{
+    flexDirection: "row",
+    alignItems: "center",
   }
 });
 export default Planter;
