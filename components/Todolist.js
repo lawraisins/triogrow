@@ -111,7 +111,7 @@ const renderItem = ({ item }) => {
           style={styles.checkbox}
           value={item.isChecked}
           onValueChange={() => toggleCheckBox(item.name)}
-          color='black'
+          color="#4B2209"
         ></Checkbox>
         <View style={[styles.item, item.isChecked && styles.itemChecked]}>
           <Text style={styles.taskheader}>{item.name}</Text>
@@ -323,10 +323,11 @@ const renderItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1 ,
-    backgroundColor: 'white',
+    backgroundColor: "#FAF4E6",
     width:'100%',
     height:'100%',
     padding: 10,
+    borderRadius: 20,
 
   },
   tasksWrapper: {
@@ -334,12 +335,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 42,
-    fontFamily: "Poppins-Header",
-    top: 55,
+    fontFamily: "Arial-Rounded",
+    color:"#004F18",
   },
-  items: {
-    top: 55,
-  },  
+  // items: {
+  //   top: 55,
+  // },  
   writeTaskWrapper: {
     position: "absolute",
     bottom: 40,
@@ -400,9 +401,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     // margin: 20,
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 2,
+    backgroundColor: "#FAF4E6",
+    // borderColor: 'black',
+    // borderWidth: 2,
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -427,28 +428,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
   },
   textStyle: {
-    color: 'white',
+    color: "#FAF4E6",
     fontWeight: 'bold',
     textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontFamily: 'Arial-Rounded',
+    color: "#4B2209",
   },
   taskheader: {
     fontSize: 22,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
+    color: "#4B2209",
   },
   subheader: {
     fontSize: 18,
-    fontFamily: "Poppins",
+    fontFamily: "Arial-Rounded",
+    color: "#4B2209",
   },
   item: {
-    backgroundColor: "#FDF76A",
+    backgroundColor: '#A0D29F',
     padding: 15,
     borderRadius: 10,
-    borderColor:"black",
-    borderWidth: 2,
+    // borderColor:"black",
+    // borderWidth: 2,
     // flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -464,7 +469,8 @@ const styles = StyleSheet.create({
     
 },
 text: {
-    fontFamily: "Poppins"
+    fontFamily: "Arial-Rounded",
+    color: "#4B2209",
 },
 itemWrapper: {
   flexDirection:'row',
@@ -472,7 +478,7 @@ itemWrapper: {
   alignSelf:'center',
 },
 details: {
-  backgroundColor:'white',
+  // backgroundColor:'white',
   alignItems:'center',
   justifyContent:'space-between',
   padding: 5,
