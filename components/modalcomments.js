@@ -240,12 +240,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 42,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
     color:"#004F18",
   },
   subheader: {
     fontSize: 22,
-    fontFamily: "Poppins-Header",
+    fontFamily: "Arial-Rounded",
     color:"#004F18",
   },
   button: {
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#F25987",
     position: 'absolute',
     top: 10,
     right: 10,
@@ -268,10 +268,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textStyle: {
-    color: 'white',
+    fontFamily: 'Arial-Rounded',
+    color: '#FAF4E6',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 10,
+    fontSize: 11,
   },
   modalText: {
     marginBottom: 15,
@@ -285,15 +286,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon:{
-    height: 20,
-    width: 20,
+    height: 40,
+    width: 40,
     marginLeft: 15,
     tintColor: "#F25987",
 
   },
   comment:{
     justifyContent:'flex-start',
-    fontFamily: "Poppins",
+    fontFamily: "Arial-Rounded",
     fontSize: 15,
   },
   heading:{
@@ -307,11 +308,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888',
     marginLeft: 5,
-    fontFamily: 'Poppins',
+    fontFamily: 'Arial-Rounded',
   },
   username: {
     fontSize: 14,
-    fontFamily: 'Poppins-Header',
+    fontFamily: 'Arial-Rounded',
   },
   commentContainer:{
     marginVertical: 5,
