@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 400,
-    height: 600,
-    marginHorizontal: 10,
+    width: 600,
+    height: 1000,
+    marginHorizontal: 50,
   },
 });

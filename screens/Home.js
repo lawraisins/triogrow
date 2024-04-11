@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9839D",
     padding: 10,
     paddingBottom: 100,
-    height: "80%"
+    height: "80%",
+    justifyContent: 'c'
   },
   addPlanter: {
     flexDirection:"row",
