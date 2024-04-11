@@ -206,13 +206,13 @@ export default function EditProfile() {
       },
       header: {
         fontSize: 42,
-        fontFamily: "Poppins-Header",
+        fontFamily: "Arial-Rounded",
         top: 15,
         color:"#004F18",
       },
       subheader: {
         fontSize: 18,
-        fontFamily: "Poppins",
+        fontFamily: "Arial-Rounded",
         color:"#4B2209",
         
       },

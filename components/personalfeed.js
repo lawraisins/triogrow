@@ -233,7 +233,7 @@ const PersonalFeed = ( {refreshing, onRefresh }) => {
         },
         feed: {
           paddingBottom: 50,
-          height: "60%",
+          height: "75%",
         }
       }
       );
