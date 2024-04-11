@@ -41,14 +41,14 @@ export default function FAQ() {
     },
     {
       id: 5,
-      title: '02 | Video 1',
+      title: '02 | Video 1: Composting for Beginners: The Compost Tube',
       onPress: () => {
         navigation.navigate('Tutorial');
       },
     },
     {
       id: 6,
-      title: '03 | Video 2',
+      title: '03 | Video 2: Triogrow App Soil Building Test Video',
       onPress: () => {
         navigation.navigate('Tutorial2');
       },
@@ -57,30 +57,30 @@ export default function FAQ() {
     // ... other tutorial items
   ];
 
-  const video = [
-    {
-      id: 5,
-      title: '01 | Video 1',
-      onPress: () => {
-        navigation.navigate('Tutorial');
-      },
-    },
-    {
-      id: 6,
-      title: '02 | Video 2',
-      onPress: () => {
-        navigation.navigate('Tutorial');
-      },
-    },
-    {
-      id: 7,
-      title: '03 | Video 3',
-      onPress: () => {
-        navigation.navigate('Tutorial');
-      },
-    },
-    // ... other video items
-  ];
+  // const video = [
+  //   {
+  //     id: 5,
+  //     title: '01 | Video 1',
+  //     onPress: () => {
+  //       navigation.navigate('Tutorial');
+  //     },
+  //   },
+  //   {
+  //     id: 6,
+  //     title: '02 | Video 2',
+  //     onPress: () => {
+  //       navigation.navigate('Tutorial');
+  //     },
+  //   },
+  //   {
+  //     id: 7,
+  //     title: '03 | Video 3',
+  //     onPress: () => {
+  //       navigation.navigate('Tutorial');
+  //     },
+  //   },
+  //   // ... other video items
+  // ];
 
   return (
     <ScrollView style={styles.container}>
@@ -111,20 +111,6 @@ export default function FAQ() {
           </TouchableOpacity>
         ))}
       </View>
-
-      <View style={styles.headingBox}>
-        <Text style={styles.heading}>Video Tutorials</Text>
-      </View>
-
-      <View style={styles.greenBox}>
-        {video.map((videoItem) => (
-          <TouchableOpacity key={videoItem.id} onPress={() => {/* Navigation for video */}}>
-            <View style={styles.tutorialBox}>
-              <Text style={styles.tutorialTitle}>{videoItem.title}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
     </ScrollView>
   );
 }
@@ -134,6 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FAF4E6",
     padding: 20,
+    // justifyContent: "center"
   },
   headingBox: {
     // paddingVertical: 10,
@@ -149,7 +136,7 @@ const styles = StyleSheet.create({
   tutorialBox: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    padding: 10,
+    padding: 20,
     justifyContent: "center",
     marginBottom: 16,
   },
@@ -161,14 +148,14 @@ const styles = StyleSheet.create({
   },
   greenBox: {
     backgroundColor: '#A0D29F',
-    padding: 10,
-    justifyContent: "space-between",
+    padding: 20,
+    justifyContent: "center",
     borderRadius: 10,
     marginBottom: 10,
   },
   tutorialContentBox: {
     // marginTop: 10,
-    padding: 5,
+    padding: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
   },
