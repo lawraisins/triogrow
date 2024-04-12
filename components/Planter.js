@@ -31,76 +31,77 @@ const Planter = ({refreshing, onRefresh }) =>  {
 
 
 
-    // Get the socketId from the DB
-    const getSocketId = async (id) => {
-      try {
-        // Replace 'your-backend-url' with the actual URL of your backend server
-        const token = await _getToken();
-        const response = await fetch(`${backendURL}/planter/getSocketId`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify({"RPI_ID":id}), // Pass userId as an object with a single property
-        });
-        const data = await response.json();
-        if (response.ok) {
-          // Update the state with the retrieved posts
-          setSocketId(data.socketId)
-          console.log(socketId)
-          
-        } else {
-          console.error('Failed to retrieve posts:', data.error);
-        }
-      } catch (error) {
-        console.error('Error fetching posts:', error.message);
+  // Get the socketId from the DB
+  const getSocketId = async (id) => {
+    try {
+      // Replace 'your-backend-url' with the actual URL of your backend server
+      const token = await _getToken();
+      const response = await fetch(`${backendURL}/planter/getSocketId`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify({"RPI_ID":id}), // Pass userId as an object with a single property
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // Update the state with the retrieved posts
+        setSocketId(data.socketId)
+        console.log(socketId)
+      } else {
+        console.error('Failed to retrieve posts:', data.error);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching posts:', error.message);
+    }
+  };
 
     
-    const socket = io('http://124.155.214.143:5000');
-    // Listen for 'connect' event
-    socket.on('connect', () => {
+  const socket = io('http://124.155.214.143:5000');
+  // Listen for 'connect' event
+  socket.on('connect', () => {
     console.log('Connected to socket server');
-});
+  });
   
 
 
-    //Need to pass the socketId to the backend so that it can send the pump value to the RPi
-    const onPumpPressed = async (id) => {
-      try {
-        const socket = io('http://124.155.214.143:5000');
-        socket.on('connect', () => {
-          console.log('Connected to socket server');
-        });
-        await socket.emit('pump_command', "SlR7g2hxgElZTSIQAAAP");
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    };
+  // Need to pass the socketId to the backend so that it can send the pump value to the RPi
+  const onPumpPressed = async (rpi_id) => {
+    try {
+      await getSocketId(rpi_id);
+      const socket = io('http://124.155.214.143:5000');
+      socket.on('connect', () => {
+        console.log('Connected to socket server');
+      });
+      // await socket.emit('pump_command', "SlR7g2hxgElZTSIQAAAP");
+      await socket.emit('pump_command', socketId);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
 
 
-    const fetchPlanters = async () => {
-      try {
-        // Replace 'your-backend-url' with the actual URL of your backend server
-        const token = await _getToken();
-        const response = await fetch(`${backendURL}/planter/getPlanterData`,{
-          headers: {
-            Authorization: `${token}`, // Access the token from the headers
-          }
-        });
-        const data = await response.json();
-        if (response.ok) {
-          // Update the state with the retrieved posts
-          setPlanters(data.content)            
-        } else {
-          console.error('Failed to retrieve planters:', data.error);
+  const fetchPlanters = async () => {
+    try {
+      // Replace 'your-backend-url' with the actual URL of your backend server
+      const token = await _getToken();
+      const response = await fetch(`${backendURL}/planter/getPlanterData`,{
+        headers: {
+          Authorization: `${token}`, // Access the token from the headers
         }
-      } catch (error) {
-        console.error('Error fetching planters:', error.message);
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // Update the state with the retrieved posts
+        setPlanters(data.content)            
+      } else {
+        console.error('Failed to retrieve planters:', data.error);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching planters:', error.message);
+    }
+  };
 ;
 
     useEffect(() => {
