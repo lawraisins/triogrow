@@ -30,6 +30,7 @@ const Planter = ({refreshing, onRefresh }) =>  {
   };
 
 
+
     // Get the socketId from the DB
     const getSocketId = async (id) => {
       try {
@@ -47,7 +48,7 @@ const Planter = ({refreshing, onRefresh }) =>  {
         if (response.ok) {
           // Update the state with the retrieved posts
           setSocketId(data.socketId)
-          // console.log(socketId)
+          console.log(socketId)
           
         } else {
           console.error('Failed to retrieve posts:', data.error);
@@ -56,37 +57,28 @@ const Planter = ({refreshing, onRefresh }) =>  {
         console.error('Error fetching posts:', error.message);
       }
     };
+
     
+    const socket = io('http://124.155.214.143:5000');
+    // Listen for 'connect' event
+    socket.on('connect', () => {
+    console.log('Connected to socket server');
+});
+  
 
 
     //Need to pass the socketId to the backend so that it can send the pump value to the RPi
     const onPumpPressed = async (id) => {
-        try {
-            // Data to send in the POST request
-            // getSocketId(id)
-            // const socket = io('http://124.155.214.143:5000');
-            // // Listen for 'connect' event
-            // socket.on('connect', () => {
-            //   console.log('Connected to socket server');
-            // });
-            // socket.emit('pump_command', socketId);
-            // socket.close()
-        
-        } catch (error) {
-            // Handle any errors that occur during the registration process
-            console.error('Update error: ', error);
-            if (error.response) {
-                // The request was made, but the server responded with an error
-                console.error('Server error: ', error.response.data);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.error('No response received from the server', error.response.data);
-            } else {
-                // Something happened in setting up the request
-                console.error('Request setup error: ', error.response.data);
-            }
-        }
-    }
+      try {
+        const socket = io('http://124.155.214.143:5000');
+        socket.on('connect', () => {
+          console.log('Connected to socket server');
+        });
+        await socket.emit('pump_command', "SlR7g2hxgElZTSIQAAAP");
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
 
 
     const fetchPlanters = async () => {
